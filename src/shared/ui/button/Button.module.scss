@@ -1,0 +1,76 @@
+.button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-block;
+  border: 0;
+  font-size: 16px;
+}
+
+// VARIANTS
+.primary {
+  color: white;
+  background-color: #1ea7fd;
+}
+
+.secondary {
+  color: #333;
+  background-color: transparent;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;
+}
+
+.danger {
+  background-color: #ff0000;
+  color: white;
+}
+
+.success {
+  background-color: #00ff00;
+  color: white;
+}
+
+.outline {
+  border: 1px solid #1ea7fd;
+  background-color: transparent;
+}
+
+.ghost {
+  background-color: transparent;
+  border: none;
+}
+
+.link {
+  text-decoration: underline;
+  color: #1ea7fd;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+// SIZES
+.small {
+  font-size: 12px;
+  padding: 10px 16px;
+}
+
+.medium {
+  font-size: 14px;
+  padding: 11px 20px;
+}
+
+.large {
+  font-size: 16px;
+  padding: 12px 24px;
+}
+
+.s48 {
+  width: 48px;
+  height: 48px;
+}
+
+.icon {
+  padding: 0;
+  font-size: 24px;
+}
