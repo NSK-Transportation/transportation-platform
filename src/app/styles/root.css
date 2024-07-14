@@ -37,7 +37,34 @@
   --color-orange-90: #642e12;
   --color-orange-100: #3e1d0b;
 
-  /* START Buttons */
+  --color-error: #ff9f9f;
+  --color-success: #6dee91;
+  --color-warning: #ffcc00;
+
+  --color-gradient: linear-gradient(to right, #2196f3, #afddff, #ffffff);
+
+  /* START Status */
+  --status-color-green: #6dee91;
+  --status-color-grey: #e0e0e0;
+  --status-color-blue: #b5dcff;
+  --status-color-red: #ff9f9f;
+  /* END Status */
+
+  /* START Sizes */
+  --small-padding: 8px 16px;
+  --small-font-size: 12px;
+
+  --medium-padding: 12px 24px;
+  --medium-font-size: 14px;
+
+  --large-padding: 24px 64px;
+  --large-font-size: 16px;
+
+  --icon-padding: 8px;
+  --icon-font-size: 16px;
+  /* END Sizes */
+
+  /* START Button */
   /* Default */
   --button-default-color: var(--color-gray-80);
   --button-default-background: var(--color-gray-10);
@@ -49,23 +76,26 @@
 
   /* Primary */
   --button-primary-color: var(--color-gray-10);
-  --button-primary-background: var(--color-orange-30);
+  --button-primary-background: var(--color-orange-50);
 
-  --button-primary-hover-color: var(--color-orange-50);
-  --button-primary-hover-background: var(--color-gray-10);
+  --button-primary-hover-color: var(--color-gray-10);
+  --button-primary-hover-background: var(--color-orange-60);
 
   --button-primary-click-color: var(--color-gray-10);
-  --button-primary-click-background: var(--color-orange-50);
+  --button-primary-click-background: var(--color-orange-70);
 
   /* Secondary */
-  --button-secondary-color: var(--color-gray-80);
+  --button-secondary-color: var(--color-orange-50);
   --button-secondary-background: var(--color-gray-10);
+  --button-secondary-border-color: var(--color-orange-50);
 
-  --button-secondary-hover-color: var(--color-blue-50);
-  --button-secondary-hover-background: var(--color-blue-20);
+  --button-secondary-hover-color: var(--color-orange-60);
+  --button-secondary-hover-background: var(--color-gray-10);
+  --button-secondary-hover-border: var(--color-orange-60);
 
-  --button-secondary-click-color: var(--color-gray-10);
-  --button-secondary-click-background: var(--color-blue-60);
+  --button-secondary-click-color: var(--color-orange-70);
+  --button-secondary-click-background: var(--color-gray-10);
+  --button-secondary-click-border: var(--color-orange-70);
 
   /* Danger */
   --button-danger-color: var(--color-gray-10);
@@ -81,33 +111,26 @@
 
   /* Disabled */
   --button-disabled-color: var(--color-gray-40);
-  --button-disabled-background: var(--color-gray-10);
-
-  /* Sizes */
-  --button-small-padding: 8px 12px;
-  --button-small-font-size: 12px;
-
-  --button-medium-padding: 12px 16px;
-  --button-medium-font-size: 14px;
-
-  --button-large-padding: 16px 24px;
-  --button-large-font-size: 16px;
-
-  --button-icon-padding: 8px;
-  --button-icon-font-size: 16px;
+  --button-disabled-background: var(--color-gray-30);
+  --button-disabled-border-color: var(--color-gray-40);
   /* END Buttons */
 
-  /* Input */
-  --input-primary-color: #ececec;
-  --input-disabled-color: rgba(69, 67, 199, 0.15);
-  --input-border-radius: 8px;
-  --input-padding-vertical: 8px;
-  --input-padding-horizontal: 16px;
+  /* START Input */
+  /* Default */
+  --input-default-color: var(--color-blue-50);
+  --input-default-background: var(--color-gray-10);
+  --input-default-border-color: var(--color-gray-50);
 
-  --text-white: #ffffff;
+  --input-default-hover-color: var(--color-blue-50);
 
-  --global-border-color: #dbdbdb;
-  --global-background-color: #ffffff;
+  --input-default-click-color: var(--color-blue-50);
 
-  --indicator-error: #f64c4c;
+  /* Disabled */
+  --input-disabled-color: var(--color-gray-50);
+  --input-disabled-border-color: var(--color-gray-50);
+
+  --input-error-color: var(--color-error); /* Error */
+  --input-success-color: var(--color-success); /* Success */
+  --input-warning-color: var(--color-warning); /* Warning */
+  /* END Input */
 }
