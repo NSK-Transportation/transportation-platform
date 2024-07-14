@@ -1,0 +1,123 @@
+@import url(../../../app/styles/root.css);
+
+.input {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--input-default-border-color);
+  background-color: var(--input-default-background);
+  border-radius: 8px;
+  font-size: 16px;
+  padding: 8px 12px;
+  transition: all 0.2s ease-out;
+  cursor: text;
+
+  input {
+    border: 0;
+    outline: 0;
+    width: 100%;
+
+    &::placeholder {
+      opacity: 0.5;
+    }
+  }
+
+  &.fullWidth {
+    width: 100%;
+  }
+
+  &:hover {
+    border-color: var(--input-default-hover-color);
+  }
+
+  &:focus-visible {
+    outline: 0;
+  }
+
+  &:focus-within {
+    color: var(--input-default-color);
+    box-shadow: 0 0 0 3px var(--input-default-color);
+
+    input::placeholder {
+      opacity: 1;
+      color: var(--input-default-color);
+      border-color: var(--input-default-hover-border);
+    }
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    input {
+      color: var(--input-disabled-color);
+      background-color: var(--input-disabled-background);
+      cursor: not-allowed;
+    }
+
+    &:hover,
+    &:focus {
+      border-color: var(--input-disabled-border-color);
+    }
+  }
+
+  &__slots {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Variants
+.default {
+  color: var(--button-default-color);
+}
+
+.error {
+  border-color: var(--input-error-color);
+  box-shadow: 0 0 0 3px var(--input-error-color);
+  input {
+    color: var(--input-error-color);
+  }
+
+  &.disabled {
+    border-color: var(--input-disabled-border-color);
+    box-shadow: none;
+
+    input {
+      color: var(--input-disabled-color);
+    }
+  }
+}
+
+.success {
+  border-color: var(--input-success-color);
+  box-shadow: 0 0 0 3px var(--input-success-color);
+  input {
+    color: var(--input-success-color);
+  }
+
+  &.disabled {
+    border-color: var(--input-disabled-border-color);
+    box-shadow: none;
+
+    input {
+      color: var(--input-disabled-color);
+    }
+  }
+}
+
+.warning {
+  border-color: var(--input-warning-color);
+  box-shadow: 0 0 0 3px var(--input-warning-color);
+
+  input {
+    color: var(--input-warning-color);
+  }
+
+  &.disabled {
+    border-color: var(--input-disabled-border-color);
+    box-shadow: none;
+
+    input {
+      color: var(--input-disabled-color);
+    }
+  }
+}

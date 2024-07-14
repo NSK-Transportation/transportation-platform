@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
 import { Button } from "./Button";
 
 const meta: Meta<typeof Button> = {
-  title: "Example/Button",
+  title: "Button",
   component: Button,
   parameters: {
     layout: "centered",
@@ -11,20 +10,21 @@ const meta: Meta<typeof Button> = {
   tags: ["autodocs"],
   argTypes: {
     variant: {
-      control: { type: "multi-select" },
+      control: { type: "radio" },
       options: ["default", "primary", "secondary", "link", "danger"],
     },
+    disabled: { type: "boolean" },
     size: {
-      control: { type: "multi-select" },
+      control: { type: "radio" },
       options: ["small", "medium", "large", "s48", "icon"],
     },
   },
   args: {
+    disabled: false,
     label: "Button",
     variant: "primary",
     size: "medium",
     className: "",
-    onClick: action("clicked"),
   },
 };
 
