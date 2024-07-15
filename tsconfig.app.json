@@ -21,7 +21,17 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@ui": ["src/shared/ui"],
+      "@api": ["src/shared/api"],
+      "@icons": ["src/shared/assets/icons"],
+      "@utils": ["src/shared/utils"],
+      "@hooks": ["src/shared/hooks"],
+      "@consts": ["src/shared/consts"]
+    }
   },
   "include": ["src", "vite-env.d.ts"]
 }
