@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes, ImgHTMLAttributes, ReactNode, Ref } from "react";
+import { forwardRef, ImgHTMLAttributes, ReactNode, Ref } from "react";
 import clsx from "clsx";
 import styles from "./Avatar.module.scss";
 
@@ -10,7 +10,7 @@ interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   icon?: ReactNode;
 }
 
-const Avatar = forwardRef<HTMLAttributes<AvatarProps>, AvatarProps>(
+const Avatar = forwardRef<ImgHTMLAttributes<AvatarProps>, AvatarProps>(
   ({ className, src, size = "large", alt = "avatar", icon, ...props }, ref) => {
     return (
       <div
