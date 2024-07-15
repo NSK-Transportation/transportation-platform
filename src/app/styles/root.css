@@ -133,4 +133,36 @@
   --input-success-color: var(--color-success); /* Success */
   --input-warning-color: var(--color-warning); /* Warning */
   /* END Input */
+
+  /* START Radio */
+  --radio-default-color: var(--color-gray-10);
+  --radio-default-border-color: var(--color-gray-50);
+  --radio-default-checked-color: var(--color-blue-80);
+
+  --radio-default-hover-color: var(--color-gray-10);
+  --radio-default-hover-border: var(--color-blue-80);
+
+  --radio-default-click-color: var(--color-gray-10);
+  --radio-default-click-border: var(--color-blue-80);
+  --radio-default-click-box-shadow: var(--color-blue-30);
+
+  --radio-default-disabled-color: var(--color-gray-20);
+  --radio-default-disabled-border: var(--color-gray-30);
+  /* END Radio */
+
+  /* START Checkbox */
+  --checkbox-default-color: var(--color-gray-10);
+  --checkbox-default-border-color: var(--color-gray-50);
+  --checkbox-default-checked-color: var(--color-blue-80);
+
+  --checkbox-default-hover-color: var(--color-gray-10);
+  --checkbox-default-hover-border: var(--color-blue-80);
+
+  --checkbox-default-click-color: var(--color-gray-10);
+  --checkbox-default-click-border: var(--color-blue-80);
+  --checkbox-default-click-box-shadow: var(--color-blue-30);
+
+  --checkbox-default-disabled-color: var(--color-gray-20);
+  --checkbox-default-disabled-border: var(--color-gray-30);
+  /* END Checkbox */
 }
