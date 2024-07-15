@@ -37,18 +37,12 @@
   --color-orange-90: #642e12;
   --color-orange-100: #3e1d0b;
 
+  --color-info: #b5dcff;
   --color-error: #ff9f9f;
   --color-success: #6dee91;
   --color-warning: #ffcc00;
 
   --color-gradient: linear-gradient(to right, #2196f3, #afddff, #ffffff);
-
-  /* START Status */
-  --status-color-green: #6dee91;
-  --status-color-grey: #e0e0e0;
-  --status-color-blue: #b5dcff;
-  --status-color-red: #ff9f9f;
-  /* END Status */
 
   /* START Sizes */
   --small-padding: 8px 16px;
@@ -117,7 +111,7 @@
 
   /* START Input */
   /* Default */
-  --input-default-color: var(--color-blue-50);
+  --input-default-color: var(--color-blue-30);
   --input-default-background: var(--color-gray-10);
   --input-default-border-color: var(--color-gray-50);
 
@@ -165,4 +159,21 @@
   --checkbox-default-disabled-color: var(--color-gray-20);
   --checkbox-default-disabled-border: var(--color-gray-30);
   /* END Checkbox */
+
+  /* START Chip */
+  --chip-default-color: var(--color-gray-100);
+  --chip-default-background: var(--color-gray-30);
+
+  --chip-info-color: var(--color-gray-100);
+  --chip-info-background: var(--color-info);
+
+  --chip-success-color: var(--color-gray-100);
+  --chip-success-background: var(--color-success);
+
+  --chip-error-color: var(--color-gray-100);
+  --chip-error-background: var(--color-error);
+
+  --chip-warning-color: var(--color-gray-100);
+  --chip-warning-background: var(--color-warning);
+  /* END Chip */
 }

@@ -5,3 +5,5 @@ export { Input } from "./input/Input";
 export { InputGroup } from "./inputGroup/InputGroup";
 export { Radio } from "./radio/Radio";
 export { Checkbox } from "./checkbox/Checkbox";
+export { Label } from "./label/Label";
+export { Chip } from "./chip/Chip";

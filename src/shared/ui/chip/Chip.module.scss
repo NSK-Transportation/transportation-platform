@@ -1,0 +1,48 @@
+@import url(../../../app/styles/root.css);
+
+.chip {
+  border-radius: 16px;
+  cursor: default;
+
+  // Variants
+  &.default {
+    background-color: var(--chip-default-background);
+    color: var(--chip-default-color);
+  }
+
+  &.info {
+    background-color: var(--chip-info-background);
+    color: var(--chip-info-color);
+  }
+
+  &.success {
+    background-color: var(--chip-success-background);
+    color: var(--chip-success-color);
+  }
+
+  &.error {
+    background-color: var(--chip-error-background);
+    color: var(--chip-error-color);
+  }
+
+  &.warning {
+    background-color: var(--chip-warning-background);
+    color: var(--chip-warning-color);
+  }
+
+  // Sizes
+  &.small {
+    font-size: 12px;
+    padding: 0 8px;
+  }
+
+  &.medium {
+    font-size: 14px;
+    padding: 0 12px;
+  }
+
+  &.large {
+    font-size: 16px;
+    padding: 0 16px;
+  }
+}
