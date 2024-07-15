@@ -13,11 +13,7 @@ body {
   background-color: #f6f6f6;
 }
 
-.container {
-  max-width: 1440px;
-  margin: auto;
-}
-
 #root {
   margin: 16px auto;
+  max-width: 1920px;
 }
