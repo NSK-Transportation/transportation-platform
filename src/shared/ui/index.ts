@@ -7,3 +7,5 @@ export { Radio } from "./radio/Radio";
 export { Checkbox } from "./checkbox/Checkbox";
 export { Label } from "./label/Label";
 export { Chip } from "./chip/Chip";
+export { Modal } from "./modal/Modal";
+export { Popup } from "./popup/Popup";
