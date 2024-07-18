@@ -1,0 +1,33 @@
+@import url(../../../app/styles/root.css);
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+
+  .list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+
+    .link {
+      padding: 2px 8px;
+      border-radius: 8px;
+      color: var(--main-text-color);
+      background-color: var(--button-default-background);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .separator {
+      margin: 0 8px;
+    }
+  }
+}

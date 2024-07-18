@@ -1,0 +1,17 @@
+@import url(../../../app/styles/root.css);
+
+.divider {
+  &.horizontal {
+    width: 100%;
+    height: 1px;
+    border-radius: 16px;
+    border: 1px solid var(--divider-border-color);
+  }
+
+  &.vertical {
+    width: 1px;
+    height: 100%;
+    border-radius: 16px;
+    border: 1px solid var(--divider-border-color);
+  }
+}

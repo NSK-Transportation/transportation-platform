@@ -9,3 +9,6 @@ export { Label } from "./label/Label";
 export { Chip } from "./chip/Chip";
 export { Modal } from "./modal/Modal";
 export { Popup } from "./popup/Popup";
+export { Breadcrumb } from "./breadcrumb/Breadcrumb";
+export { Spinner } from "./spinner/Spinner";
+export { Divider } from "./divider/Divider";

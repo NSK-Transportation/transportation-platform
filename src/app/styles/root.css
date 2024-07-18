@@ -1,7 +1,7 @@
 :root {
   /* Global */
   --main-background-color: #f6f6f6;
-  /* --main-text-color: var(--color-gray-80); */
+  --main-text-color: var(--color-gray-80);
 
   /* Colors */
   --color-blue-10: #eaf5fe;
@@ -185,4 +185,12 @@
   /* START Modal Popup Popover */
   --wrapper-background-color: 0, 0, 0;
   /* END Modal */
+
+  /* START Spinner */
+  --spinner-border-color: var(--color-gray-80);
+  /* END Spinner */
+
+  /* START Divider */
+  --divider-border-color: var(--color-gray-40);
+  /* END Divider */
 }
