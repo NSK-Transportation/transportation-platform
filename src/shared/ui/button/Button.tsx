@@ -1,4 +1,4 @@
-import { forwardRef, ButtonHTMLAttributes } from "react";
+import { forwardRef, ButtonHTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
 import styles from "./Button.module.scss";
 
@@ -6,7 +6,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   variant?: "default" | "primary" | "secondary" | "link" | "danger";
   size?: "small" | "medium" | "large" | "s48" | "icon";
-  label: string;
+  label: string | ReactNode;
   fullWidth?: boolean;
 }
 
