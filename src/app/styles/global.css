@@ -13,6 +13,7 @@ body {
   place-items: center;
 
   background-color: var(--main-background-color);
+  color: var(--main-text-color);
 }
 
 #root {
