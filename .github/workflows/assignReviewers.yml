@@ -15,7 +15,7 @@ jobs:
     - name: Assign reviewers
       uses: kentaro-m/auto-assign-action@v1.1.2
       with:
-        reviewers: 'vlnt-trsv,Bakugan74'
-        random-reviewer: 'false'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        configuration-path: .github/autoAssign.yml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
