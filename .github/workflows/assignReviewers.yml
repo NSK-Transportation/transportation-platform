@@ -12,7 +12,18 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Check if author is an admin
+      id: check-admin
+      run: |
+        # Проверка, является ли автор администратором
+        if [ "${{ github.actor }}" = "vlnt-trsv" ] || [ "${{ github.actor }}" = "Bakugan74" ]; then
+          echo "ADMIN=true" >> $GITHUB_ENV
+        else
+          echo "ADMIN=false" >> $GITHUB_ENV
+        fi
+
     - name: Assign reviewers
+      if: ${{ env.ADMIN == 'false' }}  # Только если не администратор
       uses: kentaro-m/auto-assign-action@v1.1.2
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
