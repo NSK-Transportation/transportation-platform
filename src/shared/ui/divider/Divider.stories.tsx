@@ -7,6 +7,7 @@ const meta: Meta<typeof Divider> = {
   parameters: {
     layout: "centered",
   },
+  tags: ["dev"],
   argTypes: {
     orientation: { control: "radio", options: ["horizontal", "vertical"] },
     className: { control: "text" },
@@ -19,4 +20,12 @@ const meta: Meta<typeof Divider> = {
 
 export default meta;
 
-export const Default: StoryFn<DividerProps> = (args) => <Divider {...args} />;
+export const Default: StoryFn<DividerProps> = (args) => {
+  return (
+    <>
+      <h1>Текст сверху</h1>
+      <Divider {...args} />
+      <h1>Текст снизу</h1>
+    </>
+  );
+};

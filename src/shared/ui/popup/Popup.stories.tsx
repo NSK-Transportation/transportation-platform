@@ -13,6 +13,7 @@ const meta: Meta<typeof Popup> = {
   parameters: {
     layout: "centered",
   },
+  tags: ["dev"],
   argTypes: {
     isOpen: { control: "boolean" },
     onClose: { action: "onClose" },

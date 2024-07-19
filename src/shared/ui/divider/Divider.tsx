@@ -9,8 +9,8 @@ export interface DividerProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Divider = forwardRef<HTMLDivElement, DividerProps>(
-  ({ orientation = "horizontal", className }) => (
-    <div className={clsx(styles.divider, styles[orientation], className)} />
+  ({ orientation = "horizontal", className }, ref) => (
+    <div ref={ref} className={clsx(styles.divider, styles[orientation], className)} />
   ),
 );
 

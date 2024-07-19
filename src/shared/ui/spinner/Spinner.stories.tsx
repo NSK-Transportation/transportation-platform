@@ -7,6 +7,7 @@ const meta: Meta<typeof Spinner> = {
   parameters: {
     layout: "centered",
   },
+  tags: ["dev"],
   argTypes: {
     size: { control: "radio", options: ["small", "medium"] },
     className: { control: "text" },

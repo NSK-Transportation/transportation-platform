@@ -7,6 +7,7 @@ const meta: Meta<typeof Breadcrumb> = {
   parameters: {
     layout: "centered",
   },
+  tags: ["dev"],
   argTypes: {
     items: { control: "object" },
     className: { control: "text" },
