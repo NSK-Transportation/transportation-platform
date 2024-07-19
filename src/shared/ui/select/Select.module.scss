@@ -1,0 +1,63 @@
+@import url(../../../app/styles/root.css);
+
+.selectWrapper {
+  width: 100%;
+
+  &.fullWidth {
+    width: 100%;
+  }
+}
+
+.styledSelect {
+  // width: 140px;
+  padding: 12px 12px 12px 12px;
+  border: 1px solid var(--select-default-border-color);
+  // border-bottom: 1px;
+  border-radius: 4px;
+  background: var(--select-default-background);
+  cursor: pointer;
+  color: var(--select-default-color);
+  display: flex;
+  justify-content: space-between;
+
+  &__open{
+    color: var(--select-default-color) !important;
+    border-bottom: 1px;
+    border-radius: 4px 4px 0 0;
+  }
+
+  &:hover{
+    border-color: var(--select-default-active-color);
+  }
+
+  &__options{
+    color: var(--select-disabled-color);
+    width: auto;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    border: 1px solid var(--select-default-active-color);
+    border-top: 0;
+    border-radius: 0 0 4px 4px;
+  }
+  &__optionItem{
+    padding: 4px 10px 4px 10px;
+    &:hover{
+      color: var(--select-default-active-color);
+      border: 1px solid var( --select-default-active-color);
+      border-radius: 4px;
+    }
+  }
+  .arrow{
+    margin-left:100px ;
+    // padding-left:auto;
+    transition: transform 0.3s;
+    &svg{
+      color: var(--select-default-active-color);
+    }
+    &__open{
+      transform: rotate(180deg);
+    }
+  }
+}

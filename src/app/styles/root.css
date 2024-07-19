@@ -133,4 +133,16 @@
   --input-success-color: var(--color-success); /* Success */
   --input-warning-color: var(--color-warning); /* Warning */
   /* END Input */
+
+  /* START Select */
+  /* Default */
+  --select-default-color: var(--color-gray-40);
+  --select-default-background: var(--color-gray-10);
+  --select-default-border-color: var(--color-gray-40);
+
+  --select-default-active-color: var(--color-blue-60);
+
+  /* Disabled */
+  --select-disabled-color: var(--color-gray-80);
+  /* END Select */
 }
