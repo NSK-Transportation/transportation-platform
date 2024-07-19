@@ -1,0 +1,19 @@
+name: Assign Reviewers
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  assign-reviewers:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Assign reviewers
+      uses: kentaro-m/auto-assign-action@v1.1.2
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        configuration-path: .github/autoAssign.yml
