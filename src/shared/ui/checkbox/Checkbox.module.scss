@@ -1,0 +1,68 @@
+@import url(../../../app/styles/root.css);
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--checkbox-default-border-color);
+    border-radius: 4px;
+    appearance: none;
+    outline: none;
+    position: relative;
+    cursor: pointer;
+    transition: all var(--transition-duration) var(--transition-timing-function);
+
+    &:before {
+      content: "";
+      display: block;
+      width: 10px;
+      height: 10px;
+      background: var(--checkbox-default-checked-color);
+      border-radius: 2px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+    }
+
+    &:checked:before {
+      opacity: 1;
+    }
+  }
+
+  input[type="checkbox"]:not(:disabled):hover {
+    border-color: var(--checkbox-default-hover-border);
+    box-shadow: 0 0 0 3px var(--checkbox-default-click-box-shadow);
+  }
+
+  //   input[type="checkbox"]:not(:disabled):focus {
+  //     border-color: var(--checkbox-default-click-border);
+  //   }
+
+  &.disabled,
+  input[type="checkbox"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.row {
+    flex-direction: row;
+
+    input[type="checkbox"] {
+      margin-right: 8px;
+    }
+  }
+
+  &.column {
+    flex-direction: column;
+
+    input[type="checkbox"] {
+      margin-bottom: 8px;
+    }
+  }
+}

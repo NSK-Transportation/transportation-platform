@@ -1,0 +1,68 @@
+@import url(../../../app/styles/root.css);
+
+.radio {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+
+  input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--radio-default-border-color);
+    border-radius: 50%;
+    appearance: none;
+    outline: none;
+    position: relative;
+    cursor: pointer;
+    transition: all var(--transition-duration) var(--transition-timing-function);
+
+    &:before {
+      content: "";
+      display: block;
+      width: 10px;
+      height: 10px;
+      background: var(--radio-default-checked-color);
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+    }
+
+    &:checked:before {
+      opacity: 1;
+    }
+  }
+
+  input[type="radio"]:not(:disabled):hover {
+    border-color: var(--radio-default-hover-border);
+    box-shadow: 0 0 0 3px var(--radio-default-click-box-shadow);
+  }
+
+  // input[type="radio"]:not(:disabled):focus {
+  //   border-color: var(--radio-default-click-border);
+  // }
+
+  &.disabled,
+  input[type="radio"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.row {
+    flex-direction: row;
+
+    input[type="radio"] {
+      margin-right: 8px;
+    }
+  }
+
+  &.column {
+    flex-direction: column;
+
+    input[type="radio"] {
+      margin-bottom: 8px;
+    }
+  }
+}

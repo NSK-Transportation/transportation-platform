@@ -1,3 +1,5 @@
+@import url(./root.css);
+
 body {
   font-family: Inter, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -10,14 +12,11 @@ body {
   display: flex;
   place-items: center;
 
-  background-color: #f6f6f6;
-}
-
-.container {
-  max-width: 1440px;
-  margin: auto;
+  background-color: var(--main-background-color);
+  color: var(--main-text-color);
 }
 
 #root {
   margin: 16px auto;
+  max-width: 1920px;
 }

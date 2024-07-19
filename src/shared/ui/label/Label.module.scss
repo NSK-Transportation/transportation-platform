@@ -1,0 +1,22 @@
+.label {
+  display: flex;
+  gap: 4px;
+
+  &.up {
+    flex-direction: column;
+  }
+
+  &.down {
+    flex-direction: column-reverse;
+  }
+
+  &.left {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &.right {
+    flex-direction: row-reverse;
+    align-items: center;
+  }
+}

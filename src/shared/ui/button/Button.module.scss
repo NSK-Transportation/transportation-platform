@@ -1,11 +1,14 @@
 @import url(../../../app/styles/root.css);
 
 .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
   border: 0;
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.2s ease-out;
+  transition: all var(--transition-duration) var(--transition-timing-function);
 
   &.fullWidth {
     width: 100%;
@@ -111,9 +114,9 @@
   padding: var(--large-padding);
 }
 
-.s48 {
-  width: 48px;
-  height: 48px;
+.s36 {
+  width: 36px;
+  height: 36px;
 }
 
 .icon {

@@ -12,6 +12,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.26.19",
     "clsx": "^2.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -46,6 +47,7 @@
     "eslint-plugin-storybook": "^0.8.0",
     "prettier": "3.3.2",
     "storybook": "^8.2.2",
+    "tsc-alias": "^1.8.10",
     "typescript": "^5.2.2",
     "vite": "^5.3.1"
   }

@@ -1,7 +1,7 @@
 :root {
-  /* Global
+  /* Global */
   --main-background-color: #f6f6f6;
-  --main-text-color: var(--color-gray-80); */
+  --main-text-color: var(--color-gray-80);
 
   /* Colors */
   --color-blue-10: #eaf5fe;
@@ -37,18 +37,12 @@
   --color-orange-90: #642e12;
   --color-orange-100: #3e1d0b;
 
+  --color-info: #b5dcff;
   --color-error: #ff9f9f;
   --color-success: #6dee91;
   --color-warning: #ffcc00;
 
   --color-gradient: linear-gradient(to right, #2196f3, #afddff, #ffffff);
-
-  /* START Status */
-  --status-color-green: #6dee91;
-  --status-color-grey: #e0e0e0;
-  --status-color-blue: #b5dcff;
-  --status-color-red: #ff9f9f;
-  /* END Status */
 
   /* START Sizes */
   --small-padding: 8px 16px;
@@ -63,6 +57,11 @@
   --icon-padding: 8px;
   --icon-font-size: 16px;
   /* END Sizes */
+
+  /* START Transtion */
+  --transition-duration: 0.2s;
+  --transition-timing-function: ease-out;
+  /* END Transtion */
 
   /* START Button */
   /* Default */
@@ -117,7 +116,7 @@
 
   /* START Input */
   /* Default */
-  --input-default-color: var(--color-blue-50);
+  --input-default-color: var(--color-blue-30);
   --input-default-background: var(--color-gray-10);
   --input-default-border-color: var(--color-gray-50);
 
@@ -134,6 +133,7 @@
   --input-warning-color: var(--color-warning); /* Warning */
   /* END Input */
 
+
   /* START Select */
   /* Default */
   --select-default-color: var(--color-gray-40);
@@ -145,4 +145,65 @@
   /* Disabled */
   --select-disabled-color: var(--color-gray-80);
   /* END Select */
+
+  /* START Radio */
+  --radio-default-color: var(--color-gray-10);
+  --radio-default-border-color: var(--color-gray-50);
+  --radio-default-checked-color: var(--color-blue-80);
+
+  --radio-default-hover-color: var(--color-gray-10);
+  --radio-default-hover-border: var(--color-blue-80);
+
+  --radio-default-click-color: var(--color-gray-10);
+  --radio-default-click-border: var(--color-blue-80);
+  --radio-default-click-box-shadow: var(--color-blue-30);
+
+  --radio-default-disabled-color: var(--color-gray-20);
+  --radio-default-disabled-border: var(--color-gray-30);
+  /* END Radio */
+
+  /* START Checkbox */
+  --checkbox-default-color: var(--color-gray-10);
+  --checkbox-default-border-color: var(--color-gray-50);
+  --checkbox-default-checked-color: var(--color-blue-80);
+
+  --checkbox-default-hover-color: var(--color-gray-10);
+  --checkbox-default-hover-border: var(--color-blue-80);
+
+  --checkbox-default-click-color: var(--color-gray-10);
+  --checkbox-default-click-border: var(--color-blue-80);
+  --checkbox-default-click-box-shadow: var(--color-blue-30);
+
+  --checkbox-default-disabled-color: var(--color-gray-20);
+  --checkbox-default-disabled-border: var(--color-gray-30);
+  /* END Checkbox */
+
+  /* START Chip */
+  --chip-default-color: var(--color-gray-100);
+  --chip-default-background: var(--color-gray-30);
+
+  --chip-info-color: var(--color-gray-100);
+  --chip-info-background: var(--color-info);
+
+  --chip-success-color: var(--color-gray-100);
+  --chip-success-background: var(--color-success);
+
+  --chip-error-color: var(--color-gray-100);
+  --chip-error-background: var(--color-error);
+
+  --chip-warning-color: var(--color-gray-100);
+  --chip-warning-background: var(--color-warning);
+  /* END Chip */
+
+  /* START Modal Popup Popover */
+  --wrapper-background-color: var(--color-gray-10);
+  /* END Modal */
+
+  /* START Spinner */
+  --spinner-border-color: var(--color-gray-80);
+  /* END Spinner */
+
+  /* START Divider */
+  --divider-border-color: var(--color-gray-40);
+  /* END Divider */
 }
