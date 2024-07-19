@@ -183,7 +183,7 @@
   /* END Chip */
 
   /* START Modal Popup Popover */
-  --wrapper-background-color: 0, 0, 0;
+  --wrapper-background-color: var(--color-gray-10);
   /* END Modal */
 
   /* START Spinner */

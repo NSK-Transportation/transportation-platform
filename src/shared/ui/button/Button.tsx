@@ -5,7 +5,7 @@ import styles from "./Button.module.scss";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   variant?: "default" | "primary" | "secondary" | "link" | "danger";
-  size?: "small" | "medium" | "large" | "s48" | "icon";
+  size?: "small" | "medium" | "large" | "s36" | "icon";
   label: string | ReactNode;
   fullWidth?: boolean;
 }

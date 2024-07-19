@@ -1,0 +1,26 @@
+@import url(../../../app/styles/root.css);
+
+.popover {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: var(--wrapper-background-color);
+  padding: 16px;
+  border-radius: 8px;
+  animation: fadeIn var(--transition-duration) var(--transition-timing-function) forwards;
+  z-index: 50;
+
+  &__actions {
+    display: flex;
+    gap: 16px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

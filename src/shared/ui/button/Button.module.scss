@@ -1,6 +1,9 @@
 @import url(../../../app/styles/root.css);
 
 .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
   border: 0;
   font-size: 16px;
@@ -111,9 +114,9 @@
   padding: var(--large-padding);
 }
 
-.s48 {
-  width: 48px;
-  height: 48px;
+.s36 {
+  width: 36px;
+  height: 36px;
 }
 
 .icon {
