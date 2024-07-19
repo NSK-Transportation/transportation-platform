@@ -1,0 +1,21 @@
+name: Assign Reviewers
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  assign-reviewers:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Assign reviewers
+      uses: kentaro-m/auto-assign-action@v2.2.0
+      with:
+        reviewers: 'vlnt-trsv,Bakugan74'
+        random-reviewer: 'false'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
