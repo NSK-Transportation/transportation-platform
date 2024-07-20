@@ -4,10 +4,6 @@ import { Breadcrumb, BreadcrumbProps } from "./Breadcrumb";
 const meta: Meta<typeof Breadcrumb> = {
   title: "Components/Breadcrumb",
   component: Breadcrumb,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["dev"],
   argTypes: {
     items: { control: "object" },
     className: { control: "text" },

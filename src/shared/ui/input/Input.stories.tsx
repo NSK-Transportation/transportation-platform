@@ -3,12 +3,8 @@ import { Input } from "./Input";
 import { BiShow } from "react-icons/bi";
 
 const meta: Meta<typeof Input> = {
-  title: "Input",
+  title: "Components/Input",
   component: Input,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     disabled: { type: "boolean" },
     variant: {

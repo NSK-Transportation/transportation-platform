@@ -3,12 +3,8 @@ import { Label } from "./Label";
 import { Input } from "../input/Input";
 
 const meta: Meta<typeof Label> = {
-  title: "Label",
+  title: "Components/Label",
   component: Label,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     direction: {
       control: { type: "radio" },

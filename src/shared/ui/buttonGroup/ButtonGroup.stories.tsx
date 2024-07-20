@@ -3,12 +3,8 @@ import { ButtonGroup } from "./ButtonGroup";
 import { Button } from "../button/Button";
 
 const meta: Meta<typeof ButtonGroup> = {
-  title: "ButtonGroup",
+  title: "Components/ButtonGroup",
   component: ButtonGroup,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     size: {
       control: { type: "radio" },

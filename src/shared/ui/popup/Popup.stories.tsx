@@ -10,10 +10,6 @@ import { Button } from "../button/Button";
 const meta: Meta<typeof Popup> = {
   title: "Components/Popup (In Progress)",
   component: Popup,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["dev"],
   argTypes: {
     isOpen: { control: "boolean" },
     onClose: { action: "onClose" },
