@@ -1,0 +1,19 @@
+.stacks {
+  display: flex;
+}
+
+.x {
+  flex-direction: row;
+}
+
+.y {
+  flex-direction: column;
+}
+
+.fullwidth {
+  width: 100%;
+}
+
+.fullheight {
+  height: 100%;
+}
