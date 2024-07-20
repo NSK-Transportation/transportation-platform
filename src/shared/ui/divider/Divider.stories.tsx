@@ -4,10 +4,6 @@ import { Divider, DividerProps } from "./Divider";
 const meta: Meta<typeof Divider> = {
   title: "Components/Divider",
   component: Divider,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["dev"],
   argTypes: {
     orientation: { control: "radio", options: ["horizontal", "vertical"] },
     className: { control: "text" },

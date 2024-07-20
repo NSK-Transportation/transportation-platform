@@ -2,12 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Chip } from "./Chip";
 
 const meta: Meta<typeof Chip> = {
-  title: "Chip",
+  title: "Components/Chip",
   component: Chip,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     variant: {
       control: { type: "radio" },

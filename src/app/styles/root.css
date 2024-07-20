@@ -178,6 +178,23 @@
   --checkbox-default-disabled-border: var(--color-gray-30);
   /* END Checkbox */
 
+  /* START Switch */
+  --switch-default-color: var(--color-gray-10);
+  --switch-default-border-color: var(--color-gray-50);
+  --switch-default-background-color: var(--color-gray-30);
+  --switch-default-checked-color: var(--color-blue-80);
+
+  --switch-default-hover-color: var(--color-gray-10);
+  --switch-default-hover-border: var(--color-blue-80);
+
+  --switch-default-click-color: var(--color-gray-10);
+  --switch-default-click-border: var(--color-blue-80);
+  --switch-default-click-box-shadow: var(--color-blue-30);
+
+  --switch-default-disabled-color: var(--color-gray-20);
+  --switch-default-disabled-border: var(--color-gray-30);
+  /* END Switch */
+
   /* START Chip */
   --chip-default-color: var(--color-gray-100);
   --chip-default-background: var(--color-gray-30);

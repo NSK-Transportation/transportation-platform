@@ -8,15 +8,20 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "small" | "medium" | "large" | "s36" | "icon";
   label: string | ReactNode;
   fullWidth?: boolean;
+  loading?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "small", label, fullWidth, ...props }, ref) => (
+  (
+    { className, variant = "default", size = "medium", label, fullWidth, loading, ...props },
+    ref,
+  ) => (
     <button
       className={clsx(styles.button, className, {
         [styles.fullWidth]: fullWidth,
         [styles[size]]: size,
         [styles[variant]]: variant,
+        [styles.loading]: loading,
       })}
       ref={ref}
       {...props}

@@ -7,10 +7,6 @@ import { IoIosSettings } from "react-icons/io";
 const meta: Meta<typeof Popover> = {
   title: "Components/Popover",
   component: Popover,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     placement: {
       control: { type: "radio" },

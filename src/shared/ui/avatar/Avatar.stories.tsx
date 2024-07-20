@@ -3,12 +3,8 @@ import { Avatar } from "./Avatar";
 import { AiFillAliwangwang } from "react-icons/ai";
 
 const meta: Meta<typeof Avatar> = {
-  title: "Avatar",
+  title: "Components/Avatar",
   component: Avatar,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     size: {
       control: { type: "radio" },

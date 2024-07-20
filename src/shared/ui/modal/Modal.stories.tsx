@@ -3,12 +3,8 @@ import { Modal } from "./Modal";
 import { Button } from "../button/Button";
 
 const meta: Meta<typeof Modal> = {
-  title: "Modal",
+  title: "Components/Modal",
   component: Modal,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     isOpen: { control: "boolean" },
     onClose: { action: "onClose" },

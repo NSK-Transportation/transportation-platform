@@ -3,12 +3,8 @@ import { InputGroup } from "./InputGroup";
 import { Input } from "../input/Input";
 
 const meta: Meta<typeof InputGroup> = {
-  title: "InputGroup",
+  title: "Components/InputGroup",
   component: InputGroup,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     size: {
       control: { type: "radio" },
