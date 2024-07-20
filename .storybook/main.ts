@@ -6,11 +6,19 @@ const config: StorybookConfig = {
     "@storybook/addon-onboarding",
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/addon-interactions"
+    "@storybook/addon-interactions",
   ],
+  docs: {
+    autodocs: "tag",
+    defaultName: "Documentation",
+  },
   framework: {
     name: "@storybook/react-vite",
-    options: {},
+    options: {
+      builder: {
+        viteConfigPath: "../vite.config.ts",
+      },
+    },
   },
 };
 export default config;
