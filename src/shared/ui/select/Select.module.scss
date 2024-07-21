@@ -9,29 +9,25 @@
 }
 
 .styledSelect {
-  // width: 140px;
   padding: 12px 12px 12px 12px;
   border: 1px solid var(--select-default-border-color);
-  // border-bottom: 1px;
   border-radius: 4px;
   background: var(--select-default-background);
   cursor: pointer;
   color: var(--select-default-color);
   display: flex;
   justify-content: space-between;
-
+  align-items: center;
+  
   &__open{
     color: var(--select-default-color) !important;
     border-bottom: 1px;
     border-radius: 4px 4px 0 0;
   }
 
-  &:hover{
-    border-color: var(--select-default-active-color);
-  }
-
   &__options{
     color: var(--select-disabled-color);
+    background: var(--select-default-background);
     width: auto;
     cursor: pointer;
     margin: 0;
@@ -50,7 +46,7 @@
     }
   }
   .arrow{
-    margin-left:100px ;
+    // margin-left:100px ;
     // padding-left:auto;
     transition: transform 0.3s;
     &svg{

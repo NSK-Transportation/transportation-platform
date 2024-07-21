@@ -1,0 +1,51 @@
+@import url(../../../app/styles/root.css);
+
+
+.box{
+    padding: 40px;
+    box-shadow: 0px 4px 11.4px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    display: flex;
+
+
+    // direction
+    &.up{
+        align-items: flex-start;
+    }
+    &.right{
+        justify-content: flex-end;
+    }
+    &.left{
+        justify-content: flex-start;
+    }
+    &.center{
+        align-items: center;
+        justify-content: center;
+    }
+    &.down{
+        align-items: flex-end;
+    }
+
+    // size
+    &.small{
+        width: 210px;
+        height: 200px;
+    }
+    &.medium{
+        width: 400px;
+        height: 400px;
+    }
+    &.large{
+        width: 500px;
+        height: 600px;
+    }
+
+    //color
+    &.white{
+        background: var(--box-white-color);
+    }
+    &.blue{
+        background: var(--box-blue-color);
+    }
+
+}
