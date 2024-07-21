@@ -223,4 +223,9 @@
   /* START Divider */
   --divider-border-color: var(--color-gray-40);
   /* END Divider */
+
+   /* START Box */
+   --box-blue-color: var(--color-blue-70);
+   --box-white-color: var(--color-gray-10);
+   /* END Box */
 }
