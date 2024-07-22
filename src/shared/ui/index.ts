@@ -16,3 +16,5 @@ export { Spinner } from "./spinner/Spinner";
 export { Divider } from "./divider/Divider";
 export { Switch } from "./switch/Switch";
 export { Stacks } from "./stacks/Stacks";
+export { Select } from "./select/Select";
+export { Table } from "./table/Table";
