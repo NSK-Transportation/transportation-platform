@@ -16,7 +16,7 @@ const preview: Preview = {
     docs: {
       page: doc,
       theme: {
-        ...themes.light,
+        ...themes.dark,
       },
     },
   },
