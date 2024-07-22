@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Table, TableProps } from "./Table";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "../checkbox/Checkbox";
+import { Button } from "../button/Button";
 
 interface Data {
   id: number;
@@ -63,31 +64,6 @@ export const Default: StoryFn<TableProps<Data>> = (args) => {
       cell: () => <div>-</div>,
     },
     {
-      accessorKey: "seria",
-      header: "Серия",
-      cell: () => <div>-</div>,
-    },
-    {
-      accessorKey: "number",
-      header: "Номер",
-      cell: () => <div>-</div>,
-    },
-    {
-      accessorKey: "stationIn",
-      header: "Станция назначения",
-      cell: () => <div>-</div>,
-    },
-    {
-      accessorKey: "stationOut",
-      header: "Станция отправления",
-      cell: () => <div>-</div>,
-    },
-    {
-      accessorKey: "type",
-      header: "Тип билета",
-      cell: () => <div>-</div>,
-    },
-    {
       accessorKey: "name",
       header: "Пассажир",
     },
@@ -101,5 +77,12 @@ export const Default: StoryFn<TableProps<Data>> = (args) => {
       .then((data) => setUsers(data));
   }, []);
 
-  return <Table {...args} columns={columns} data={users} />;
+  return (
+    <Table
+      style={{ minWidth: "760px" }}
+      {...args}
+      columns={columns}
+      data={users}
+    />
+  );
 };

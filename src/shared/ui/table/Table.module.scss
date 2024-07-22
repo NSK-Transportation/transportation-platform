@@ -22,13 +22,24 @@ $border: 1px solid var(--table-divider-color);
     border-bottom: $border;
     padding: 0 8px 0 8px;
     cursor: pointer;
+
+    & .table__cell {
+      opacity: 0.5;
+      transition: all var(--transition-duration) var(--transition-timing-function);
+    }
+
+    & .table__cell:hover {
+      opacity: 1;
+    }
   }
 
   &__row {
     width: 100%;
     display: flex;
     align-items: center;
+    border-radius: 8pxr;
     padding: 8px;
+    // cursor: pointer;
 
     &:hover {
       background-color: var(--table-background-hover-color);
@@ -39,7 +50,7 @@ $border: 1px solid var(--table-divider-color);
     }
 
     &.checkboxCell {
-      width: auto;
+      width: 25%;
     }
   }
 
@@ -50,7 +61,7 @@ $border: 1px solid var(--table-divider-color);
     gap: 8px;
 
     &.checkboxCell {
-      width: auto;
+      width: 25%;
     }
   }
 }

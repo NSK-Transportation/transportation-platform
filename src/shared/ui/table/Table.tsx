@@ -14,11 +14,18 @@ export interface TableProps<T> extends TableHTMLAttributes<HTMLTableElement> {
   columns: ColumnDef<T, any>[];
   data: T[];
   pagination?: boolean;
+
+  // pageSize?: number;
+  // onPageChange?: (pageIndex: number) => void;
+  // loading?: boolean;
+
+  onRowClick?: (row: T) => void;
+  onCellClick?: (cell: T) => void;
   className?: string;
 }
 
 const Table = forwardRef<HTMLTableElement, TableProps<any>>(
-  ({ columns, data, pagination = true, className, ...props }, ref) => {
+  ({ columns, data, pagination = true, onRowClick, onCellClick, className, ...props }, ref) => {
     const table = useReactTable({
       columns,
       data,
@@ -63,13 +70,18 @@ const Table = forwardRef<HTMLTableElement, TableProps<any>>(
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className={styles.table__row}>
+              <tr
+                key={row.id}
+                className={styles.table__row}
+                onClick={() => onRowClick && onRowClick(row.original)}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
                     className={clsx(styles.table__cell, {
                       [styles.checkboxCell]: cell.column.id === "actions",
                     })}
+                    onClick={() => onCellClick && onCellClick(cell.getValue())}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
