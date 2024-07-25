@@ -6,7 +6,7 @@ export interface StacksProps extends HTMLAttributes<HTMLDivElement> {
   gap?: CSSProperties["gap"];
   alignItems?: CSSProperties["alignItems"];
   justifyContent?: CSSProperties["justifyContent"];
-  direction?: "x" | "y";
+  direction?: "row" | "column";
   fullwidth?: boolean;
   fullheight?: boolean;
   children: ReactNode;
@@ -20,7 +20,7 @@ const Stacks = forwardRef<HTMLDivElement, StacksProps>(
       gap,
       alignItems,
       justifyContent,
-      direction = "x",
+      direction = "row",
       fullwidth,
       fullheight,
       children,

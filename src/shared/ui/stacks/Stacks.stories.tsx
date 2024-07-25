@@ -15,7 +15,7 @@ const meta: Meta<typeof Stacks> = {
     className: { control: "text" },
   },
   args: {
-    direction: "x",
+    direction: "row",
     gap: 8,
     alignItems: "start",
     justifyContent: "start",
