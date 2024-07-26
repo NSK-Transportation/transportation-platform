@@ -66,18 +66,6 @@
     }
   }
 
-  // content: "";
-  //     display: block;
-  //     width: 10px;
-  //     height: 10px;
-  //     background: var(--checkbox-default-checked-color);
-  //     border-radius: 2px;
-  //     position: absolute;
-  //     top: 50%;
-  //     left: 50%;
-  //     transform: translate(-50%, -50%);
-  //     opacity: 0;
-
   &.indeterminate {
     input[type="checkbox"]:indeterminate:before {
       height: 2.5px;
