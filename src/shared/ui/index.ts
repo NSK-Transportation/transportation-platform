@@ -17,3 +17,6 @@ export { Divider } from "./divider/Divider";
 export { Switch } from "./switch/Switch";
 export { Stacks } from "./stacks/Stacks";
 export { Form } from "./form/Form";
+export { Select } from "./select/Select";
+export { Table } from "./table/Table";
+
