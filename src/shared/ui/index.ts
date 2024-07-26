@@ -20,4 +20,5 @@ export { Stepper, type Step } from "./stepper/Stepper";
 export { Form } from "./form/Form";
 export { Select } from "./select/Select";
 export { Table } from "./table/Table";
-
+export { Typography } from "./typography/Typography";
+export { Box } from "./box/Box";
