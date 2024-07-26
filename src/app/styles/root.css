@@ -133,7 +133,6 @@
   --input-warning-color: var(--color-warning); /* Warning */
   /* END Input */
 
-
   /* START Select */
   /* Default */
   --select-default-color: var(--color-gray-40);
@@ -223,6 +222,12 @@
   /* START Divider */
   --divider-border-color: var(--color-gray-40);
   /* END Divider */
+
+  /* START Table */
+  --table-background-color: var(--color-gray-10);
+  --table-divider-color: var(--color-gray-30);
+  --table-background-hover-color: var(--color-gray-20);
+  /* END Table */
 
    /* START Box */
    --box-blue-color: var(--color-blue-70);
