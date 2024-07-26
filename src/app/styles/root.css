@@ -223,14 +223,20 @@
   --divider-border-color: var(--color-gray-40);
   /* END Divider */
 
+  /* START Box */
+  --box-blue-color: var(--color-blue-70);
+  --box-white-color: var(--color-gray-10);
+  /* END Box */
+
+  /* START Stepper */
+  --stepper-background-color: var(--color-gray-10);
+  --stepper-border-color: var(--color-blue-70);
+  --stepper-color: var(--color-blue-70);
+  /* END Stepper */
+
   /* START Table */
   --table-background-color: var(--color-gray-10);
   --table-divider-color: var(--color-gray-30);
   --table-background-hover-color: var(--color-gray-20);
   /* END Table */
-
-   /* START Box */
-   --box-blue-color: var(--color-blue-70);
-   --box-white-color: var(--color-gray-10);
-   /* END Box */
 }

@@ -1,0 +1,70 @@
+@import url(../../../app/styles/root.css);
+
+.stepper {
+  display: flex;
+
+  &__step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.25;
+  }
+
+  &__active {
+    opacity: 1;
+    &.stepper__line {
+      opacity: 0.25;
+    }
+  }
+
+  &__completed {
+    opacity: 1;
+  }
+
+  &__icon {
+    min-width: 48px;
+    min-height: 48px;
+    border: 2px solid var(--stepper-border-color);
+    border-radius: 50%;
+    color: var(--stepper-color);
+    background-color: var(--stepper-background-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  &__line {
+    width: 32px;
+    border: none;
+    border-top: 2px solid var(--stepper-color);
+  }
+
+  &.row {
+    flex-direction: row;
+  }
+
+  &.column {
+    flex-direction: column;
+    .stepper {
+      &__step {
+        height: 100%;
+        flex-direction: column;
+      }
+      &__line {
+        width: 0;
+        height: 32px;
+        border-top: none;
+        border-right: 2px solid var(--stepper-color);
+      }
+    }
+  }
+
+  &.fullwidth {
+    width: 100%;
+  }
+
+  &.fullheight {
+    height: 100%;
+  }
+}
