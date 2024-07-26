@@ -1,0 +1,19 @@
+@import url(../../../app/styles/root.css);
+
+.form {
+  &__errors {
+    margin-top: 16px;
+    background-color: var(--color-error);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+    font-size: 14px;
+  }
+
+  &__message {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
