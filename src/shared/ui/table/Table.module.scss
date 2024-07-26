@@ -1,0 +1,67 @@
+@import url(../../../app/styles/root.css);
+
+$border: 1px solid var(--table-divider-color);
+
+.table {
+  &__container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  &__wrapper {
+    width: 100%;
+    background-color: var(--table-background-color);
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  &__header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: $border;
+    padding: 0 8px 0 8px;
+    cursor: pointer;
+
+    & .table__cell {
+      opacity: 0.5;
+      transition: all var(--transition-duration) var(--transition-timing-function);
+    }
+
+    & .table__cell:hover {
+      opacity: 1;
+    }
+  }
+
+  &__row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 8pxr;
+    padding: 8px;
+    // cursor: pointer;
+
+    &:hover {
+      background-color: var(--table-background-hover-color);
+    }
+
+    &:not(:last-child) {
+      border-bottom: $border;
+    }
+
+    &.checkboxCell {
+      width: 25%;
+    }
+  }
+
+  &__cell {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &.checkboxCell {
+      width: 25%;
+    }
+  }
+}
