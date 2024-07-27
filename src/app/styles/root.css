@@ -44,6 +44,26 @@
 
   --color-gradient: linear-gradient(to right, #2196f3, #afddff, #ffffff);
 
+  /* START Typography */
+  /* --font-family: "Roboto", sans-serif; */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  --font-primary: var(--color-orange-50);
+  --font-secondary: var(--color-gray-50);
+  --font-info: var(--color-info);
+  --font-error: var(--color-error);
+  --font-success: var(--color-success);
+  --font-warning: var(--color-warning);
+
+  --h1: 32px;
+  --h2: 24px;
+  --h3: 16px;
+  --body: 16px;
+  --caption: 12px;
+  /* End Typography */
+
   /* START Sizes */
   --small-padding: 8px 16px;
   --small-font-size: 12px;
