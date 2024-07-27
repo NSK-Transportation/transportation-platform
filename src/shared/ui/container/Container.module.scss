@@ -1,0 +1,22 @@
+.container {
+  &.xsm-768 {
+    max-width: 768px;
+  }
+
+  &.sm-1200 {
+    max-width: 1200px;
+  }
+
+  &.md-1440 {
+    max-width: 1440px;
+  }
+
+  &.lg-1920 {
+    max-width: 1920px;
+  }
+
+  &.fullWidth {
+    max-width: 100%;
+    width: 100%;
+  }
+}
