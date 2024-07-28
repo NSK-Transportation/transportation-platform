@@ -11,19 +11,23 @@ export interface TypographyProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Typography = forwardRef<HTMLDivElement, TypographyProps>(
-  ({ children, className, variant = "body", color = "default", align = "left", ...props }, ref) => (
-    <div
-      ref={ref}
-      className={clsx(styles.typography, className, {
-        [styles[variant]]: variant,
-        [styles[color]]: color,
-        [styles[align]]: align,
-      })}
-      {...props}
-    >
-      {children}
-    </div>
-  ),
+  ({ children, className, variant = "body", color = "default", align = "left", ...props }, ref) => {
+    const Component = variant === "body" ? "p" : variant;
+
+    return (
+      <Component
+        ref={ref}
+        className={clsx(styles.typography, className, {
+          [styles[variant]]: variant,
+          [styles[color]]: color,
+          [styles[align]]: align,
+        })}
+        {...props}
+      >
+        {children}
+      </Component>
+    );
+  },
 );
 
 Typography.displayName = "Typography";
