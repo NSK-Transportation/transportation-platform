@@ -23,3 +23,4 @@ export { Table } from "./table/Table";
 export { Typography } from "./typography/Typography";
 export { Box } from "./box/Box";
 export { Container } from "./container/Container";
+export { Layout } from "./layout/Layout";

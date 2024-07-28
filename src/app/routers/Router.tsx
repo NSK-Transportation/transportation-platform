@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-
-import { Home } from "../../pages/home";
-
+import { Home, NotFound } from "@/pages";
+  
 export const Router = () => {
   return (
     <Routes>
       <Route index element={<Home />} />
-      <Route path="*" element={"404"} />
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
