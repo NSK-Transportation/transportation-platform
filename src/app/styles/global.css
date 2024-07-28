@@ -17,6 +17,6 @@ body {
 }
 
 #root {
-  margin: 16px auto;
+  /* margin: 16px auto; */
   max-width: 1920px;
 }
