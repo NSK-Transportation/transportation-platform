@@ -68,7 +68,7 @@
   --small-padding: 8px 16px;
   --small-font-size: 12px;
 
-  --medium-padding: 12px 24px;
+  --medium-padding: 8px 24px;
   --medium-font-size: 14px;
 
   --large-padding: 24px 64px;
@@ -84,15 +84,6 @@
   /* END Transtion */
 
   /* START Button */
-  /* Default */
-  --button-default-color: var(--color-gray-80);
-  --button-default-background: var(--color-gray-10);
-  --button-default-border-color: var(--color-gray-40);
-
-  --button-default-hover-color: var(--color-blue-10);
-  --button-default-hover-background: var(--color-gray-40);
-  --button-default-hover-border: var(--color-blue-10);
-
   /* Primary */
   --button-primary-color: var(--color-gray-10);
   --button-primary-background: var(--color-orange-50);
@@ -105,16 +96,22 @@
 
   /* Secondary */
   --button-secondary-color: var(--color-orange-50);
-  --button-secondary-background: var(--color-gray-10);
   --button-secondary-border-color: var(--color-orange-50);
 
   --button-secondary-hover-color: var(--color-orange-60);
-  --button-secondary-hover-background: var(--color-gray-10);
   --button-secondary-hover-border: var(--color-orange-60);
 
   --button-secondary-click-color: var(--color-orange-70);
-  --button-secondary-click-background: var(--color-gray-10);
   --button-secondary-click-border: var(--color-orange-70);
+
+  /* Tertiary */
+  --button-tertiary-color: var(--color-gray-100);
+
+  --button-tertiary-hover-color: var(--color-blue-50);
+  --button-tertiary-hover-background: var(--color-blue-20);
+
+  --button-tertiary-click-color: var(--color-gray-10);
+  --button-tertiary-click-background: var(--color-blue-60);
 
   /* Danger */
   --button-danger-color: var(--color-gray-10);
