@@ -1,1 +1,2 @@
-export { Router } from "./Router.tsx";
+export { Router } from "./Router";
+export { PrivateRoute } from "./PrivateRoute";
