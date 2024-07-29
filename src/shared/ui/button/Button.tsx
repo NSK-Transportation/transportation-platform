@@ -1,11 +1,12 @@
-import { forwardRef, ButtonHTMLAttributes, ReactNode } from "react";
+import { forwardRef, ButtonHTMLAttributes, ReactNode, CSSProperties } from "react";
 import clsx from "clsx";
 import styles from "./Button.module.scss";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
-  variant?: "default" | "primary" | "secondary" | "link" | "danger";
-  size?: "small" | "medium" | "large" | "s36" | "icon";
+  variant?: "primary" | "secondary" | "tertiary" | "link" | "danger";
+  size?: "small" | "medium" | "large" | "icon";
+  justifyContent?: CSSProperties["justifyContent"];
   label: string | ReactNode;
   fullWidth?: boolean;
   loading?: boolean;
@@ -13,7 +14,16 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant = "default", size = "medium", label, fullWidth, loading, ...props },
+    {
+      className,
+      variant = "default",
+      size = "medium",
+      justifyContent,
+      label,
+      fullWidth,
+      loading,
+      ...props
+    },
     ref,
   ) => (
     <button
@@ -23,6 +33,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         [styles[variant]]: variant,
         [styles.loading]: loading,
       })}
+      style={{
+        justifyContent,
+      }}
       ref={ref}
       {...props}
     >
