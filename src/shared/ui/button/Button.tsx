@@ -16,7 +16,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       className,
-      variant = "default",
+      variant = "primary",
       size = "medium",
       justifyContent,
       label,
