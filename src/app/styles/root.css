@@ -51,7 +51,7 @@
   --font-weight-bold: 700;
 
   --font-primary: var(--color-orange-50);
-  --font-secondary: var(--color-gray-50);
+  --font-secondary: var(--color-gray-60);
   --font-info: var(--color-info);
   --font-error: var(--color-error);
   --font-success: var(--color-success);
