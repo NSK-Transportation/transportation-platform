@@ -12,7 +12,7 @@ export interface TypographyProps extends HTMLAttributes<HTMLDivElement> {
 
 const Typography = forwardRef<HTMLDivElement, TypographyProps>(
   ({ children, className, variant = "body", color = "default", align = "left", ...props }, ref) => {
-    const Component = variant === "body" ? "p" : variant;
+    const Component = variant === "body" ? "p" : "caption" ? "span" : variant;
 
     return (
       <Component
