@@ -1,9 +1,11 @@
 .asidePanel {
-  background-color: var(--color-gray-10);
-  border-radius: 0 24px 24px 0;
   padding: 24px 8px;
   height: 100%;
   overflow-y: auto;
+
+  &__roleName {
+    margin-left: 24px;
+  }
 
   &__link {
     padding: 8px;

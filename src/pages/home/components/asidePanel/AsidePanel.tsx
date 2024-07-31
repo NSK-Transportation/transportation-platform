@@ -1,4 +1,4 @@
-import { Button, Divider, Image, Stacks, Typography } from "@/shared/ui";
+import { Box, Button, Divider, Image, Stacks, Typography } from "@/shared/ui";
 import styles from "./AsidePanel.module.scss";
 import { LinkData as links, roleNames } from "./LinkData";
 import { NavLink } from "react-router-dom";
@@ -6,13 +6,13 @@ import { logoNoText } from "@/shared/assets";
 
 export const AsidePanel = () => {
   return (
-    <nav className={styles.asidePanel}>
+    <Box className={styles.asidePanel}>
       <Stacks direction="column" gap={16}>
         <Image alignSelf="center" size="50%" alt={"logoNoText"} src={logoNoText} />
         <Divider />
         {Object.keys(links).map((role, index) => (
           <div className={styles.asidePanel__link} key={index}>
-            <Typography variant="caption" color="secondary">
+            <Typography variant="caption" color="secondary" className={styles.asidePanel__roleName}>
               {roleNames[role]}
             </Typography>
             {links[role].map((link, linkIndex) => (
@@ -27,6 +27,6 @@ export const AsidePanel = () => {
           </div>
         ))}
       </Stacks>
-    </nav>
+    </Box>
   );
 };
