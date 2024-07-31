@@ -1,0 +1,114 @@
+.textarea {
+  display: flex;
+  border: 1px solid var(--input-default-border-color);
+  background-color: var(--input-default-background);
+  border-radius: 8px;
+  font-size: 16px;
+  padding: 10px 16px;
+  transition: all var(--transition-duration) var(--transition-timing-function);
+  cursor: text;
+  position: relative;
+  max-width: 600px;
+  max-height: 300px;
+  min-height: 100px;
+
+  &.fullWidth {
+    width: 100%;
+  }
+
+  &:hover {
+    border-color: var(--input-default-hover-color);
+  }
+
+  &:focus-within {
+    box-shadow: 0 0 0 3px var(--input-default-color);
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  textarea {
+    border: none;
+    outline: none;
+    width: 100%;
+    resize: none;
+    background: transparent;
+    overflow: auto;
+
+    &::placeholder {
+      opacity: 0.5;
+    }
+
+    &:focus::placeholder {
+      opacity: 1;
+      color: var(--input-default-color);
+    }
+
+    &:disabled {
+      color: var(--input-disabled-color);
+      background-color: var(--input-disabled-background);
+      cursor: not-allowed;
+    }
+  }
+
+  // Variants
+  &.default {
+    color: var(--input-default-color);
+  }
+
+  &.error {
+    border-color: var(--input-error-color);
+    box-shadow: 0 0 0 3px var(--input-error-color);
+
+    textarea {
+      color: var(--input-error-color);
+    }
+
+    &.disabled {
+      border-color: var(--input-disabled-border-color);
+      box-shadow: none;
+
+      textarea {
+        color: var(--input-disabled-color);
+      }
+    }
+  }
+
+  &.success {
+    border-color: var(--input-success-color);
+    box-shadow: 0 0 0 3px var(--input-success-color);
+
+    textarea {
+      color: var(--input-success-color);
+    }
+
+    &.disabled {
+      border-color: var(--input-disabled-border-color);
+      box-shadow: none;
+
+      textarea {
+        color: var(--input-disabled-color);
+      }
+    }
+  }
+
+  &.warning {
+    border-color: var(--input-warning-color);
+    box-shadow: 0 0 0 3px var(--input-warning-color);
+
+    textarea {
+      color: var(--input-warning-color);
+    }
+
+    &.disabled {
+      border-color: var(--input-disabled-border-color);
+      box-shadow: none;
+
+      textarea {
+        color: var(--input-disabled-color);
+      }
+    }
+  }
+}
