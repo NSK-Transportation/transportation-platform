@@ -1,6 +1,4 @@
-import { Button, Divider, Image, Stacks, Typography } from "@/shared/ui";
 import { logoNoText } from "@/shared/assets";
-
 import styles from "./AsidePanel.module.scss";
 
 import { NavLink } from "react-router-dom";
@@ -10,13 +8,13 @@ export const AsidePanel = () => {
   const { links, linksNames, selectLink } = useAsideStore();
 
   return (
-    <nav className={styles.asidePanel}>
+    <Box className={styles.asidePanel}>
       <Stacks direction="column" gap={16}>
         <Image alignSelf="center" size="50%" alt={"logoNoText"} src={logoNoText} />
         <Divider />
         {Object.keys(links).map((name, index) => (
           <div className={styles.asidePanel__link} key={index}>
-            <Typography variant="caption" color="secondary">
+            <Typography variant="caption" color="secondary"  className={styles.asidePanel__roleName}>
               {linksNames[name]}
             </Typography>
             {links[name].map((link, linkIndex) => (
@@ -32,6 +30,6 @@ export const AsidePanel = () => {
           </div>
         ))}
       </Stacks>
-    </nav>
+    </Box>
   );
 };

@@ -1,17 +1,14 @@
-@import url(../../../app/styles/root.css);
-
 $border: 2px dashed #ccc;
 
 .layout {
   display: grid;
   grid-template-areas:
-    "aside header header"
+    "aside main header"
     "aside main info";
   grid-template-columns: 250px 1.5fr 1fr;
   grid-template-rows: auto 1fr;
   width: 100vw;
   height: 100vh;
-  gap: 16px;
 
   &__headerPanel,
   &__asidePanel,
@@ -20,22 +17,29 @@ $border: 2px dashed #ccc;
     border: $border;
   } // TODO: Удалить после добавления всех компонентов
 
+  &__headerPanel,
+  &__asidePanel,
+  &__mainPanel,
+  &__informationPanel {
+    margin: 16px;
+  }
+
   &__headerPanel {
     grid-area: header;
+    margin-bottom: 0;
   }
 
   &__asidePanel {
     grid-area: aside;
-    overflow-y: auto;
+    margin-right: 0;
   }
 
   &__mainPanel {
     grid-area: main;
-    overflow-y: auto;
+    margin-right: 0;
   }
 
   &__informationPanel {
     grid-area: info;
-    overflow-y: auto;
   }
 }

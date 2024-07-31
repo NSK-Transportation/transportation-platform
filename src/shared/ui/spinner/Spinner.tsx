@@ -1,4 +1,3 @@
-// Spinner.tsx
 import { forwardRef, HTMLAttributes } from "react";
 import clsx from "clsx";
 import styles from "./Spinner.module.scss";

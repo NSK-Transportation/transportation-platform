@@ -1,0 +1,9 @@
+.time {
+  display: flex;
+  color: var(--color-gray-50);
+  font-size: 36px;
+
+  &__seconds {
+    opacity: 0.5;
+  }
+}

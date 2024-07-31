@@ -1,10 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Tooltip } from "./Tooltip";
-// import { Input } from "../input/Input";
-// import { Checkbox } from "../checkbox/Checkbox";
-import { Box } from "../box/Box";
-import { ButtonGroup } from "../buttonGroup/ButtonGroup";
-import { Button } from "../button/Button";
+import { Meta, StoryFn } from "@storybook/react";
+import { Tooltip, TooltipProps } from "./Tooltip";
 
 const meta: Meta<typeof Tooltip> = {
   title: "Components/Tooltip",
@@ -17,17 +12,14 @@ const meta: Meta<typeof Tooltip> = {
   },
   args: {
     direction: "up",
-    text: "валпщвапл",
+    text: "Text tooltip",
+    children: "Tooltip",
     className: "",
   },
-} satisfies Meta<typeof Tooltip>;
+};
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
-
-export const WithChildren: Story = {
-  args: {
-    children: <Button label="gggg"  />,
-  },
+export const Default: StoryFn<TooltipProps> = (args) => {
+  return <Tooltip {...args}>{args.children}</Tooltip>;
 };

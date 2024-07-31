@@ -2,7 +2,7 @@ import { forwardRef, HTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
 import styles from "./Tooltip.module.scss";
 
-interface TooltipProps extends HTMLAttributes<HTMLElement> {
+export interface TooltipProps extends HTMLAttributes<HTMLElement> {
   className?: string;
   children: ReactNode;
   direction?: "up" | "down" | "left" | "right";
