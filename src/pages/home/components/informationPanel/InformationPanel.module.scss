@@ -1,3 +1,12 @@
-.information {
-  padding: 16px;
+.informationPanel {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+
+  &__text {
+    display: flex;
+    justify-content: center;
+    color: var(--color-blue-50);
+  }
+
 }
