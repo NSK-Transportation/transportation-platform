@@ -5,7 +5,7 @@ import { Home, NotFound } from "@/pages";
 export const Router = () => {
   return (
     <Routes>
-      <Route index element={<Home />} />
+      <Route path="/home" element={<Home />} />
 
       {/* <Route
         path="/admin"
