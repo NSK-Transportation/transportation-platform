@@ -37,7 +37,7 @@ export const Default: StoryFn<StepperProps> = (args) => {
   });
 
   return (
-    <Stacks gap={16} direction="y">
+    <Stacks gap={16} direction="column">
       <Stepper direction="row" activeStep={activeStep} steps={steps} />
 
       <p>

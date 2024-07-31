@@ -26,9 +26,9 @@ export const Default: Story = {
   args: {
     size: "small",
     children: [
-      <Button key="1" label="Button 1" variant="default" />,
-      <Button key="2" label="Button 2" variant="default" />,
-      <Button key="3" label="Button 3" variant="default" />,
+      <Button key="1" label="Button 1" variant="primary" />,
+      <Button key="2" label="Button 2" variant="primary" />,
+      <Button key="3" label="Button 3" variant="primary" />,
     ],
   },
 };

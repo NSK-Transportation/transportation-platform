@@ -28,6 +28,17 @@ export const Default: StoryFn<ContainerProps> = (args) => {
     <Container {...args}>
       <Box>
         <Typography>Container</Typography>
+        <Typography>Это пример текста внутри Container</Typography>
+      </Box>
+    </Container>
+  );
+};
+
+export const ContainerWithImage: StoryFn<ContainerProps> = (args) => {
+  return (
+    <Container {...args}>
+      <Box>
+        <img src="https://placehold.co/250x250" alt="Пример изображения" />
       </Box>
     </Container>
   );
