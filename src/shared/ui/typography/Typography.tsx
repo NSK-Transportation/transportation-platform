@@ -3,7 +3,7 @@ import clsx from "clsx";
 import styles from "./Typography.module.scss";
 
 export interface TypographyProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: "h1" | "h2" | "h3" | "body" | "caption";
+  variant?: "h1" | "h2" | "h3" | "body" | "caption" | "span";
   color?: "default" | "primary" | "secondary" | "success" | "error" | "warning" | "info";
   align?: "left" | "center" | "right" | "justify";
   children: ReactNode;
@@ -12,7 +12,7 @@ export interface TypographyProps extends HTMLAttributes<HTMLDivElement> {
 
 const Typography = forwardRef<HTMLDivElement, TypographyProps>(
   ({ children, className, variant = "body", color = "default", align = "left", ...props }, ref) => {
-    const Component = variant === "body" ? "p" : "caption" ? "span" : variant;
+    const Component = variant === "body" ? "span" : "caption" ? "span" : variant;
 
     return (
       <Component
