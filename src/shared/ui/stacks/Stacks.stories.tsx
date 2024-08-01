@@ -5,7 +5,7 @@ const meta: Meta<typeof Stacks> = {
   title: "Components/Stacks",
   component: Stacks,
   argTypes: {
-    direction: { control: "radio", options: ["x", "y"] },
+    direction: { control: "radio", options: ["row", "columnS"] },
     gap: { control: "number" },
     alignItems: { control: "text" },
     justifyContent: { control: "text" },

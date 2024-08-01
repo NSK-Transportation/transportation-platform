@@ -1,12 +1,12 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { Stepper, Step, StepperProps } from "./Stepper";
+import { Stepper, type Step, StepperProps } from "./Stepper";
 import { FaCheck, FaInfoCircle, FaUser } from "react-icons/fa";
 import { useStepper } from "@/shared/hooks/useStepper";
 import { Stacks } from "../stacks/Stacks";
 import { Button } from "../button/Button";
 
 const meta: Meta<typeof Stepper> = {
-  title: "Components/Stepper",
+  title: "Components/Stepper (Not Working On Storybook)",
   component: Stepper,
   argTypes: {
     direction: { control: "radio", options: ["row", "column"] },
@@ -28,7 +28,7 @@ const meta: Meta<typeof Stepper> = {
 
 export default meta;
 
-export const Default: StoryFn<StepperProps> = (args) => {
+export const Default: StoryFn<StepperProps> = (_args) => {
   const steps: Step[] = [{ icon: <FaUser /> }, { icon: <FaInfoCircle /> }, { icon: <FaCheck /> }];
 
   const { activeStep, nextStep, prevStep, isFirstStep, isLastStep } = useStepper({

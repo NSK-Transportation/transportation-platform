@@ -8,7 +8,7 @@ import { Label } from "../label/Label";
 import { Button } from "../button/Button";
 
 const meta: Meta<typeof Popup> = {
-  title: "Components/Popup (In Progress)",
+  title: "Components/Popup ",
   component: Popup,
   argTypes: {
     isOpen: { control: "boolean" },

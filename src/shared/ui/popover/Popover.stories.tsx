@@ -50,9 +50,9 @@ export const WithActions: StoryFn<PopoverProps> = (args) => {
       {...restArgs}
     >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Button size="s36" label={<IoIosSettings size={24} />} />
-        <Button size="s36" label={<IoIosSettings size={24} />} />
-        <Button size="s36" label={<IoIosSettings size={24} />} />
+        <Button size="icon" label={<IoIosSettings />} />
+        <Button size="icon" label={<IoIosSettings />} />
+        <Button size="icon" label={<IoIosSettings />} />
       </div>
     </Popover>
   );
