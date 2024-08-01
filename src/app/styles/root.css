@@ -57,12 +57,14 @@
   --font-success: var(--color-success);
   --font-warning: var(--color-warning);
 
-  --h1: 32px;
-  --h2: 24px;
-  --h3: 16px;
-  --body: 16px;
+  --h1: 20px;
+  --h2: 16px;
+  --h3: 14px;
+  --h4: 12px;
+  --h5: 10px;
+  --h6: 8px;
   --caption: 12px;
-  --span: 14px;
+  --span: 16px;
   /* End Typography */
 
   /* START Sizes */
