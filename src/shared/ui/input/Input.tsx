@@ -6,11 +6,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   variant?: "default" | "error" | "success" | "warning";
   slots?: ReactNode;
+  pointer?: boolean;
   fullWidth?: boolean;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, variant = "default", disabled, slots, fullWidth, ...props }, ref) => {
+  ({ className, variant = "default", disabled, slots, pointer, fullWidth, ...props }, ref) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleDivClick = useCallback(() => {
@@ -30,7 +31,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
       >
         <input ref={inputRef} disabled={disabled} {...props} />
-        {slots && <div className={styles.input__slots}>{slots}</div>}
+        {slots && (
+          <div
+            className={clsx(styles.input__slots, {
+              [styles.input__slots__pointer]: pointer,
+            })}
+          >
+            {slots}
+          </div>
+        )}
       </div>
     );
   },

@@ -62,6 +62,7 @@
   --h3: 16px;
   --body: 16px;
   --caption: 12px;
+  --span: 14px;
   /* End Typography */
 
   /* START Sizes */
@@ -229,7 +230,8 @@
   /* END Chip */
 
   /* START Modal Popup Popover */
-  --wrapper-background-color: var(--color-gray-10);
+  --wrapper-background-color: var(--color-gray-100);
+  --content-background-color: var(--color-gray-10);
   /* END Modal */
 
   /* START Spinner */

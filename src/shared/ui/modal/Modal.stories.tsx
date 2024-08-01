@@ -1,13 +1,16 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Modal } from "./Modal";
+import { Meta, StoryFn } from "@storybook/react";
+import { Modal, ModalProps } from "./Modal";
 import { Button } from "../button/Button";
+import { Input } from "../input/Input";
+import { useState } from "react";
+import { Stacks } from "../stacks/Stacks";
+import { Textarea } from "../textarea/Textarea";
 
 const meta: Meta<typeof Modal> = {
   title: "Components/Modal",
   component: Modal,
   argTypes: {
     isOpen: { control: "boolean" },
-    onClose: { action: "onClose" },
     className: { control: "text" },
     direction: {
       control: { type: "radio" },
@@ -17,21 +20,41 @@ const meta: Meta<typeof Modal> = {
     children: { control: "text" },
   },
   args: {
-    isOpen: false,
-    direction: "right",
-    children: "Modal",
-    actions: [
-      <Button label="Отмена" key="1" fullWidth />,
-      <Button label="Сохранить" key="2" fullWidth />,
-    ],
     className: "",
   },
-} satisfies Meta<typeof Modal>;
+};
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+export const Default: StoryFn<ModalProps> = (args) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-export const Default: Story = {
-  args: {},
+  return (
+    <>
+      <Button label="Открыть" onClick={() => setIsOpen(!isOpen)}>
+        Open Modal
+      </Button>
+      <Modal
+        {...args}
+        isOpen={isOpen}
+        actions={
+          <>
+            <Button
+              label="Отмена"
+              variant="secondary"
+              fullWidth
+              onClick={() => setIsOpen(!isOpen)}
+            />
+            <Button label="Сохранить" fullWidth />
+          </>
+        }
+      >
+        <Stacks direction="column" gap={16}>
+          <Input placeholder="Имя" />
+          <Input placeholder="ID водителя" />
+          <Textarea placeholder="Сообщение" />
+        </Stacks>
+      </Modal>
+    </>
+  );
 };

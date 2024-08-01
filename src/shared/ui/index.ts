@@ -25,3 +25,6 @@ export { Box } from "./box/Box";
 export { Container } from "./container/Container";
 export { Layout } from "./layout/Layout";
 export { Image } from "./image/Image";
+export { Time } from "./time/Time";
+export { Textarea } from "./textarea/Textarea";
+export { User } from "./user/User";

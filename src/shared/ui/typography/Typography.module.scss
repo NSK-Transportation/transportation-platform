@@ -1,5 +1,5 @@
 .typography {
-    width: 100%;
+  width: 100%;
 
   // Variant
   &.h1 {
@@ -24,6 +24,10 @@
   &.caption {
     display: block;
     font-size: var(--caption);
+  }
+
+  &.span {
+    font-size: var(--span);
   }
 
   // Color

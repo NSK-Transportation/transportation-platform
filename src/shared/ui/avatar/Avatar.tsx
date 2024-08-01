@@ -2,7 +2,7 @@ import { forwardRef, ImgHTMLAttributes, ReactNode, Ref } from "react";
 import clsx from "clsx";
 import styles from "./Avatar.module.scss";
 
-interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
+export interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   className?: string;
   size?: "small" | "medium" | "large";
   src?: string;
