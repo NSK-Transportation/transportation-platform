@@ -6,6 +6,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   variant?: "primary" | "secondary" | "tertiary" | "link" | "danger";
   size?: "small" | "medium" | "large" | "icon";
+  sizeIcon?: string | number;
   justifyContent?: CSSProperties["justifyContent"];
   label: string | ReactNode;
   fullWidth?: boolean;
@@ -18,6 +19,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       variant = "primary",
       size = "medium",
+      sizeIcon,
       justifyContent,
       label,
       fullWidth,
@@ -25,23 +27,35 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       ...props
     },
     ref,
-  ) => (
-    <button
-      className={clsx(styles.button, className, {
-        [styles.fullWidth]: fullWidth,
-        [styles[size]]: size,
-        [styles[variant]]: variant,
-        [styles.loading]: loading,
-      })}
-      style={{
-        justifyContent,
-      }}
-      ref={ref}
-      {...props}
-    >
-      {label}
-    </button>
-  ),
+  ) => {
+    const iconSizeStyle =
+      size === "icon" && sizeIcon
+        ? {
+            width: typeof sizeIcon === "number" ? `${sizeIcon}px` : sizeIcon,
+            height: typeof sizeIcon === "number" ? `${sizeIcon}px` : sizeIcon,
+            fontSize: typeof sizeIcon === "number" ? `${sizeIcon / 2}px` : `calc(${sizeIcon} / 2)`,
+          }
+        : {};
+
+    return (
+      <button
+        className={clsx(styles.button, className, {
+          [styles.fullWidth]: fullWidth,
+          [styles[size]]: size,
+          [styles[variant]]: variant,
+          [styles.loading]: loading,
+        })}
+        style={{
+          justifyContent,
+          ...iconSizeStyle,
+        }}
+        ref={ref}
+        {...props}
+      >
+        {label}
+      </button>
+    );
+  },
 );
 
 Button.displayName = "Button";

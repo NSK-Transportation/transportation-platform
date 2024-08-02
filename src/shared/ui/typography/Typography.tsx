@@ -1,18 +1,32 @@
-import { forwardRef, HTMLAttributes, ReactNode } from "react";
+import { CSSProperties, forwardRef, HTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
 import styles from "./Typography.module.scss";
 
 export interface TypographyProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: "h1" | "h2" | "h3" | "body" | "caption" | "span";
+  variant?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "caption" | "span";
   color?: "default" | "primary" | "secondary" | "success" | "error" | "warning" | "info";
   align?: "left" | "center" | "right" | "justify";
+  weight?: CSSProperties["fontWeight"];
+  size?: CSSProperties["fontSize"];
   children: ReactNode;
   className?: string;
 }
 
 const Typography = forwardRef<HTMLDivElement, TypographyProps>(
-  ({ children, className, variant = "body", color = "default", align = "left", ...props }, ref) => {
-    const Component = variant === "body" ? "span" : "caption" ? "span" : variant;
+  (
+    {
+      children,
+      className,
+      variant = "span",
+      color = "default",
+      align = "left",
+      weight = "normal",
+      size,
+      ...props
+    },
+    ref,
+  ) => {
+    const Component = variant === "caption" ? "span" : variant;
 
     return (
       <Component
@@ -20,8 +34,12 @@ const Typography = forwardRef<HTMLDivElement, TypographyProps>(
         className={clsx(styles.typography, className, {
           [styles[variant]]: variant,
           [styles[color]]: color,
-          [styles[align]]: align,
         })}
+        style={{
+          textAlign: align,
+          fontWeight: weight,
+          fontSize: size,
+        }}
         {...props}
       >
         {children}

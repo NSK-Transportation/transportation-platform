@@ -3,6 +3,7 @@ import styles from "./AsidePanel.module.scss";
 
 import { NavLink } from "react-router-dom";
 import { useAsideStore } from "./AsidePanel.store";
+import { Box, Button, Divider, Image, Stacks, Typography } from "@/shared/ui";
 
 export const AsidePanel = () => {
   const { links, linksNames, selectLink } = useAsideStore();

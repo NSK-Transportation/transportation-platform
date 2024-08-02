@@ -10,9 +10,15 @@ const meta: Meta<typeof Label> = {
       control: { type: "radio" },
       options: ["up", "down", "left", "right"],
     },
+    text: { control: "text" },
+    required: {
+      control: { type: "boolean" },
+    },
+    className: { control: "text" },
   },
   args: {
     direction: "up",
+    required: false,
     text: "Здесь могла быть ваша реклама",
     className: "",
   },
@@ -29,5 +35,7 @@ export const WithChildren: Story = {
 };
 
 export const Default: Story = {
-  args: {},
+  args: {
+    required: true,
+  },
 };

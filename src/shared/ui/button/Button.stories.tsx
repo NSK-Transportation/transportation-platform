@@ -18,6 +18,9 @@ const meta: Meta<typeof Button> = {
       control: { type: "radio" },
       options: ["small", "medium", "large", "icon"],
     },
+    sizeIcon: {
+      control: { type: "text" },
+    },
     justifyContent: {
       control: { type: "radio" },
       options: ["center", "start", "end"],
@@ -59,5 +62,5 @@ export const WithBoxAndJustifyContent: StoryFn<ButtonProps> = (args) => {
 };
 
 export const Icon: StoryFn<ButtonProps> = (args) => {
-  return <Button {...args} size="icon" label={<AiFillAliwangwang />} />;
+  return <Button {...args} size="icon" sizeIcon={48} label={<AiFillAliwangwang />} />;
 };

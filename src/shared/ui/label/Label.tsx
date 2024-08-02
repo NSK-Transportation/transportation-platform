@@ -7,10 +7,11 @@ interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
   children: ReactNode;
   direction?: "up" | "down" | "left" | "right";
   text: string;
+  required?: boolean;
 }
 
 const Label = forwardRef<HTMLLabelElement, LabelProps>(
-  ({ className, direction = "up", children, text, ...props }, ref) => (
+  ({ className, direction = "up", children, text, required, ...props }, ref) => (
     <label
       className={clsx(styles.label, className, {
         [styles[direction]]: direction,
@@ -18,7 +19,12 @@ const Label = forwardRef<HTMLLabelElement, LabelProps>(
       ref={ref}
       {...props}
     >
-      {text && <span className={styles.label__text}>{text}</span>}
+      {text && (
+        <span className={styles.label__text}>
+          {text}
+          {required && <span className={styles.required}>*</span>}
+        </span>
+      )}
       {children}
     </label>
   ),

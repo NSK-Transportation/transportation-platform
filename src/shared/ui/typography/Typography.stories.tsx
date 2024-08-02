@@ -7,24 +7,31 @@ const meta: Meta<typeof Typography> = {
   argTypes: {
     variant: {
       control: { type: "radio" },
-      options: ["h1", "h2", "h3", "body", "caption"],
+      options: ["h1", "h2", "h3", "h4", "h5", "h6", "caption", "span"],
     },
     color: {
       control: { type: "radio" },
       options: ["default", "primary", "secondary", "success", "error", "warning", "info"],
     },
     align: {
-      control: { type: "radio" },
-      options: ["left", "center", "right", "justify"],
+      control: { type: "text" },
+    },
+    weight: {
+      control: { type: "text" },
+    },
+    size: {
+      control: { type: "text" },
     },
     children: { control: "text" },
     className: { control: "text" },
   },
   args: {
-    variant: "body",
+    variant: "span",
     color: "default",
     align: "left",
-    children: "",
+    weight: "normal",
+    size: "16px",
+    children: "Этот текст изменяется / This is text too",
     className: "",
   },
 };
