@@ -15,6 +15,7 @@
   &__userInfo {
     display: flex;
     align-items: center;
+    margin-left: 10px;
 
     &__text {
       margin-left: 10px;
@@ -28,14 +29,5 @@
   &__idUser {
     color: var(--color-blue-40);
     font-size: 14px;
-  }
-
-
-  &__button {
-    padding: 13px;
-    border: 0;
-    background-color: var(--color-gray-10);
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
-    border-radius: 13px;
   }
 }

@@ -4,7 +4,7 @@ import styles from "./Box.module.scss";
 
 interface BoxProps extends HTMLAttributes<HTMLDivElement> {
   className?: string;
-  children: ReactNode;
+  children?: ReactNode;
   direction?: "up" | "down" | "left" | "right" | "center";
   text?: string;
   fullWidth?: boolean;

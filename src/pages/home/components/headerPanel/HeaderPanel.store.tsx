@@ -6,11 +6,11 @@ interface Text {
 }
 
 interface Store {
-  Text: { [key: string]: Text[] };
+  text: { [key: string]: Text[] };
 }
 
 const useHeaderStore = create<Store>(() => ({
-  Text: {
+  text: {
     user: [{ user: "Иванова Диана", id_user: "ID: 000000" }],
   },
 }));
