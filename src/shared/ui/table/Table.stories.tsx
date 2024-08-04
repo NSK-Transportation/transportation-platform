@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Table, TableProps } from "./Table";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "../checkbox/Checkbox";
-import { Button } from "../button/Button";
 
 interface Data {
   id: number;

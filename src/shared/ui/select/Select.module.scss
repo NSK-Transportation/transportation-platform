@@ -1,57 +1,79 @@
 .selectWrapper {
-  width: 100%;
-
   &.fullWidth {
     width: 100%;
   }
+
+  &:hover {
+    .select {
+      border-color: var(--select-default-active-color);
+    }
+
+    .arrow svg {
+      color: var(--select-default-active-color);
+    }
+
+    .options {
+      border-color: var(--select-default-active-color);
+    }
+
+    .option:hover {
+      background: var(--select-default-active-color);
+    }
+  }
 }
 
-.styledSelect {
-  padding: 12px 12px 12px 12px;
+.select {
+  padding: 12px;
   border: 1px solid var(--select-default-border-color);
   border-radius: 4px;
   background: var(--select-default-background);
-  cursor: pointer;
   color: var(--select-default-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
-  &__open{
-    color: var(--select-default-color) !important;
-    border-bottom: 1px;
+  gap: 48px;
+  cursor: pointer;
+
+  &.open {
+    border-bottom: 0;
     border-radius: 4px 4px 0 0;
   }
+}
 
-  &__options{
-    color: var(--select-disabled-color);
-    background: var(--select-default-background);
-    width: auto;
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    border: 1px solid var(--select-default-active-color);
-    border-top: 0;
-    border-radius: 0 0 4px 4px;
+.arrow {
+  transition: transform var(--transition-duration) var(--transition-timing-function);
+
+  svg {
+    color: var(--select-default-active-color);
   }
-  &__optionItem{
-    padding: 4px 10px 4px 10px;
-    &:hover{
-      color: var(--select-default-active-color);
-      border: 1px solid var( --select-default-active-color);
-      border-radius: 4px;
+
+  &.open {
+    transform: rotate(-180deg);
+  }
+}
+
+.options {
+  background: var(--select-default-background);
+  width: auto;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  border: 1px solid var(--select-default-border-color);
+  border-top: 0;
+  border-radius: 0 0 4px 4px;
+  cursor: pointer;
+
+  &__item {
+    border-radius: 4px;
+    padding: 4px;
+
+    &:hover {
+      background-color: #f2f2f2;
     }
   }
-  .arrow{
-    // margin-left:100px ;
-    // padding-left:auto;
-    transition: transform 0.3s;
-    &svg{
-      color: var(--select-default-active-color);
-    }
-    &__open{
-      transform: rotate(180deg);
-    }
+
+  &__selected {
+    color: var(--select-default-active-color);
+    outline: 1px solid var(--select-default-active-color);
   }
 }

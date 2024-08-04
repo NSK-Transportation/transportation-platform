@@ -2,41 +2,47 @@ $border: 2px dashed #ccc;
 
 .layout {
   display: grid;
-  grid-template-areas:
-    "aside main header"
-    "aside main info";
-  grid-template-columns: 250px 1.5fr 1fr;
+  grid-template-columns: 250px 1.7fr 1fr;
   grid-template-rows: auto 1fr;
+  padding: 16px;
+  gap: 16px;
   width: 100vw;
   height: 100vh;
 
+  &.default {
+    grid-template-areas:
+      "aside nav header"
+      "aside main info";
+  }
+
+  &.withoutInfo {
+    grid-template-areas:
+      "aside nav header"
+      "aside main main";
+  }
+
   &__headerPanel,
   &__asidePanel,
+  &__navPanel,
   &__mainPanel,
   &__informationPanel {
     border: $border;
   } // TODO: Удалить после добавления всех компонентов
 
-  &__headerPanel,
-  &__asidePanel,
-  &__mainPanel,
-  &__informationPanel {
-    margin: 16px;
-  }
-
   &__headerPanel {
     grid-area: header;
-    margin-bottom: 0;
+  }
+
+  &__navPanel {
+    grid-area: nav;
   }
 
   &__asidePanel {
     grid-area: aside;
-    margin-right: 0;
   }
 
   &__mainPanel {
     grid-area: main;
-    margin-right: 0;
   }
 
   &__informationPanel {
