@@ -1,5 +1,9 @@
+import { Box } from "@/shared/ui";
 import styles from "./InformationPanel.module.scss";
 
 export const InformationPanel = () => {
-  return <div className={styles.information}>InformationPanel</div>;
+  return (
+    <Box className={styles.informationPanel} text="Данных нет">
+    </Box>
+  );
 };
