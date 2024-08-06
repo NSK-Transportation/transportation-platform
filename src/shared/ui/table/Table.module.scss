@@ -6,6 +6,10 @@ $border: 1px solid var(--table-divider-color);
     overflow-x: auto;
   }
 
+  &__name {
+    opacity: 0.5;
+  }
+
   &__wrapper {
     width: 100%;
     background-color: var(--table-background-color);
@@ -18,7 +22,7 @@ $border: 1px solid var(--table-divider-color);
     display: flex;
     align-items: center;
     border-bottom: $border;
-    padding: 0 8px 0 8px;
+    padding: 16px 0 8px 0;
     cursor: pointer;
 
     & .table__cell {
@@ -35,8 +39,7 @@ $border: 1px solid var(--table-divider-color);
     width: 100%;
     display: flex;
     align-items: center;
-    border-radius: 8pxr;
-    padding: 8px;
+    padding: 8px 0;
     // cursor: pointer;
 
     &:hover {
@@ -60,6 +63,23 @@ $border: 1px solid var(--table-divider-color);
 
     &.checkboxCell {
       width: 25%;
+    }
+  }
+
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    gap: 16px;
+  }
+
+  &__pageInfo {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+
+    & span {
+      opacity: 0.5;
     }
   }
 }

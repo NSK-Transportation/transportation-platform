@@ -1,40 +1,39 @@
-import React, { useState, useRef, useEffect, forwardRef, HTMLAttributes } from "react";
+import { useState, useRef, useEffect, forwardRef, SelectHTMLAttributes } from "react";
 import clsx from "clsx";
 import styles from "./Select.module.scss";
+import { IoIosArrowDown } from "react-icons/io";
 
-interface SelectProps extends HTMLAttributes<HTMLDivElement> {
+export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   className?: string;
-  variant?: "default" | "active";
   options: { value: string; label: string }[];
-  placeholder?: string;
   fullWidth?: boolean;
+  defaultValue?: string;
 }
 
-const Select = forwardRef<HTMLDivElement, SelectProps>(
-  ({ className, variant = "default", options, placeholder, fullWidth, ...props }, ref) => {
+const Select = forwardRef<HTMLSelectElement, SelectProps>(
+  ({ className, options, fullWidth, defaultValue, ...props }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState<string | null>(null);
-    const [borderColor, setBorderColor] = useState<string>("var(--select-default-border-color)");
-    const [svgColor, setSvgColor] = useState<string>("var(--select-default-color)");
+    const [selectedOption, setSelectedOption] = useState<string | null>(defaultValue || null);
     const selectRef = useRef<HTMLDivElement>(null);
 
     const handleSelectClick = () => {
-      if (!isOpen) {
-        setSvgColor("var(--select-default-active-color)"); 
-      }
       setIsOpen(!isOpen);
-      setBorderColor(isOpen ? "var(--select-default-border-color)" : "var(--select-default-active-color)");
     };
 
     const handleOptionClick = (option: { value: string; label: string }) => {
-      setSelectedOption(option.label);
+      setSelectedOption(option.value);
       setIsOpen(false);
+      if (props.onChange) {
+        const event = {
+          target: { value: option.value },
+        } as React.ChangeEvent<HTMLSelectElement>;
+        props.onChange(event);
+      }
     };
 
     const handleClickOutside = (event: MouseEvent) => {
       if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
         setIsOpen(false);
-        setBorderColor("var(--select-default-active-color)");
       }
     };
 
@@ -45,42 +44,38 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
       };
     }, []);
 
+    useEffect(() => {
+      if (defaultValue) {
+        const defaultOption = options.find((option) => option.value === defaultValue);
+        if (defaultOption) {
+          setSelectedOption(defaultOption.value);
+        }
+      }
+    }, [defaultValue, options]);
+
+    const selectedLabel =
+      options.find((option) => option.value === selectedOption)?.label || "Placeholder";
+
     return (
       <div
-        className={clsx(styles.selectWrapper, { [styles.fullWidth]: fullWidth })}
+        className={clsx(styles.selectWrapper, className, { [styles.fullWidth]: fullWidth })}
         ref={selectRef}
-        style={{ borderColor }}
-        {...props}
       >
-        <div
-          className={clsx(styles.styledSelect, { [styles.styledSelect__open]: isOpen })}
-          style={{
-            borderColor,
-            color: selectedOption ? "var(--select-disabled-color)" : "var(--select-default-color)",
-          }}
-          onClick={handleSelectClick}
-        >
-          {selectedOption || placeholder}
-          <span className={clsx(styles.arrow, { [styles.arrow__open]: isOpen })}>
-            <svg
-              width="10"
-              height="7"
-              viewBox="0 0 10 7"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ stroke: svgColor }}
-            >
-              <path d="M0.5 1L5 5.5L9.5 1" strokeLinecap="round" />
-            </svg>
+        <div className={clsx(styles.select, { [styles.open]: isOpen })} onClick={handleSelectClick}>
+          {selectedLabel}
+          <span className={clsx(styles.arrow, { [styles.open]: isOpen })}>
+            <IoIosArrowDown />
           </span>
         </div>
         {isOpen && (
-          <ul className={styles.styledSelect__options}>
+          <ul className={styles.options}>
             {options.map((option) => (
               <li
                 key={option.value}
                 onClick={() => handleOptionClick(option)}
-                className={styles.styledSelect__optionItem}
+                className={clsx(styles.options__item, {
+                  [styles.options__selected]: option.value === selectedOption,
+                })}
               >
                 {option.label}
               </li>
@@ -89,7 +84,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
 Select.displayName = "Select";
