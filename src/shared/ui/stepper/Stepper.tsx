@@ -4,8 +4,7 @@ import styles from "./Stepper.module.scss";
 
 export interface Step {
   icon: ReactNode;
-  //   title: string;
-  //   description?: string;
+  visible?: boolean;
 }
 
 export interface StepperProps extends HTMLAttributes<HTMLDivElement> {
@@ -23,6 +22,8 @@ const Stepper = forwardRef<HTMLDivElement, StepperProps>(
     { direction = "row", fullwidth, fullheight, activeStep = 0, steps, className, ...props },
     ref,
   ) => {
+    const visibleSteps = steps.filter((step) => step.visible !== false);
+
     return (
       <div
         ref={ref}
@@ -33,7 +34,7 @@ const Stepper = forwardRef<HTMLDivElement, StepperProps>(
         })}
         {...props}
       >
-        {steps.map((step, index) => (
+        {visibleSteps.map((step, index) => (
           <div
             key={index}
             className={clsx(styles.stepper__step, {
@@ -42,7 +43,7 @@ const Stepper = forwardRef<HTMLDivElement, StepperProps>(
             })}
           >
             <div className={styles.stepper__icon}>{step.icon}</div>
-            {index < steps.length - 1 && (
+            {index < visibleSteps.length - 1 && (
               <hr
                 className={clsx(styles.stepper__line, {
                   [styles.stepper__active]: index === activeStep,

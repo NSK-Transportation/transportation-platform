@@ -21,7 +21,7 @@
   &[disabled] {
     color: var(--button-disabled-color);
     background-color: var(--button-disabled-background);
-    border: 0;
+    outline: 0;
     cursor: not-allowed;
 
     &:hover,
@@ -29,7 +29,7 @@
       text-decoration: none;
       color: var(--button-disabled-color);
       background-color: var(--button-disabled-background);
-      border-color: var(--button-disabled-border-color);
+      outline-color: var(--button-disabled-border-color);
     }
   }
 
@@ -86,16 +86,16 @@
 
 .secondary {
   color: var(--button-secondary-color);
-  border: 1px solid var(--button-secondary-border-color);
+  outline: 1px solid var(--button-secondary-border-color);
 
   &:hover {
     color: var(--button-secondary-hover-color);
-    border-color: var(--button-secondary-hover-border);
+    outline-color: var(--button-secondary-hover-border);
   }
 
   &:active {
     color: var(--button-secondary-click-color);
-    border-color: var(--button-secondary-click-border);
+    outline-color: var(--button-secondary-click-border);
   }
 }
 

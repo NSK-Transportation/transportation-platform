@@ -21,14 +21,6 @@ $border: 2px dashed #ccc;
       "aside main main";
   }
 
-  &__headerPanel,
-  &__asidePanel,
-  &__navPanel,
-  &__mainPanel,
-  &__informationPanel {
-    border: $border;
-  } // TODO: Удалить после добавления всех компонентов
-
   &__headerPanel {
     grid-area: header;
   }

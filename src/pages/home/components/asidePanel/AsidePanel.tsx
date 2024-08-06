@@ -1,12 +1,23 @@
 import { logoNoText } from "@/shared/assets";
 import styles from "./AsidePanel.module.scss";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useAsideStore } from "./AsidePanel.store";
 import { Box, Button, Divider, Image, Stacks, Typography } from "@/shared/ui";
+import { useEffect } from "react";
 
 export const AsidePanel = () => {
-  const { links, linksNames, selectLink } = useAsideStore();
+  const { links, linksNames, activeLink, selectLink } = useAsideStore();
+  const location = useLocation();
+
+  useEffect(() => {
+    const foundLink = Object.values(links)
+      .flat()
+      .find((link) => link);
+    if (foundLink) {
+      selectLink(foundLink.text);
+    }
+  }, [location.pathname]);
 
   return (
     <Box className={styles.asidePanel}>
@@ -15,12 +26,14 @@ export const AsidePanel = () => {
         <Divider />
         {Object.keys(links).map((name, index) => (
           <div className={styles.asidePanel__link} key={index}>
-            <Typography variant="caption" color="secondary"  className={styles.asidePanel__roleName}>
+            <Typography variant="caption" color="secondary" className={styles.asidePanel__roleName}>
               {linksNames[name]}
             </Typography>
             {links[name].map((link, linkIndex) => (
               <NavLink
-                className={({ isActive }) => (isActive ? styles.active : "")}
+                className={({ isActive }) =>
+                  isActive || link.to === activeLink ? styles.active : ""
+                }
                 key={linkIndex}
                 to={link.to}
                 onClick={() => selectLink(link.text)}

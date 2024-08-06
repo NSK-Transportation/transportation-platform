@@ -4,7 +4,15 @@ import styles from "./Typography.module.scss";
 
 export interface TypographyProps extends HTMLAttributes<HTMLDivElement> {
   variant?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "caption" | "span";
-  color?: "default" | "primary" | "secondary" | "success" | "error" | "warning" | "info";
+  color?:
+    | "default-black"
+    | "default-white"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "error"
+    | "warning"
+    | "info";
   align?: "left" | "center" | "right" | "justify";
   weight?: CSSProperties["fontWeight"];
   size?: CSSProperties["fontSize"];
@@ -18,7 +26,7 @@ const Typography = forwardRef<HTMLDivElement, TypographyProps>(
       children,
       className,
       variant = "span",
-      color = "default",
+      color = "default-black",
       align = "left",
       weight = "normal",
       size,

@@ -1,5 +1,4 @@
 .typography {
-  width: 100%;
   overflow-wrap: break-word;
 
   // Variant
@@ -37,8 +36,12 @@
   }
 
   // Color
-  &.default {
+  &.default-black {
     color: var(--main-text-color);
+  }
+
+  &.default-white {
+    color: var(--main-text-color-white);
   }
 
   &.primary {
