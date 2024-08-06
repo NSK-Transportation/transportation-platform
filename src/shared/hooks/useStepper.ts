@@ -13,40 +13,30 @@ interface UseStepperReturn {
   goToStep: (step: number) => void;
   isFirstStep: boolean;
   isLastStep: boolean;
-  steps: Step[];
 }
 
-export const useStepper = ({ initialStep = 0, steps }: UseStepper): UseStepperReturn => {
-  const initialStepClamped = Math.max(0, Math.min(initialStep, steps.length - 1));
-  const [activeStep, setActiveStep] = useState(initialStepClamped);
-
-  const nextStep = useCallback(() => {
-    setActiveStep((prevStep) => Math.min(prevStep + 1, steps.length - 1));
-  }, [steps.length]);
-
-  const prevStep = useCallback(() => {
-    setActiveStep((prevStep) => Math.max(prevStep - 1, 0));
-  }, []);
-
-  const goToStep = useCallback(
-    (step: number) => {
-      if (step >= 0 && step < steps.length) {
-        setActiveStep(step);
-      }
-    },
-    [steps.length],
+export const useStepper = ({ initialStep = 1, steps }: UseStepper): UseStepperReturn => {
+  const visibleSteps = steps.filter((step) => step.visible !== false);
+  const [activeStep, setActiveStep] = useState(
+    Math.max(0, Math.min(initialStep, visibleSteps.length - 1)),
   );
 
-  const isFirstStep = activeStep === 0;
-  const isLastStep = activeStep === steps.length - 1;
+  const changeStep = useCallback(
+    (delta: number) => {
+      setActiveStep((prev) => {
+        const newIndex = Math.max(0, Math.min(prev + delta, visibleSteps.length - 1));
+        return visibleSteps[newIndex] ? newIndex : prev;
+      });
+    },
+    [visibleSteps.length],
+  );
 
   return {
     activeStep,
-    nextStep,
-    prevStep,
-    goToStep,
-    isFirstStep,
-    isLastStep,
-    steps,
+    nextStep: () => changeStep(1),
+    prevStep: () => changeStep(-1),
+    goToStep: (step: number) => setActiveStep(step),
+    isFirstStep: activeStep === 0,
+    isLastStep: activeStep === visibleSteps.length - 1,
   };
 };
