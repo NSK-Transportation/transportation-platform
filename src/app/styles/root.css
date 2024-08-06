@@ -2,6 +2,7 @@
   /* Global */
   --main-background-color: #f6f6f6;
   --main-text-color: var(--color-gray-80);
+  --main-text-color-white: var(--color-gray-10);
 
   /* Colors */
   --color-blue-10: #eaf5fe;
