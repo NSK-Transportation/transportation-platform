@@ -2,8 +2,6 @@ import { forwardRef, HTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
 import styles from "./Layout.module.scss";
 
-export const DEFAULT_GRID_TEMPLATE = "aside main header";
-
 export interface LayoutProps extends HTMLAttributes<HTMLDivElement> {
   asidePanel: ReactNode; // Левая часть интерфейса
   mainPanel: ReactNode; // Серединая часть интерфейса
