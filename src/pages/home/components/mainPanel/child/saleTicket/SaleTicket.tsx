@@ -9,13 +9,14 @@ import { Button, Stacks, Step, Stepper } from "@/shared/ui";
 import { useStepper } from "@/shared/hooks";
 import { BusIcon, PaymentIcon, ReturnIcon, SeatIcon, UserIcon } from "@/shared/assets/icons";
 import { useMainStore } from "../../MainPanel.store";
+import { WayMainList } from "./wayMainList/WayMainList";
 
 export const SaleTicket = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const step = searchParams.get("step") || "0";
 
   const {
-    saleTicket: { returnWay },
+    saleTicket: { returnWay, wayDetails },
   } = useMainStore();
 
   const steps: Step[] = [
@@ -48,7 +49,12 @@ export const SaleTicket = () => {
   const getStepContent = () => {
     switch (activeStep) {
       case 0:
-        return <WayMenu />;
+        return (
+          <>
+            <WayMenu />
+            <WayMainList data={wayDetails} />
+          </>
+        );
       case 1:
         return "Выбор места";
       case 2:
@@ -63,7 +69,13 @@ export const SaleTicket = () => {
   };
 
   return (
-    <Stacks gap={16} direction="column">
+    <Stacks
+      style={{
+        height: "100%",
+      }}
+      gap={16}
+      direction="column"
+    >
       <Stepper direction="row" activeStep={activeStep} steps={steps} />
 
       {getStepContent()}
