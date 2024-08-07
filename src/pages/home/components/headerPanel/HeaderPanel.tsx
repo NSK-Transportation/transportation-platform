@@ -13,21 +13,23 @@ export const HeaderPanel = () => {
       {text.user.map(({ user, id_user }) => (
         <div className={styles.headerPanel__userInfo} key={id_user}>
           <Avatar className={styles.headerPanel__avatar} />
-          {/* <div className={styles.headerPanel__userInfo__text}> */}
           <Stacks direction="column" className={styles.headerPanel__userInfo__text}>
-            <Typography color="secondary" className="">
-              <div className={styles.headerPanel__user}>{user}</div>
+            <Typography color="secondary" className="" size={14}>
+              {user}
             </Typography>
-            <div className={styles.headerPanel__idUser}>{id_user}</div>
+            <Typography variant="h3" color="info" className="headerPanel__idUser" size={14}>
+              {id_user}
+            </Typography>
           </Stacks>
-          {/* </div> */}
         </div>
       ))}
       <Button
+        className={styles.headerPanel__button}
         justifyContent="center"
         label={<RxExit />}
         size="icon"
         variant="secondary"
+        sizeIcon={48}
       />
     </div>
   );
