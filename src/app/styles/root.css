@@ -51,7 +51,8 @@
   --font-weight-medium: 500;
   --font-weight-bold: 700;
 
-  --font-primary: var(--color-orange-50);
+  --font-primary: var(--color-orange-40);
+  --font-primary-second: var(--color-blue-60);
   --font-secondary: var(--color-gray-60);
   --font-info: var(--color-info);
   --font-error: var(--color-error);
@@ -246,7 +247,7 @@
   /* END Divider */
 
   /* START Box */
-  --box-blue-color: var(--color-blue-70);
+  --box-blue-color: var(--color-blue-60);
   --box-white-color: var(--color-gray-10);
   /* END Box */
 
