@@ -8,6 +8,7 @@ export interface TypographyProps extends HTMLAttributes<HTMLDivElement> {
     | "default-black"
     | "default-white"
     | "primary"
+    | "primary-second"
     | "secondary"
     | "success"
     | "error"
