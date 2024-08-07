@@ -1,5 +1,4 @@
 .headerPanel {
-  padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,13 +20,19 @@
       margin-left: 10px;
     }
   }
-
-  &__user {
-    font-size: 14px;
-  }
-
-  &__idUser {
+  &__idUser{
     color: var(--color-blue-40);
-    font-size: 14px;
+  }
+  h3{
+    color: var(--color-blue-40);
+  }
+  &__button{
+    background-color: var(--color-gray-10);
+    color: var(--color-gray-40);
+    outline: none;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    &:hover{
+      color: var(--color-gray-40);
+    }
   }
 }
