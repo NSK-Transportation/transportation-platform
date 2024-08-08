@@ -12,14 +12,21 @@ import { ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import { useMainStore } from "../../../MainPanel.store";
 
-export const WayMenu = () => {
+interface WayMenuProps {
+  returnWay?: boolean;
+}
+
+export const WayMenu = ({ returnWay }: WayMenuProps) => {
   const {
-    saleTicket: { way, setWay, returnWay, setReturnWay },
+    saleTicket: { way, setWay },
   } = useMainStore();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setWay({ ...way, [name]: value });
+    setWay({
+      ...way,
+      ...(returnWay ? { return: { ...way.return, [name]: value } } : { [name]: value }),
+    });
   };
 
   const handleClick = () => {
@@ -32,14 +39,14 @@ export const WayMenu = () => {
       <Box color="blue">
         <Stacks fullwidth direction="column" gap={8}>
           <Typography variant="h3" color="default-white">
-            Выбор рейса
+            {returnWay ? "Выберите обратный рейс" : "Выберите рейс"}
           </Typography>
           <InputGroup fullWidth>
             {/* TODO: Добавить Datepicker */}
             <Input
               name="date"
               type="date"
-              value={way.date}
+              value={returnWay ? way.return?.date : way.date}
               onChange={handleChange}
               key="1"
               placeholder="Дата отправления"
@@ -47,7 +54,7 @@ export const WayMenu = () => {
             <Input
               name="from"
               type="text"
-              value={way.from}
+              value={returnWay ? way.return?.from : way.from}
               onChange={handleChange}
               key="2"
               placeholder="Станция отправления"
@@ -55,7 +62,7 @@ export const WayMenu = () => {
             <Input
               name="to"
               type="text"
-              value={way.to}
+              value={returnWay ? way.return?.to : way.to}
               onChange={handleChange}
               key="3"
               placeholder="Станция прибытия"
@@ -63,12 +70,9 @@ export const WayMenu = () => {
           </InputGroup>
 
           <Stacks justifyContent="flex-end">
-            <Link
-              to={"?step=1"}
-              onClick={() => setReturnWay({ ...returnWay, have: !returnWay.have })}
-            >
+            <Link to={"?step=1"} onClick={() => setWay({ ...way, returnHave: !way.returnHave })}>
               <Typography variant="h3" color="default-white">
-                {returnWay.have ? "-" : "+"} Обратный билет
+                {way.returnHave ? "-" : "+"} Обратный билет
               </Typography>
             </Link>
           </Stacks>
