@@ -14,14 +14,9 @@
     width: 100%;
   }
 
-  &:focus-visible {
-    outline: 0;
-  }
-
   &[disabled] {
     color: var(--button-disabled-color);
     background-color: var(--button-disabled-background);
-    outline: 0;
     cursor: not-allowed;
 
     &:hover,
@@ -29,7 +24,6 @@
       text-decoration: none;
       color: var(--button-disabled-color);
       background-color: var(--button-disabled-background);
-      outline-color: var(--button-disabled-border-color);
     }
   }
 
@@ -130,6 +124,23 @@
     text-decoration: underline;
     color: var(--button-link-hover-color);
   }
+}
+
+.free {
+  outline: 1px solid var(--color-blue-50);
+}
+
+.selected {
+  color: var(--color-gray-10);
+  background-color: var(--color-blue-80);
+}
+
+.booking {
+  outline: 1px solid var(--color-gray-50);
+}
+
+.occupied {
+  outline: 1px solid var(--color-gray-30);
 }
 
 // Sizes
