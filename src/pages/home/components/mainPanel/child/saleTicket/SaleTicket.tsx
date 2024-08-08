@@ -5,25 +5,26 @@
 
 import { useSearchParams } from "react-router-dom";
 import { WayMenu } from "./wayMenu/WayMenu";
-import { Button, Stacks, Step, Stepper } from "@/shared/ui";
+import { Button, Divider, Stacks, Step, Stepper } from "@/shared/ui";
 import { useStepper } from "@/shared/hooks";
 import { BusIcon, PaymentIcon, ReturnIcon, SeatIcon, UserIcon } from "@/shared/assets/icons";
 import { useMainStore } from "../../MainPanel.store";
 import { WayMainList } from "./wayMainList/WayMainList";
+import { SeatMainItem } from "./seatMainItem/SeatMainItem";
 
 export const SaleTicket = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const step = searchParams.get("step") || "0";
 
   const {
-    saleTicket: { returnWay, wayDetails },
+    saleTicket: { activeWay, way, wayDetails },
   } = useMainStore();
 
   const steps: Step[] = [
     { icon: <BusIcon /> },
     { icon: <SeatIcon /> },
     { icon: <UserIcon /> },
-    { icon: <ReturnIcon />, visible: returnWay.have },
+    { icon: <ReturnIcon />, visible: Boolean(way.returnHave) },
     { icon: <PaymentIcon /> },
   ];
 
@@ -33,10 +34,14 @@ export const SaleTicket = () => {
   });
 
   const handleNextStep = () => {
-    setSearchParams({
-      step: String(activeStep + 1),
-    });
-    nextStep();
+    if (!activeWay) {
+      alert("Выберите маршрут");
+    } else {
+      setSearchParams({
+        step: String(activeStep + 1),
+      });
+      nextStep();
+    }
   };
 
   const handlePrevStep = () => {
@@ -56,13 +61,11 @@ export const SaleTicket = () => {
           </>
         );
       case 1:
-        return "Выбор места";
+        return <SeatMainItem />;
       case 2:
         return "Данные пассажира";
       case 3:
-        return returnWay.have ? "Обратный билет" : "Оплата";
-      case 4:
-        return "Оплата";
+        return way.returnHave ? <WayMenu returnWay /> : "Оплата";
       default:
         return null;
     }

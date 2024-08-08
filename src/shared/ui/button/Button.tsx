@@ -4,7 +4,17 @@ import styles from "./Button.module.scss";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
-  variant?: "primary" | "secondary" | "tertiary" | "link" | "danger";
+  variant?:
+    | "primary"
+    | "secondary"
+    | "tertiary"
+    | "link"
+    | "danger"
+    // Для SeatMainItem компонента //
+    | "free"
+    | "selected"
+    | "booking"
+    | "occupied";
   size?: "small" | "medium" | "large" | "icon";
   sizeIcon?: string | number;
   justifyContent?: CSSProperties["justifyContent"];
