@@ -28,3 +28,4 @@ export { Image } from "./image/Image";
 export { Time } from "./time/Time";
 export { Textarea } from "./textarea/Textarea";
 export { User } from "./user/User";
+export { Grid } from "./grid/Grid";

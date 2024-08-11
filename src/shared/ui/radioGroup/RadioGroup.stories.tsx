@@ -36,6 +36,7 @@ export const Default: StoryFn<RadioGroupProps> = () => {
       ]}
       selected={selectedRadio}
       onChange={handleRadioChange}
+      direction={undefined}
     />
   );
 };

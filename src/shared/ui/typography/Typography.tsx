@@ -17,6 +17,7 @@ export interface TypographyProps extends HTMLAttributes<HTMLDivElement> {
   align?: "left" | "center" | "right" | "justify";
   weight?: CSSProperties["fontWeight"];
   size?: CSSProperties["fontSize"];
+  cursor?: CSSProperties["cursor"];
   children: ReactNode;
   className?: string;
 }
@@ -31,6 +32,7 @@ const Typography = forwardRef<HTMLDivElement, TypographyProps>(
       align = "left",
       weight = "normal",
       size,
+      cursor,
       ...props
     },
     ref,
@@ -48,6 +50,7 @@ const Typography = forwardRef<HTMLDivElement, TypographyProps>(
           textAlign: align,
           fontWeight: weight,
           fontSize: size,
+          cursor: cursor,
         }}
         {...props}
       >
