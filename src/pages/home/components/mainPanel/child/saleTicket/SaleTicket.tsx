@@ -4,20 +4,18 @@
  */
 
 import { useSearchParams } from "react-router-dom";
-import { WayMenu } from "./wayMenu/WayMenu";
-import { Button, Divider, Stacks, Step, Stepper } from "@/shared/ui";
-import { useStepper } from "@/shared/hooks";
-import { BusIcon, PaymentIcon, ReturnIcon, SeatIcon, UserIcon } from "@/shared/assets/icons";
 import { useMainStore } from "../../MainPanel.store";
-import { WayMainList } from "./wayMainList/WayMainList";
-import { SeatMainItem } from "./seatMainItem/SeatMainItem";
+import { Button, Stacks, Step, Stepper } from "@/shared/ui";
+import { useStepper } from "@/shared/hooks";
+import { BusIcon, PaymentIcon, ReturnIcon, SeatIcon, UserIcon } from "@/shared/assets";
+import { WayMenu, WayMainList, SeatMainItem, PassengerInfoItem } from "./index";
 
 export const SaleTicket = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const step = searchParams.get("step") || "0";
 
   const {
-    saleTicket: { activeWay, way, wayDetails },
+    saleTicket: { activeWay, way, wayDetails, passengers },
   } = useMainStore();
 
   const steps: Step[] = [
@@ -34,8 +32,15 @@ export const SaleTicket = () => {
   });
 
   const handleNextStep = () => {
-    if (!activeWay) {
+    if (activeStep === 0 && !activeWay) {
       alert("Выберите маршрут");
+      return;
+    } else if (activeStep === 1 && activeWay?.seatsSelected.length === 0) {
+      alert("Выберите места");
+      return;
+    } else if (activeStep === 2 && passengers.some((p) => !p.ticket)) {
+      alert("Заполните данные пассажира");
+      return;
     } else {
       setSearchParams({
         step: String(activeStep + 1),
@@ -57,28 +62,29 @@ export const SaleTicket = () => {
         return (
           <>
             <WayMenu />
-            <WayMainList data={wayDetails} />
+            <WayMainList data={wayDetails || []} /> 
           </>
         );
       case 1:
         return <SeatMainItem />;
       case 2:
-        return "Данные пассажира";
+        return <PassengerInfoItem />;
       case 3:
-        return way.returnHave ? <WayMenu returnWay /> : "Оплата";
+        return way.returnHave ? (
+          <>
+            <WayMenu returnWay />
+            <WayMainList data={wayDetails || []} /> 
+          </>
+        ) : (
+          "Оплата"
+        );
       default:
         return null;
     }
   };
 
   return (
-    <Stacks
-      style={{
-        height: "100%",
-      }}
-      gap={16}
-      direction="column"
-    >
+    <Stacks gap={16} direction="column">
       <Stepper direction="row" activeStep={activeStep} steps={steps} />
 
       {getStepContent()}

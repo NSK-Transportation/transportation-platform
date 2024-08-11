@@ -29,16 +29,13 @@ export const SeatMainItem = () => {
     return <Typography variant="h3">Маршрут не найден</Typography>;
   }
 
-  const { seats } = activeWay;
-  const selectedSeatsCount = seats.filter((seat) => seat.status === "selected").length;
-
   // TODO: Добавить данные багажного места и изменить макс. кол-во мест на динамическое обновление
   return (
     <Box>
       <Stacks fullwidth direction="column" gap={16}>
         <Stacks justifyContent="space-between">
           <Stacks direction="column" gap={4}>
-            <Typography variant="h3">Количество мест: {selectedSeatsCount}</Typography>
+            <Typography variant="h3">Количество мест: {activeWay.seatsSelected.length}</Typography>
             <Typography color="secondary" variant="h4">
               Макс. количество: 10
             </Typography>
@@ -46,7 +43,7 @@ export const SeatMainItem = () => {
 
           <Stacks alignItems="flex-end" direction="column" gap={4}>
             <Typography variant="h3">Автобус: №{activeWay.wayNumber}</Typography>
-            <Typography variant="h3">Пассажирских мест: {seats.length}</Typography>
+            <Typography variant="h3">Пассажирских мест: {activeWay.seats.length}</Typography>
             <Typography variant="h3">Багажных мест: 0</Typography>
           </Stacks>
         </Stacks>
@@ -66,7 +63,7 @@ export const SeatMainItem = () => {
               }}
               gap={16}
             >
-              {seats.map((seat) => (
+              {activeWay.seats.map((seat) => (
                 <Button
                   key={seat.id}
                   variant={seat.status}
