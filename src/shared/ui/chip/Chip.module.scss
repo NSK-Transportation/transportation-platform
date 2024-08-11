@@ -1,11 +1,30 @@
 .chip {
-  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 64px;
   cursor: default;
+
+  &.selected {
+    &.outline {
+      color: var(--chip-outline-color);
+      background-color: var(--chip-outline-background);
+    }
+  }
 
   // Variants
   &.default {
-    background-color: var(--chip-default-background);
-    color: var(--chip-default-color);
+    cursor: pointer;
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &.primary {
+    background-color: var(--chip-primary-background);
+    color: var(--chip-primary-color);
   }
 
   &.info {
@@ -28,6 +47,15 @@
     color: var(--chip-warning-color);
   }
 
+  &.outline {
+    cursor: pointer;
+    border: 1px solid var(--chip-outline-border);
+
+    &:hover {
+      border-color: var(--chip-outline-hover-border);
+    }
+  }
+
   // Sizes
   &.small {
     font-size: 12px;
@@ -40,7 +68,12 @@
   }
 
   &.large {
-    font-size: 16px;
+    font-size: 14px;
     padding: 0 16px;
+  }
+
+  &.extra-large {
+    font-size: 14px;
+    padding: 10px;
   }
 }

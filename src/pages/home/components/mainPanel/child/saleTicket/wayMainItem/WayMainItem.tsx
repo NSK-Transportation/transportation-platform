@@ -51,21 +51,20 @@ export const WayMainItem: FC<WayMainItemProps> = ({ item, isSelected, onClick })
         </Stacks>
 
         <Stacks fullwidth justifyContent="space-between">
-          
           {renderLocation(item.from)}
           {renderLocation(item.to)}
 
           <Stacks direction="column" justifyContent="space-between">
             <Stacks direction="column">
               <Typography variant="h3" color="secondary">
-                Свободно мест: {item.seatsAvailable}
+                Свободно мест: {item.seats.length}
               </Typography>
               <Typography variant="h3" color="info">
                 Регулярный
               </Typography>
             </Stacks>
             <Typography variant="h3" color="secondary">
-              В брони: {item.booking}
+              В брони: {item.seats.filter((seat) => seat.status === "booking").length}
             </Typography>
           </Stacks>
 

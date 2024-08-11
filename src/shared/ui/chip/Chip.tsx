@@ -4,19 +4,19 @@ import styles from "./Chip.module.scss";
 
 interface ChipProps extends HTMLAttributes<HTMLDivElement> {
   className?: string;
-  variant?: "default" | "info" | "success" | "error" | "warning";
-  size?: "small" | "medium" | "large";
+  variant?: "default" | "primary" | "info" | "success" | "error" | "warning" | "outline";
+  size?: "small" | "medium" | "large" | "extra-large";
+  selected?: boolean;
   label: string;
-  //   startIcon?: ReactNode;
-  //   endIcon?: ReactNode;
 }
 
 const Chip = forwardRef<HTMLDivElement, ChipProps>(
-  ({ className, variant = "info", size = "medium", label, ...props }, ref) => (
+  ({ className, variant = "default", size = "medium", selected, label, ...props }, ref) => (
     <div
       className={clsx(styles.chip, className, {
         [styles[size]]: size,
         [styles[variant]]: variant,
+        [styles.selected]: selected,
       })}
       ref={ref}
       {...props}

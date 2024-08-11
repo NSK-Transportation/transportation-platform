@@ -1,18 +1,16 @@
 .inputGroup {
   display: inline-flex;
   align-items: center;
-
+  gap: 2px;
+  
   > * {
     margin: 0;
+    border: 0;
     border-radius: 0;
     padding: 12px 24px;
 
     &:focus-within {
       z-index: 1;
-    }
-
-    &:not(:first-child, :last-child) {
-      border-radius: 0;
     }
 
     &:first-child {

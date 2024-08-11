@@ -9,7 +9,6 @@
 
 import { Box, Button, Input, InputGroup, Stacks, Typography } from "@/shared/ui";
 import { ChangeEvent } from "react";
-import { Link } from "react-router-dom";
 import { useMainStore } from "../../../MainPanel.store";
 
 interface WayMenuProps {
@@ -70,11 +69,14 @@ export const WayMenu = ({ returnWay }: WayMenuProps) => {
           </InputGroup>
 
           <Stacks justifyContent="flex-end">
-            <Link to={"?step=1"} onClick={() => setWay({ ...way, returnHave: !way.returnHave })}>
-              <Typography variant="h3" color="default-white">
-                {way.returnHave ? "-" : "+"} Обратный билет
-              </Typography>
-            </Link>
+            <Typography
+              cursor="pointer"
+              onClick={() => setWay({ ...way, returnHave: !way.returnHave })}
+              variant="h3"
+              color="default-white"
+            >
+              {way.returnHave ? "-" : "+"} Обратный билет
+            </Typography>
           </Stacks>
         </Stacks>
 
