@@ -159,9 +159,9 @@
   /* Default */
   --select-default-color: var(--color-gray-40);
   --select-default-background: var(--color-gray-10);
-  --select-default-border-color: var(--color-gray-40);
+  --select-default-border-color: var(--color-gray-50);
 
-  --select-default-active-color: var(--color-blue-60);
+  --select-default-active-color: var(--color-blue-50);
 
   /* Disabled */
   --select-disabled-color: var(--color-gray-80);
@@ -217,8 +217,8 @@
   /* END Switch */
 
   /* START Chip */
-  --chip-default-color: var(--color-gray-100);
-  --chip-default-background: var(--color-gray-30);
+  --chip-primary-color: var(--color-gray-10);
+  --chip-primary-background: var(--color-orange-50);
 
   --chip-info-color: var(--color-gray-100);
   --chip-info-background: var(--color-info);
@@ -231,6 +231,11 @@
 
   --chip-warning-color: var(--color-gray-100);
   --chip-warning-background: var(--color-warning);
+
+  --chip-outline-color: var(--color-gray-10);
+  --chip-outline-border: var(--color-blue-30);
+  --chip-outline-hover-border: var(--color-blue-70);
+  --chip-outline-background: var(--color-blue-70);
   /* END Chip */
 
   /* START Modal Popup Popover */
