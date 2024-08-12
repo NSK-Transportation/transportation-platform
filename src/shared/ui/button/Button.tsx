@@ -14,7 +14,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     | "free"
     | "selected"
     | "booking"
-    | "occupied";
+    | "occupied"
+    // Для WayPayment компонента //
+    | "payment";
   size?: "small" | "medium" | "large" | "icon";
   sizeIcon?: string | number;
   justifyContent?: CSSProperties["justifyContent"];
