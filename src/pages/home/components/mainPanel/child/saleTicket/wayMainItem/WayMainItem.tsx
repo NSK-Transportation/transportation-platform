@@ -1,9 +1,7 @@
 import { Box, Stacks, Typography } from "@/shared/ui";
-import styles from "./WayMainItem.module.scss";
 import { getFormatDate } from "@/shared/utils";
-import { Location, WayDetails } from "../../../MainPanel.store";
-import clsx from "clsx";
 import { FC } from "react";
+import { Location, WayDetails } from "@/app/@types";
 
 interface WayMainItemProps {
   item: WayDetails;
@@ -19,7 +17,8 @@ export const WayMainItem: FC<WayMainItemProps> = ({ item, isSelected, onClick })
           {time}
         </Typography>
         <Typography variant="h3" weight={600} color="primary">
-          {`${getFormatDate(date, "day")}.${getFormatDate(date, "month")}`}
+          {date}
+          {/* {`${getFormatDate(date, "day")}.${getFormatDate(date, "month")}`} */}
         </Typography>
       </Stacks>
       <Stacks direction="column">
@@ -36,41 +35,44 @@ export const WayMainItem: FC<WayMainItemProps> = ({ item, isSelected, onClick })
   return (
     <Box
       fullWidth
-      className={clsx(styles.wayMainItem, {
-        [styles.wayMainItem__selected]: isSelected,
-      })}
+      style={{
+        cursor: "pointer",
+        border: isSelected ? "1px solid var(--color-blue-70)" : "1px solid transparent",
+      }}
       onClick={onClick}
     >
       <Stacks fullwidth gap={4} direction="column">
         <Stacks gap={8} alignItems="center">
-          <Typography variant="h3">Рейс №{item.wayNumber}</Typography>
-          <Typography variant="h3">{item.way}</Typography>
+          <Typography variant="h3">Рейс №{item?.wayNumber}</Typography>
+          <Typography variant="h3">
+            {item?.from.city} - {item?.to.city}
+          </Typography>
           <Typography color="secondary" variant="h4">
-            Перевозчик: {item.whoArive}
+            Перевозчик: {item?.whoArive}
           </Typography>
         </Stacks>
 
         <Stacks fullwidth justifyContent="space-between">
-          {renderLocation(item.from)}
-          {renderLocation(item.to)}
+          {renderLocation(item?.from)}
+          {renderLocation(item?.to)}
 
           <Stacks direction="column" justifyContent="space-between">
             <Stacks direction="column">
               <Typography variant="h3" color="secondary">
-                Свободно мест: {item.seats.length}
+                Свободно мест: {item?.seats?.length}
               </Typography>
               <Typography variant="h3" color="info">
                 Регулярный
               </Typography>
             </Stacks>
             <Typography variant="h3" color="secondary">
-              В брони: {item.seats.filter((seat) => seat.status === "booking").length}
+              В брони: {item?.seats.filter((seat) => seat.status === "booking").length}
             </Typography>
           </Stacks>
 
           <Stacks direction="column" justifyContent="space-between">
             <Typography variant="h1" color="primary-second">
-              {item.price} руб
+              {item?.price} руб
             </Typography>
             <Stacks gap={4}>
               <Typography variant="h3" color="secondary">

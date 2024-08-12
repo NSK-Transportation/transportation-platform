@@ -23,13 +23,12 @@ export const SeatMainItem = () => {
       );
       navigate(0);
     }
-  }, [activeWay]);
+  }, [activeWay, navigate]);
 
   if (!activeWay) {
     return <Typography variant="h3">Маршрут не найден</Typography>;
   }
 
-  // TODO: Добавить данные багажного места и изменить макс. кол-во мест на динамическое обновление
   return (
     <Box>
       <Stacks fullwidth direction="column" gap={16}>
@@ -67,7 +66,7 @@ export const SeatMainItem = () => {
                 <Button
                   key={seat.id}
                   variant={seat.status}
-                  onClick={() => toggleSeatStatus(activeWay.id, seat.id, 10)}
+                  onClick={() => toggleSeatStatus("to", activeWay.id, seat.id, 10)}
                   disabled={seat.status === "booking" || seat.status === "occupied"}
                   label={`Место ${seat.id}`}
                 />
