@@ -5,10 +5,10 @@
 
 import { useSearchParams } from "react-router-dom";
 import { useMainStore } from "../../MainPanel.store";
-import { Button, Stacks, Step, Stepper } from "@/shared/ui";
+import { Box, Button, Checkbox, Stacks, Step, Stepper, Typography } from "@/shared/ui";
 import { useStepper } from "@/shared/hooks";
 import { BusIcon, PaymentIcon, ReturnIcon, SeatIcon, UserIcon } from "@/shared/assets";
-import { WayMenu, WayMainList, SeatMainItem, PassengerInfoItem } from "./index";
+import { WayMenu, WayMainList, SeatMainItem, PassengerInfoItem, WayPayment } from "./index";
 
 export const SaleTicket = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -62,7 +62,7 @@ export const SaleTicket = () => {
         return (
           <>
             <WayMenu />
-            <WayMainList data={wayDetails || []} /> 
+            {way && wayDetails?.to?.length > 0 && <WayMainList data={wayDetails?.to} />}
           </>
         );
       case 1:
@@ -72,11 +72,26 @@ export const SaleTicket = () => {
       case 3:
         return way.returnHave ? (
           <>
+            <Box>
+              <Stacks direction="column" gap={16}>
+                <Typography variant="h3">Обратный билет пассажира</Typography>
+                {passengers.map((passenger) => (
+                  <Stacks key={passenger.id} gap={8}>
+                    <Checkbox
+                      label={`${passenger.lastName} ${passenger.firstName} ${passenger.patronymic}`}
+                    />
+                    <Typography color="primary">{passenger?.ticket?.rus}</Typography>
+                  </Stacks>
+                ))}
+              </Stacks>
+            </Box>
             <WayMenu returnWay />
-            <WayMainList data={wayDetails || []} /> 
+            {way.returnHave && wayDetails?.return?.length > 0 && (
+              <WayMainList data={wayDetails?.return} />
+            )}
           </>
         ) : (
-          "Оплата"
+          <WayPayment />
         );
       default:
         return null;

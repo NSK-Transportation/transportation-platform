@@ -10,9 +10,10 @@ import {
   Stacks,
   Typography,
 } from "@/shared/ui";
-import { BaggageType, DocumentType, Passenger, useMainStore } from "../../../MainPanel.store";
+import { useMainStore } from "../../../MainPanel.store";
 import { useNavigate } from "react-router-dom";
 import { ReactNode, useEffect } from "react";
+import { BaggageType, DocumentType, Passenger } from "@/app/@types";
 
 export const PassengerInfoItem = () => {
   const { activeWay, tickets, discounts, baggages, documents, passengers, setPassenger } =
