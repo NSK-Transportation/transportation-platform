@@ -7,17 +7,19 @@ interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {
   direction?: "row" | "column";
   label: string;
   disabled?: boolean;
+  checked?: boolean;
+  name?: string;
 }
 
 const Radio = forwardRef<HTMLInputElement, RadioProps>(
-  ({ className, disabled, direction = "row", label, ...props }, ref) => (
+  ({ className, disabled, checked, name, direction = "row", label, ...props }, ref) => (
     <label
       className={clsx(styles.radio, className, {
         [styles[direction]]: direction,
         [styles.disabled]: disabled,
       })}
     >
-      <input disabled={disabled} type="radio" ref={ref} {...props} />
+      <input checked={checked} disabled={disabled} type="radio" ref={ref} {...props} />
       {label}
     </label>
   ),

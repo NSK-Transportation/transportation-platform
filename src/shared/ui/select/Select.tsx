@@ -3,25 +3,40 @@ import clsx from "clsx";
 import styles from "./Select.module.scss";
 import { IoIosArrowDown } from "react-icons/io";
 
+export interface Option {
+  value: string | number;
+  label: string;
+}
+
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   className?: string;
-  options: { value: string; label: string }[];
+  options: Option[];
   fullWidth?: boolean;
-  defaultValue?: string;
+  defaultValue?: string | number;
+  placeholder?: string;
 }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, options, fullWidth, defaultValue, ...props }, ref) => {
+  ({ className, options, fullWidth, value, placeholder, ...props }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState<string | null>(defaultValue || null);
+    const [selectedOption, setSelectedOption] = useState<Option | null>(null);
     const selectRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      if (value !== undefined) {
+        const selected = options.find((option) => option.value === value);
+        if (selected) {
+          setSelectedOption(selected);
+        }
+      }
+    }, [value, options]);
 
     const handleSelectClick = () => {
       setIsOpen(!isOpen);
     };
 
-    const handleOptionClick = (option: { value: string; label: string }) => {
-      setSelectedOption(option.value);
+    const handleOptionClick = (option: Option) => {
+      setSelectedOption(option);
       setIsOpen(false);
       if (props.onChange) {
         const event = {
@@ -44,17 +59,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       };
     }, []);
 
-    useEffect(() => {
-      if (defaultValue) {
-        const defaultOption = options.find((option) => option.value === defaultValue);
-        if (defaultOption) {
-          setSelectedOption(defaultOption.value);
-        }
-      }
-    }, [defaultValue, options]);
-
-    const selectedLabel =
-      options.find((option) => option.value === selectedOption)?.label || "Placeholder";
+    const selectedLabel = selectedOption?.label || placeholder;
 
     return (
       <div
@@ -74,7 +79,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 key={option.value}
                 onClick={() => handleOptionClick(option)}
                 className={clsx(styles.options__item, {
-                  [styles.options__selected]: option.value === selectedOption,
+                  [styles.options__selected]: option.value === selectedOption?.value,
                 })}
               >
                 {option.label}

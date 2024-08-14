@@ -14,14 +14,9 @@
     width: 100%;
   }
 
-  &:focus-visible {
-    outline: 0;
-  }
-
   &[disabled] {
     color: var(--button-disabled-color);
     background-color: var(--button-disabled-background);
-    border: 0;
     cursor: not-allowed;
 
     &:hover,
@@ -29,7 +24,6 @@
       text-decoration: none;
       color: var(--button-disabled-color);
       background-color: var(--button-disabled-background);
-      border-color: var(--button-disabled-border-color);
     }
   }
 
@@ -86,16 +80,16 @@
 
 .secondary {
   color: var(--button-secondary-color);
-  border: 1px solid var(--button-secondary-border-color);
+  outline: 1px solid var(--button-secondary-border-color);
 
   &:hover {
     color: var(--button-secondary-hover-color);
-    border-color: var(--button-secondary-hover-border);
+    outline-color: var(--button-secondary-hover-border);
   }
 
   &:active {
     color: var(--button-secondary-click-color);
-    border-color: var(--button-secondary-click-border);
+    outline-color: var(--button-secondary-click-border);
   }
 }
 
@@ -129,6 +123,33 @@
   &:hover {
     text-decoration: underline;
     color: var(--button-link-hover-color);
+  }
+}
+
+.free {
+  outline: 1px solid var(--color-blue-50);
+}
+
+.selected {
+  color: var(--color-gray-10);
+  background-color: var(--color-blue-80);
+}
+
+.booking {
+  outline: 1px solid var(--color-gray-50);
+}
+
+.occupied {
+  outline: 1px solid var(--color-gray-30);
+}
+
+.payment {
+  background-color: var(--color-gray-10);
+  box-shadow: 0px 0px 8px 0px #00000033;
+  transition: none;
+  
+  &:hover {
+    outline: 1px solid var(--color-blue-60);
   }
 }
 

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 interface Link {
+  [x: string]: any;
   text: string;
   to: string;
 }
@@ -8,14 +9,14 @@ interface Link {
 interface Store {
   links: { [key: string]: Link[] };
   linksNames: { [key: string]: string };
-  selectedLink: string | null;
-  selectLink: (to: string) => void;
+  activeLink: string | null;
+  selectLink: (text: string) => void;
 }
 
-const useAsideStore = create<Store>((set) => ({
+const useAsideStore = create<Store>((set, get) => ({
   links: {
     cashier: [
-      { to: "/1", text: "Продажа билетов" },
+      { to: "/home/sale-ticket?step=0", text: "Продажа билетов" },
       { to: "/2", text: "Возврат билетов" },
     ],
     dispatcher: [{ to: "/3", text: "Управление рейсами" }],
@@ -26,6 +27,7 @@ const useAsideStore = create<Store>((set) => ({
     reporting: [{ to: "/6", text: "Отчёты" }],
     reference: [{ to: "/7", text: "Справочная" }],
   },
+
   linksNames: {
     cashier: "Кассир",
     dispatcher: "Диспетчер",
@@ -33,8 +35,17 @@ const useAsideStore = create<Store>((set) => ({
     reporting: "Модуль отчётности",
     reference: "Справочная",
   },
-  selectedLink: null,
-  selectLink: (text) => set({ selectedLink: text }),
+
+  activeLink: null,
+  selectLink: (text) => {
+    const links = get().links;
+    const currentLink = Object.values(links)
+      .flat()
+      .find((link) => link.text === text);
+    if (currentLink) {
+      set({ activeLink: currentLink.text });
+    }
+  },
 }));
 
 export { useAsideStore };
