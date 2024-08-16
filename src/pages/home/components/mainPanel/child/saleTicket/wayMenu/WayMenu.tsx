@@ -7,7 +7,7 @@
  * @returns {JSX.Element} Отображает форму для выбора рейса и кнопку для поиска рейсов.
  */
 
-import { Box, Button, Input, InputGroup, Stacks, Typography } from "@/shared/ui";
+import { Box, Button, Calendar, Input, InputGroup, Stacks, Typography } from "@/shared/ui";
 import { ChangeEvent } from "react";
 import { useMainStore } from "../../../MainPanel.store";
 import { WayDetails } from "@/app/@types";
@@ -68,13 +68,20 @@ const searchWays = async (wayData: any): Promise<{ to: WayDetails[]; return: Way
   }
 };
 
+const formatDate = (date: Date): string => {
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+};
+
 export const WayMenu = ({ returnWay }: WayMenuProps) => {
   const { way, setWay, setWayDetails } = useMainStore((state) => state.saleTicket);
-
   const { refetch, isFetching } = useQuery(["searchWays", way], () => searchWays(way), {
     enabled: false,
     refetchOnWindowFocus: false,
   });
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setWay(
@@ -90,6 +97,9 @@ export const WayMenu = ({ returnWay }: WayMenuProps) => {
       setWayDetails(data[direction], direction);
     }
   };
+
+  const dateValue = returnWay ? way.return?.date : way.to.date;
+
   return (
     <>
       <Box color="blue">
@@ -98,21 +108,33 @@ export const WayMenu = ({ returnWay }: WayMenuProps) => {
             {returnWay ? "Выберите обратный рейс" : "Выберите рейс"}
           </Typography>
           <InputGroup fullWidth>
-            {/* TODO: Добавить Datepicker */}
-            <Input
+            <Calendar
+              onChange={(date: Date | Date[]) => {
+                if (date instanceof Date) {
+                  setWay(
+                    returnWay
+                      ? {
+                          ...way,
+                          return: { ...way.return, date: formatDate(date) },
+                        }
+                      : {
+                          ...way,
+                          to: { ...way.to, date: formatDate(date) },
+                        },
+                  );
+                }
+              }}
               name="date"
-              type="date"
-              value={returnWay ? way.return?.date : way.to.date}
-              onChange={handleChange}
-              key="1"
               placeholder="Дата отправления"
+              minDate={new Date()}
+              value={dateValue}
             />
+
             <Input
               name="from"
               type="text"
               value={returnWay ? way.return?.from : way.to.from}
               onChange={handleChange}
-              key="2"
               placeholder="Станция отправления"
             />
             <Input
@@ -120,7 +142,6 @@ export const WayMenu = ({ returnWay }: WayMenuProps) => {
               type="text"
               value={returnWay ? way.return?.to : way.to.to}
               onChange={handleChange}
-              key="3"
               placeholder="Станция прибытия"
             />
           </InputGroup>
