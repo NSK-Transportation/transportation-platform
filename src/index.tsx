@@ -8,11 +8,11 @@ import "./app/styles/global.css";
 import "./app/styles/reset.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
       <Suspense fallback="Loading...">
         <App />
       </Suspense>
     </BrowserRouter>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
