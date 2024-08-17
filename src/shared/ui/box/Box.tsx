@@ -6,17 +6,31 @@ interface BoxProps extends HTMLAttributes<HTMLDivElement> {
   className?: string;
   children?: ReactNode;
   direction?: "up" | "down" | "left" | "right" | "center";
+  variant?: "default" | "dashed" | "solid";
   text?: string;
   fullWidth?: boolean;
   color?: "blue" | "white";
 }
 
 const Box = forwardRef<HTMLDivElement, BoxProps>(
-  ({ className, direction = "up", color = "white", children, text, fullWidth, ...props }, ref) => (
+  (
+    {
+      className,
+      direction = "up",
+      variant = "default",
+      color = "white",
+      children,
+      text,
+      fullWidth,
+      ...props
+    },
+    ref,
+  ) => (
     <div
       ref={ref}
       className={clsx(styles.box, className, {
         [styles[direction]]: direction,
+        [styles[variant]]: variant,
         [styles[color]]: color,
         [styles.fullWidth]: fullWidth,
       })}

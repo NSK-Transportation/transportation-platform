@@ -1,6 +1,5 @@
 .box {
   position: relative;
-  box-shadow: 0px 4px 11.4px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
   padding: 16px;
   display: flex;
@@ -26,6 +25,21 @@
 
   &.down {
     align-items: flex-end;
+  }
+
+  //variant
+  &.default {
+    box-shadow: 0px 0px 4px 0px #00000026;
+  }
+
+  &.dashed {
+    box-shadow: none;
+    border: 2px dashed var(--color-blue-30);
+  }
+
+  &.solid {
+    box-shadow: none;
+    border: 2px solid var(--color-blue-30);
   }
 
   //color
