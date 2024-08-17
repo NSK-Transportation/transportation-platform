@@ -1,23 +1,12 @@
 import { logoNoText } from "@/shared/assets";
 import styles from "./AsidePanel.module.scss";
 
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAsideStore } from "./AsidePanel.store";
 import { Box, Button, Divider, Image, Stacks, Typography } from "@/shared/ui";
-import { useEffect } from "react";
 
 export const AsidePanel = () => {
   const { links, linksNames, activeLink, selectLink } = useAsideStore();
-  const location = useLocation();
-
-  useEffect(() => {
-    const foundLink = Object.values(links)
-      .flat()
-      .find((link) => link);
-    if (foundLink) {
-      selectLink(foundLink.text);
-    }
-  }, [location.pathname]);
 
   return (
     <Box className={styles.asidePanel}>

@@ -48,12 +48,7 @@ export const SeatMainItem = () => {
         </Stacks>
 
         <Stacks alignItems="center" direction="column" gap={8}>
-          <Box
-            style={{
-              boxShadow: "none",
-              border: "1px dashed var(--color-gray-40)",
-            }}
-          >
+          <Box variant="dashed">
             <Stacks
               fullwidth
               style={{

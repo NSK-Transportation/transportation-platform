@@ -1,5 +1,4 @@
 import { Box, Stacks, Typography } from "@/shared/ui";
-import { getFormatDate } from "@/shared/utils";
 import { FC } from "react";
 import { Location, WayDetails } from "@/app/@types";
 

@@ -13,11 +13,19 @@ import {
 import { useMainStore } from "../../../MainPanel.store";
 import { useNavigate } from "react-router-dom";
 import { ReactNode, useEffect } from "react";
-import { BaggageType, DocumentType, Passenger } from "@/app/@types";
+import { BaggageType, DocumentType, Passenger, PrivilegeType, TicketType } from "@/app/@types";
 
 export const PassengerInfoItem = () => {
-  const { activeWay, tickets, discounts, baggages, documents, passengers, setPassenger } =
-    useMainStore((state) => state.saleTicket);
+  const {
+    activeWay,
+    tickets,
+    discounts,
+    baggages,
+    documents,
+    privileges,
+    passengers,
+    setPassenger,
+  } = useMainStore((state) => state.saleTicket);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -95,7 +103,7 @@ export const PassengerInfoItem = () => {
   );
 
   const renderPassengersInfo = (seatId: number) => {
-    const passengersInfo = passengers.find((p) => p.seatId === seatId);
+    const passengersInfo = passengers.find((p) => p.ticket?.seatId === seatId);
     if (!passengersInfo) return null;
 
     return (
@@ -114,7 +122,7 @@ export const PassengerInfoItem = () => {
               }}
             >
               <Stacks fullwidth direction="column" gap={16}>
-                <Grid fullwidth gap={16}>
+                <Grid container fullwidth gap={16}>
                   <Label variant="h3" text="Тип билета">
                     <Select
                       placeholder="Выберите тип билета"
@@ -125,7 +133,10 @@ export const PassengerInfoItem = () => {
                       value={passengersInfo?.ticket?.type}
                       onChange={(event) =>
                         setPassenger(passengersInfo.id, {
-                          ticket: tickets.find((ticket) => ticket.type === event.target.value),
+                          ticket: {
+                            ...passengersInfo.ticket,
+                            type: event.target.value as TicketType,
+                          },
                         })
                       }
                     />
@@ -138,16 +149,17 @@ export const PassengerInfoItem = () => {
                         label: baggage.rus,
                         value: baggage.type,
                       }))}
-                      value={passengersInfo?.baggage?.type}
-                      onChange={(event) =>
+                      value={passengersInfo?.ticket?.baggage?.type}
+                      onChange={(event) => {
                         setPassenger(passengersInfo.id, {
-                          baggage:
-                            baggages.find(
-                              (baggage) =>
-                                baggage.type === (event.target.value as unknown as BaggageType),
-                            ) || null,
-                        })
-                      }
+                          ticket: {
+                            ...passengersInfo.ticket,
+                            baggage: baggages.find(
+                              (baggage) => baggage.type === (event.target.value as BaggageType),
+                            ),
+                          },
+                        });
+                      }}
                     />
                   </Label>
                 </Grid>
@@ -155,38 +167,74 @@ export const PassengerInfoItem = () => {
                 {passengersInfo?.ticket?.type === "discount" && (
                   <>
                     <Divider />
+                    <Typography variant="h3">Выберите скидку</Typography>
                     <Stacks gap={8}>
-                      {discounts.map((discount) => (
+                      {discounts?.discount?.map((discount) => (
                         <Chip
                           key={discount.id}
-                          selected={passengersInfo.discount?.id === discount.id}
-                          onClick={() => setPassenger(passengersInfo.id, { discount })}
+                          selected={passengersInfo.ticket?.discount?.id === discount.id}
+                          onClick={() =>
+                            setPassenger(passengersInfo.id, {
+                              ticket: {
+                                ...passengersInfo.ticket,
+                                discount: {
+                                  ...passengersInfo.ticket.discount,
+                                  id: discount.id,
+                                  rus: discount.rus,
+                                  value: discount.value,
+                                  type: discount.type,
+                                },
+                              },
+                            })
+                          }
                           size="extra-large"
                           variant="outline"
-                          label={discount.rus}
+                          label={`${discount.rus} ${discount.value}%`}
                         />
                       ))}
                       <Chip size="extra-large" label="+ Добавить скидку" />
                     </Stacks>
-                    {passengersInfo?.discount?.id === 1 && (
+                    {passengersInfo?.ticket.discount?.id === 1 && (
                       <Grid container columns="repeat(2, 1fr)" gap={16}>
                         {renderInputFields(
                           passengersInfo,
                           <>
                             <Label variant="h3" text="Номер студенческого">
-                              <Input placeholder="№123456" />
+                              <Input
+                                placeholder="Введите номер"
+                                value={passengersInfo.identification?.studentTicketNumber}
+                                onChange={(event) =>
+                                  setPassenger(passengersInfo.id, {
+                                    identification: {
+                                      ...passengersInfo.identification,
+                                      studentTicketNumber: event.target.value,
+                                    },
+                                  })
+                                }
+                              />
                             </Label>
                           </>,
                         )}
                       </Grid>
                     )}
-                    {passengersInfo?.discount?.id === 2 && (
+                    {passengersInfo?.ticket.discount?.id === 2 && (
                       <Grid container columns="repeat(2, 1fr)" gap={16}>
                         {renderInputFields(
                           passengersInfo,
                           <>
                             <Label variant="h3" text="Номер справки">
-                              <Input placeholder="№123456" />
+                              <Input
+                                placeholder="Введите номер"
+                                value={passengersInfo.identification?.militaryCertificateNumber}
+                                onChange={(event) =>
+                                  setPassenger(passengersInfo.id, {
+                                    identification: {
+                                      ...passengersInfo.identification,
+                                      militaryCertificateNumber: event.target.value,
+                                    },
+                                  })
+                                }
+                              />
                             </Label>
                           </>,
                         )}
@@ -200,23 +248,57 @@ export const PassengerInfoItem = () => {
                     <Divider />
                     <Grid container columns="repeat(2, 1fr)" gap={16}>
                       <Label variant="h3" text="Тип льготы">
-                        <Select placeholder="Нет льготы" options={[]} />
+                        <Select
+                          placeholder="Нет льготы"
+                          options={
+                            privileges?.map((privilege) => ({
+                              label: privilege.rus,
+                              value: privilege.type,
+                            })) ?? []
+                          }
+                          value={passengersInfo.identification?.privilege?.type}
+                          onChange={(event) => {
+                            setPassenger(passengersInfo.id, {
+                              identification: {
+                                ...passengersInfo.identification,
+                                privilege: privileges.find(
+                                  (privilege) =>
+                                    privilege.type === (event.target.value as PrivilegeType),
+                                ),
+                              },
+                            });
+                          }}
+                        />
                       </Label>
                       <Label variant="h3" text="Документ на право льготы">
                         <Stacks gap={16}>
-                          <Input placeholder="Серия" />
-                          <Input placeholder="Номер" />
+                          <Input
+                            value={passengersInfo.identification?.series}
+                            placeholder="-- --"
+                            onChange={(event) =>
+                              setPassenger(passengersInfo.id, {
+                                identification: {
+                                  ...passengersInfo.identification,
+                                  series: event.target.value,
+                                },
+                              })
+                            }
+                          />
+                          <Input
+                            value={passengersInfo.identification?.number}
+                            placeholder="--- ---"
+                            onChange={(e) =>
+                              setPassenger(passengersInfo.id, {
+                                identification: {
+                                  ...passengersInfo?.identification,
+                                  number: e.target.value,
+                                },
+                              })
+                            }
+                          />
                         </Stacks>
                       </Label>
-                      <Label variant="h3" text="Тип документа">
-                        <Select placeholder="Нет документа" options={[]} />
-                      </Label>
-                      <Label variant="h3" text="Номер документа">
-                        <Stacks gap={16}>
-                          <Input placeholder="Серия" />
-                          <Input placeholder="Номер" />
-                        </Stacks>
-                      </Label>
+
                       {renderInputFields(passengersInfo, null)}
                     </Grid>
                   </>
@@ -229,18 +311,22 @@ export const PassengerInfoItem = () => {
                       <Label variant="h3" text="Тип документа">
                         <Select
                           placeholder="Выберите тип документа"
-                          options={documents.map((document) => ({
+                          options={documents?.map((document) => ({
                             label: document.rus,
                             value: document.type,
                           }))}
-                          value={passengersInfo.identification?.documentType}
-                          onChange={(event) =>
+                          value={passengersInfo.identification?.document?.type}
+                          onChange={(event) => {
                             setPassenger(passengersInfo.id, {
                               identification: {
-                                documentType: event.target.value as DocumentType,
+                                ...passengersInfo.identification,
+                                document: documents?.find(
+                                  (document) =>
+                                    document.type === (event.target.value as DocumentType),
+                                ),
                               },
-                            })
-                          }
+                            });
+                          }}
                         />
                       </Label>
                       <Stacks gap={16}>
@@ -281,11 +367,59 @@ export const PassengerInfoItem = () => {
                 {passengersInfo?.ticket?.type === "child" && (
                   <>
                     <Divider />
+                    <Typography variant="h3">Выберите скидку</Typography>
+                    <Stacks gap={8}>
+                      {discounts?.child?.map((discount) => (
+                        <Chip
+                          key={discount.id}
+                          selected={passengersInfo.ticket?.discount?.id === discount.id}
+                          onClick={() =>
+                            setPassenger(passengersInfo.id, {
+                              ticket: {
+                                ...passengersInfo.ticket,
+                                discount: {
+                                  ...passengersInfo.ticket.discount,
+                                  id: discount.id,
+                                  rus: discount.rus,
+                                  value: discount.value,
+                                  type: discount.type,
+                                },
+                              },
+                            })
+                          }
+                          size="extra-large"
+                          variant="outline"
+                          label={`${discount.rus} ${discount.value}%`}
+                        />
+                      ))}
+                    </Stacks>
                     <Grid container columns="repeat(2, 1fr)" gap={16}>
                       <Label variant="h3" text="Свидетельство о рождении">
                         <Stacks gap={16}>
-                          <Input placeholder="Серия" />
-                          <Input placeholder="Номер" />
+                          <Input
+                            placeholder="Серия"
+                            value={passengersInfo.identification?.birthCertificateSeries}
+                            onChange={(event) =>
+                              setPassenger(passengersInfo.id, {
+                                identification: {
+                                  ...passengersInfo.identification,
+                                  birthCertificateSeries: event.target.value,
+                                },
+                              })
+                            }
+                          />
+                          <Input
+                            placeholder="Номер"
+                            value={passengersInfo.identification?.birthCertificateNumber}
+                            onChange={(event) =>
+                              setPassenger(passengersInfo.id, {
+                                identification: {
+                                  ...passengersInfo.identification,
+                                  birthCertificateNumber: event.target.value,
+                                },
+                              })
+                            }
+                          />
                         </Stacks>
                       </Label>
                       {renderInputFields(passengersInfo, null)}

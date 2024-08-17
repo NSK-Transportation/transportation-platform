@@ -34,12 +34,20 @@ export const WayPayment = () => {
             return (
               <Button
                 key={payment.id}
-                variant={passengers[0]?.payment?.id === payment?.id ? "selected" : "payment"}
+                variant={passengers[0]?.ticket.payment?.id === payment?.id ? "selected" : "payment"}
                 label={payment.rus}
                 size="large"
                 onClick={() => {
                   setPassenger(passengers[0].id, {
-                    payment,
+                    ticket: {
+                      ...passengers[0].ticket,
+                      payment: {
+                        ...passengers[0].ticket.payment,
+                        id: payment.id,
+                        rus: payment.rus,
+                        type: payment.type,
+                      },
+                    },
                   });
                 }}
               />
