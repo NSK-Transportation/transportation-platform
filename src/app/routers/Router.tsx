@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Home, NotFound } from "@/pages";
-import { SaleTicket } from "@/pages/home/components/mainPanel";
+import { RefundTicket, SaleTicket } from "@/pages/home/components/mainPanel";
 // import { PrivateRoute } from "./PrivateRoute";
 
 export const Router = () => {
@@ -8,6 +8,7 @@ export const Router = () => {
     <Routes>
       <Route path="/home/*" element={<Home />}>
         <Route path="sale-ticket" element={<SaleTicket />} />
+        <Route path="refund-ticket" element={<RefundTicket />} />
       </Route>
 
       {/* <Route
