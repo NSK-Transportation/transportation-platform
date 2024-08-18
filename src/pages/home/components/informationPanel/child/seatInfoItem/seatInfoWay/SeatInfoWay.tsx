@@ -1,5 +1,6 @@
 import { useMainStore } from "@/pages/home/components/mainPanel/MainPanel.store";
 import { Box, Stacks, Typography } from "@/shared/ui";
+import { SeatInfoPlace } from "../seatInfoPlace/SeatInfoPlace";
 
 export const SeatInfoWay = () => {
   const { activeWay } = useMainStore((state) => state.saleTicket);
@@ -47,6 +48,10 @@ export const SeatInfoWay = () => {
             </Stacks>
           </Stacks>
         </Stacks>
+        <Typography variant="h4" weight={500} color="secondary">
+          Детали рейса
+        </Typography>
+        <SeatInfoPlace/>
       </Stacks>
     </Box>
   );

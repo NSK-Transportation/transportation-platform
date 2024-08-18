@@ -19,7 +19,7 @@ export const PassengerInfoItem = () => {
   const { activeWay, tickets, discounts, baggages, documents, passengers, setPassenger } =
     useMainStore((state) => state.saleTicket);
   const navigate = useNavigate();
-
+  console.log(activeWay)
   useEffect(() => {
     if (!activeWay || passengers.length === 0) {
       navigate(

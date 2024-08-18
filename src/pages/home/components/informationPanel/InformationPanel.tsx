@@ -9,7 +9,6 @@ export const InformationPanel = () => {
   
   const [searchParams] = useSearchParams();
   const step = searchParams.get("step") || "0";
-  console.log(step);
   if (step == "0") {
     return (
       <Box
