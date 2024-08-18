@@ -5,7 +5,7 @@ import {
   Passenger,
   Payment,
   Privilege,
-  RefundReason,
+  Refund,
   SeatStatus,
   Status,
   Ticket,
@@ -53,7 +53,7 @@ interface Store {
 
   refundTicket: {
     passenger: Required<Passenger>;
-    reasons: RefundReason[];
+    reasons: Refund[];
     setPassenger: (data: Partial<Passenger>) => void;
   };
 }
