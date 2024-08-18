@@ -6,10 +6,27 @@ import { InfoAboutTicket } from "./infoAboutTicket/InfoAboutTicket";
 import { useMainStore } from "../../MainPanel.store";
 import { useState } from "react";
 import { CashReturnIcon } from "@/shared/assets";
+import { useMutation } from "react-query";
 
 export const RefundTicket = () => {
   const { passenger } = useMainStore((state) => state.refundTicket);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { mutate, isLoading } = useMutation(async (data: any) => {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.ok === true) {
+      setIsOpen(true);
+    } else {
+      alert(`Ошибка ${response.status}`);
+    }
+    return;
+  });
 
   return (
     <>
@@ -23,8 +40,9 @@ export const RefundTicket = () => {
             <Stacks fullwidth justifyContent="flex-end">
               <Button
                 disabled={!(passenger.ticket.refund?.type && passenger.lastName)}
+                loading={isLoading}
                 label="Возврат"
-                onClick={() => setIsOpen(true)}
+                onClick={() => mutate({ type: passenger.ticket.refund?.type })}
               />
             </Stacks>
           </Stacks>
@@ -36,9 +54,15 @@ export const RefundTicket = () => {
       </Grid>
       <Popup icon={<CashReturnIcon />} isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <Stacks gap={16} direction="column" alignItems="center ">
-          <Typography variant="h3">Возврат средств на сумму {"Null"} руб. совершен</Typography>
-          <Typography variant="h3">Тип возврата: {"Null"}</Typography>
-          <Typography color="secondary" variant="h3">Средства вернутся в течение 3-х рабочих дней</Typography>
+          <Typography variant="h3">
+            Возврат средств на сумму {passenger?.ticket.refund?.amount || 0} руб. совершен
+          </Typography>
+          <Typography variant="h3">
+            Тип возврата: {passenger.ticket.refund?.type || "Неизвестно"}
+          </Typography>
+          <Typography color="secondary" variant="h3">
+            Средства вернутся в течение 3-х рабочих дней
+          </Typography>
         </Stacks>
       </Popup>
     </>

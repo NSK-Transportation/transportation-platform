@@ -1,6 +1,6 @@
 import { Box, Label, Select, Stacks, Typography } from "@/shared/ui";
 import { useMainStore } from "../../../MainPanel.store";
-import { RefundReasonType } from "@/app/@types";
+import { RefundType } from "@/app/@types";
 
 export const InfoAboutRefund = () => {
   const { passenger, reasons, setPassenger } = useMainStore((state) => state.refundTicket);
@@ -23,7 +23,7 @@ export const InfoAboutRefund = () => {
               setPassenger({
                 ticket: {
                   refund: {
-                    type: event.target.value as RefundReasonType,
+                    type: event.target.value as RefundType,
                   },
                 },
               });
