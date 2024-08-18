@@ -44,13 +44,14 @@ export interface Payment {
   rus: string;
 }
 
-// Типы причин возврата
-export type RefundReasonType = "delay";
-// Интерфейс причины возврата
-export interface RefundReason {
+// Типы возврата
+export type RefundType = "delay";
+// Интерфейс возврата
+export interface Refund {
   id: number;
   type: RefundReasonType;
   rus: string;
+  amount?: number;
 }
 
 // Типы скидок
@@ -93,7 +94,7 @@ export interface Ticket {
   cashRegister?: CashRegister | null;
   saleDate?: string;
   saleTime?: string;
-  refund?: Partial<RefundReason> | null;
+  refund?: Partial<Refund> | null;
 }
 
 // Типы багажа
