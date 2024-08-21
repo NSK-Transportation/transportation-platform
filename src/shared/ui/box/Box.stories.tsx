@@ -10,14 +10,14 @@ const meta: Meta<typeof Box> = {
       control: { type: "radio" },
       options: ["up", "down", "left", "right","center"],
     },
-    size:{
-      control: { type: "radio" },
-      options: ["small", "medium", "large"],
+    border:{
+      control: {type: "radio" },
+      options: ["right","left","up","down"],
     },
     color:{
       control: { type: "radio" },
       options: ["blue", "white"],
-    }
+    },
   },
 
 } satisfies Meta<typeof Box>;

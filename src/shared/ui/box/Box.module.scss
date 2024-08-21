@@ -1,6 +1,7 @@
 .box {
   position: relative;
   border-radius: 16px;
+  box-shadow: 0px 4px 11.4px rgba(0, 0, 0, 0.1);
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -49,6 +50,23 @@
   &.blue {
     background: var(--box-blue-color);
   }
+  //border-radius
+  &.default{
+    border-radius: 16px;
+  }
+  &.right{
+    border-radius: 0 16px 16px 0;
+  }
+  &.left{
+    border-radius: 16px 0 0 16px;
+  }
+  &.up{
+    border-radius: 16px 16px 0 0;
+  }
+  &.down{
+    border-radius: 0 0 16px 16px;
+  }
+
 
   &__text {
     position: absolute;

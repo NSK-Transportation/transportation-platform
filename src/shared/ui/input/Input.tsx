@@ -1,24 +1,50 @@
-import { forwardRef, InputHTMLAttributes, ReactNode, useCallback, useRef } from "react";
+import {
+  forwardRef,
+  InputHTMLAttributes,
+  ReactNode,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+} from "react";
 import clsx from "clsx";
 import styles from "./Input.module.scss";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   variant?: "default" | "error" | "success" | "warning";
   slots?: ReactNode;
   pointer?: boolean;
   fullWidth?: boolean;
+  onWrapperClick?: () => void;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, variant = "default", disabled, slots, pointer, fullWidth, ...props }, ref) => {
+  (
+    {
+      className,
+      variant = "default",
+      disabled,
+      slots,
+      pointer,
+      fullWidth,
+      onWrapperClick,
+      ...props
+    },
+    ref,
+  ) => {
     const inputRef = useRef<HTMLInputElement>(null);
+    
+    useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
     const handleDivClick = useCallback(() => {
       if (inputRef.current) {
         inputRef.current.focus();
       }
-    }, []);
+      if (onWrapperClick) {
+        onWrapperClick();
+      }
+    }, [onWrapperClick]);
+
 
     return (
       <div
@@ -28,7 +54,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           [styles.disabled]: disabled,
         })}
         onClick={handleDivClick}
-        ref={ref}
       >
         <input ref={inputRef} disabled={disabled} {...props} />
         {slots && (
