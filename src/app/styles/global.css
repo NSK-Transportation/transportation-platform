@@ -30,6 +30,5 @@ body {
 }
 
 #root {
-  /* margin: 16px auto; */
-  max-width: 1920px;
+  margin: auto;
 }
