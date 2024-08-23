@@ -17,7 +17,6 @@ export const WayMainItem: FC<WayMainItemProps> = ({ item, isSelected, onClick })
         </Typography>
         <Typography variant="h3" weight={600} color="primary">
           {date}
-          {/* {`${getFormatDate(date, "day")}.${getFormatDate(date, "month")}`} */}
         </Typography>
       </Stacks>
       <Stacks direction="column">

@@ -99,7 +99,7 @@ export const SaleTicket = () => {
   };
 
   return (
-    <Stacks gap={16} direction="column">
+    <Stacks gap={16} direction="column" fullheight>
       <Stepper direction="row" activeStep={activeStep} steps={steps} />
 
       {getStepContent()}

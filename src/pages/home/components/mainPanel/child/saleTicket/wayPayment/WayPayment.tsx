@@ -29,7 +29,7 @@ export const WayPayment = () => {
           </Stacks>
         </Stacks>
 
-        <Grid gap={16}>
+        <Grid gap={16} columns={"1fr 1fr 1fr"}>
           {payments.map((payment) => {
             return (
               <Button

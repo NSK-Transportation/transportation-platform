@@ -10,7 +10,6 @@ interface WayMainListProps {
 export const WayMainList = ({ data }: WayMainListProps) => {
   const { activeWay, setActiveWay } = useMainStore((state) => state.saleTicket);
 
-  console.log(data);
   const handleItemClick = (item: WayDetails) => {
     setActiveWay(item);
   };
@@ -23,12 +22,12 @@ export const WayMainList = ({ data }: WayMainListProps) => {
     >
       <Stacks fullwidth direction="column" gap={12}>
         {data.map((item: WayDetails, index) => (
-            <WayMainItem
-              key={index}
-              item={item}
-              isSelected={activeWay ? activeWay.id === item.id : false}
-              onClick={() => handleItemClick(item)}
-            />
+          <WayMainItem
+            key={index}
+            item={item}
+            isSelected={activeWay ? activeWay.id === item.id : false}
+            onClick={() => handleItemClick(item)}
+          />
         ))}
       </Stacks>
     </Box>

@@ -49,7 +49,7 @@ const searchWays = async (wayData: any): Promise<{ to: WayDetails[]; return: Way
         house: "67",
         station: "ЖД Вокзал",
         time: "13:20",
-        date: wayData.date,
+        date: "26 июня",
       },
       to: {
         city: "Кемерово",
@@ -57,7 +57,7 @@ const searchWays = async (wayData: any): Promise<{ to: WayDetails[]; return: Way
         house: "81",
         station: "",
         time: "17:50",
-        date: wayData.date,
+        date: "26 июня",
       },
     }));
 
