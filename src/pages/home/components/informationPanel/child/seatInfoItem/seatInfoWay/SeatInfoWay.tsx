@@ -1,9 +1,13 @@
 import { useMainStore } from "@/pages/home/components/mainPanel/MainPanel.store";
 import { Box, Stacks, Typography } from "@/shared/ui";
 import { SeatInfoPlace } from "../seatInfoPlace/SeatInfoPlace";
+import { Tooltip } from "@/shared/ui";
+import { useState } from "react";
 
 export const SeatInfoWay = () => {
   const { activeWay } = useMainStore((state) => state.saleTicket);
+  const [visible, setVisible] = useState(true);
+
   return (
     <Box border="up">
       <Stacks gap={8} direction="column" fullwidth>
@@ -14,15 +18,20 @@ export const SeatInfoWay = () => {
               {activeWay?.from.city} - {activeWay?.to.city}
             </Typography>
           </Stacks>
-          <Typography color="secondary" variant="h4">
-            Перевозчик:
-          </Typography>
+          <Tooltip text={activeWay?.whoArive ?? ""} direction="down">
+            <Typography cursor="pointer" color="secondary" variant="h4">
+              Перевозчик
+            </Typography>
+          </Tooltip>
         </Stacks>
-        <Stacks gap={33} direction="row">
+        <Stacks gap={32} direction="row">
           <Stacks direction="column">
-            <Stacks direction="column">
+            <Stacks gap={4} alignItems="flex-end">
               <Typography variant="h1" weight={600} color="primary-second">
                 {activeWay?.from.time}
+              </Typography>
+              <Typography variant="h3" weight={600} color="primary">
+                {activeWay?.from.date}
               </Typography>
             </Stacks>
             <Stacks direction="column">
@@ -35,9 +44,14 @@ export const SeatInfoWay = () => {
             </Stacks>
           </Stacks>
           <Stacks direction="column">
-            <Typography variant="h1" weight={600} color="primary-second">
-              {activeWay?.to.time}
-            </Typography>
+            <Stacks gap={4} alignItems="flex-end">
+              <Typography variant="h1" weight={600} color="primary-second">
+                {activeWay?.to.time}
+              </Typography>
+              <Typography variant="h3" weight={600} color="primary">
+                {activeWay?.to.date}
+              </Typography>
+            </Stacks>
             <Stacks direction="column">
               <Typography variant="h3" color="secondary">
                 {activeWay?.to.city} - {activeWay?.to.station}
@@ -48,10 +62,18 @@ export const SeatInfoWay = () => {
             </Stacks>
           </Stacks>
         </Stacks>
-        <Typography variant="h4" weight={500} color="secondary">
-          Детали рейса
-        </Typography>
-        <SeatInfoPlace/>
+        {(activeWay?.seatsSelected|| []).length > 0 && (
+          <Typography
+            onClick={() => setVisible(!visible)}
+            cursor="pointer"
+            variant="h4"
+            weight={500}
+            color="secondary"
+          >
+            Детали рейса
+          </Typography>
+        )}
+        {visible && <SeatInfoPlace />}
       </Stacks>
     </Box>
   );
