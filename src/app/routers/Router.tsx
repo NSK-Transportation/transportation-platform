@@ -22,7 +22,7 @@ export const Router = () => {
       /> */}
 
       <Route path="*" element={<NotFound />} />
-      <Route path="auth" element={<Auth />} />
+      <Route path="/" element={<Auth />} />
     </Routes>
   );
 };
