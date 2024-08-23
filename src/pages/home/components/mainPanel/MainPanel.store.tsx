@@ -2,6 +2,7 @@ import {
   Baggage,
   Discount,
   Document,
+  Gender,
   Passenger,
   Payment,
   Privilege,
@@ -37,6 +38,7 @@ interface Store {
     documents: Document[];
     privileges: Privilege[];
     payments: Payment[];
+    genders: Gender[];
 
     // Методы для изменения состояния
     setWay: (data: WayMenu) => void;
@@ -77,47 +79,6 @@ const useMainStore = create<Store>()(
         },
         passengers: [],
         activeWay: null,
-        // wayDetails: [
-        //   // {
-        //   //   id: 1,
-        //   //   way: "Москва - Кемерово",
-        //   //   wayNumber: "7345",
-        //   //   whoArive: "ООО “Кузбасские междугородние перевозки”",
-        //   //   price: 1276,
-        //   //   seatsSelected: [],
-        //   //   seats: [
-        //   //     { id: 1, status: "free" },
-        //   //     { id: 2, status: "free" },
-        //   //     { id: 3, status: "booking" },
-        //   //     { id: 4, status: "occupied" },
-        //   //     { id: 5, status: "free" },
-        //   //     { id: 6, status: "free" },
-        //   //     { id: 7, status: "free" },
-        //   //     { id: 8, status: "free" },
-        //   //     { id: 9, status: "free" },
-        //   //     { id: 10, status: "free" },
-        //   //     { id: 11, status: "free" },
-        //   //     { id: 12, status: "free" },
-        //   //     { id: 13, status: "free" },
-        //   //   ],
-        //   //   from: {
-        //   //     city: "Москва",
-        //   //     street: "ул.Ленина",
-        //   //     house: "67",
-        //   //     station: "ЖД Вокзал",
-        //   //     time: "13:20",
-        //   //     date: "2022-05-01",
-        //   //   },
-        //   //   to: {
-        //   //     city: "Кемерово",
-        //   //     street: "пр.Кузнецкий",
-        //   //     house: "81",
-        //   //     station: "",
-        //   //     time: "17:50",
-        //   //     date: "2022-05-01",
-        //   //   },
-        //   // },
-        // ],
         wayDetails: {
           to: [],
           return: [],
@@ -159,6 +120,10 @@ const useMainStore = create<Store>()(
           { id: 1, type: "cash", rus: "Наличные" },
           { id: 2, type: "card", rus: "Карта" },
           { id: 3, type: "qr", rus: "QR Код" },
+        ],
+        genders: [
+          { id: 1, type: "male", rus: "Мужчина" },
+          { id: 2, type: "female", rus: "Женщина" },
         ],
 
         setWay: (data) =>
