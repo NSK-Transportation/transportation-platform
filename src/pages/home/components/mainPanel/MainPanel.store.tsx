@@ -4,7 +4,8 @@ import {
   Document,
   Passenger,
   Payment,
-  Seat,
+  Privilege,
+  Refund,
   SeatStatus,
   Status,
   Ticket,
@@ -28,9 +29,13 @@ interface Store {
     };
     statuses: Status[];
     tickets: Ticket[];
-    discounts: Discount[];
+    discounts: {
+      discount: Discount[] | null;
+      child: Discount[] | null;
+    };
     baggages: Baggage[];
     documents: Document[];
+    privileges: Privilege[];
     payments: Payment[];
 
     // Методы для изменения состояния
@@ -44,6 +49,12 @@ interface Store {
       seatId: number,
       maxSeats: number,
     ) => void;
+  };
+
+  refundTicket: {
+    passenger: Required<Passenger>;
+    reasons: Refund[];
+    setPassenger: (data: Partial<Passenger>) => void;
   };
 }
 
@@ -123,17 +134,27 @@ const useMainStore = create<Store>()(
           { id: 3, type: "privilege", rus: "Льготный билет" },
           { id: 4, type: "discount", rus: "Скидочный билет" },
         ],
-        discounts: [
-          { id: 1, type: "student", rus: "Студент (скидка 50%)" },
-          { id: 2, type: "military", rus: "СВО (скидка 50%)" },
-        ],
+        discounts: {
+          child: [
+            { id: 1, type: "half", value: 50, rus: "" },
+            { id: 2, type: "full", value: 100, rus: "" },
+          ],
+          discount: [
+            { id: 1, type: "student", value: 50, rus: "Студент" },
+            { id: 2, type: "military", value: 50, rus: "СВО" },
+          ],
+        },
         baggages: [
           { id: 1, type: "none", rus: "Нет багажа" },
           { id: 2, type: "small", rus: "Маленький (20 кг)" },
           { id: 3, type: "big", rus: "Большой (40 кг)" },
           { id: 4, type: "huge", rus: "Огромный (60 кг)" },
         ],
-        documents: [{ id: 1, type: "passport", rus: "Паспорт" }],
+        documents: [
+          { id: 1, type: "passport", rus: "Паспорт" },
+          { id: 2, type: "driver", rus: "Водительские" },
+        ],
+        privileges: [{ id: 1, type: "student", rus: "Студент" }],
         payments: [
           { id: 1, type: "cash", rus: "Наличные" },
           { id: 2, type: "card", rus: "Карта" },
@@ -155,43 +176,55 @@ const useMainStore = create<Store>()(
             state.saleTicket.activeWay = way;
           }),
 
-        toggleSeatStatus: (direction: "to" | "return", wayId, seatId, maxSeats) =>
+        toggleSeatStatus: (
+          direction: "to" | "return",
+          wayId: number,
+          seatId: number,
+          maxSeats: number,
+        ) =>
           set((state) => {
             const wayDetailsList = state.saleTicket.wayDetails[direction];
-            const wayIndex = wayDetailsList?.findIndex((way: WayDetails) => way.id === wayId);
+            const wayIndex = wayDetailsList.findIndex((way) => way.id === wayId);
             if (wayIndex === -1) return;
 
-            const selectedSeatsCount = wayDetailsList[wayIndex].seatsSelected.length;
+            const wayDetails = wayDetailsList[wayIndex];
 
-            const seats = wayDetailsList[wayIndex].seats.map((seat: Seat) => {
+            const selectedSeatsCount = wayDetails.seatsSelected.length;
+
+            const updatedSeats = wayDetails.seats.map((seat) => {
               if (seat.id === seatId) {
                 if (seat.status === "free" && selectedSeatsCount < maxSeats) {
-                  wayDetailsList[wayIndex].seatsSelected.push(seatId);
+                  wayDetails.seatsSelected.push(seatId);
 
-                  state.saleTicket.passengers.push({
+                  const newPassenger: Passenger = {
                     id: seatId,
-                    discount: null,
                     firstName: "",
                     lastName: "",
                     patronymic: "",
                     gender: null,
                     birthday: "",
                     phone: "",
-                    seatId: seatId,
                     identification: null,
-                    baggage: null,
-                    ticket: null,
-                    payment: null,
-                  });
+                    ticket: {
+                      id: seatId,
+                      type: "",
+                      rus: "",
+                      seatId: seat.id,
+                      wayDetails: wayDetails,
+                      discount: null,
+                      baggage: null,
+                      payment: null,
+                    },
+                  };
+
+                  state.saleTicket.passengers.push(newPassenger);
 
                   return { ...seat, status: "selected" as SeatStatus };
                 } else if (seat.status === "selected") {
-                  wayDetailsList[wayIndex].seatsSelected = wayDetailsList[
-                    wayIndex
-                  ].seatsSelected.filter((id) => id !== seatId);
+                  wayDetails.seatsSelected = wayDetails.seatsSelected.filter((id) => id !== seatId);
 
                   state.saleTicket.passengers = state.saleTicket.passengers.filter(
-                    (passenger) => passenger.seatId !== seatId,
+                    (passenger) => passenger.ticket?.seatId !== seatId,
                   );
 
                   return { ...seat, status: "free" as SeatStatus };
@@ -200,12 +233,18 @@ const useMainStore = create<Store>()(
               return seat;
             });
 
-            wayDetailsList[wayIndex].seats = seats;
+            wayDetails.seats = updatedSeats;
+
+            state.saleTicket.wayDetails[direction] = [
+              ...wayDetailsList.slice(0, wayIndex),
+              { ...wayDetails, seats: updatedSeats, seatsSelected: wayDetails.seatsSelected },
+              ...wayDetailsList.slice(wayIndex + 1),
+            ];
 
             state.saleTicket.activeWay = {
               ...state.saleTicket.activeWay!,
-              seats,
-              seatsSelected: wayDetailsList[wayIndex].seatsSelected,
+              seats: updatedSeats,
+              seatsSelected: wayDetails.seatsSelected,
             };
           }),
 
@@ -222,7 +261,28 @@ const useMainStore = create<Store>()(
             }
           }),
       },
+
+      refundTicket: {
+        passenger: {
+          id: 0,
+          firstName: "",
+          lastName: "",
+          patronymic: "",
+          gender: null,
+          birthday: "",
+          phone: "",
+          identification: null,
+          ticket: {},
+        },
+        reasons: [{ id: 1, type: "delay", rus: "Опоздание" }],
+
+        setPassenger: (data) =>
+          set((state) => {
+            state.refundTicket.passenger = { ...state.refundTicket.passenger, ...data };
+          }),
+      },
     })),
+    { name: "MainPanelStore" },
   ),
 );
 

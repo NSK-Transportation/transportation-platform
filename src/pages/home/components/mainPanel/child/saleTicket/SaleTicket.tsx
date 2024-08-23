@@ -104,10 +104,17 @@ export const SaleTicket = () => {
 
       {getStepContent()}
 
-      <Stacks gap={16} justifyContent="space-between">
-        <Button variant="secondary" label="Назад" onClick={handlePrevStep} disabled={isFirstStep} />
-        <Button variant="primary" label="Дальше" onClick={handleNextStep} disabled={isLastStep} />
-      </Stacks>
+      {!(wayDetails.to.length === 0) && (
+        <Stacks gap={16} justifyContent="space-between">
+          <Button
+            variant="secondary"
+            label="Назад"
+            onClick={handlePrevStep}
+            disabled={isFirstStep}
+          />
+          <Button variant="primary" label="Дальше" onClick={handleNextStep} disabled={isLastStep} />
+        </Stacks>
+      )}
     </Stacks>
   );
 };

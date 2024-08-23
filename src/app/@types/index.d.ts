@@ -44,13 +44,37 @@ export interface Payment {
   rus: string;
 }
 
+// Типы возврата
+export type RefundType = "delay";
+// Интерфейс возврата
+export interface Refund {
+  id: number;
+  type: RefundReasonType;
+  rus: string;
+  amount?: number;
+}
+
 // Типы скидок
 export type DiscountType = "none" | "student" | "military" | "half" | "full";
 // Интерфейс скидок
 export interface Discount {
   id: number;
   type: DiscountType;
+  value: number;
   rus: string;
+}
+
+// Интерфейс кассира
+export interface Cashier {
+  id: number;
+  name: string;
+}
+
+// Интерфейс кассы
+export interface CashRegister {
+  id: number;
+  location: string;
+  number: string;
 }
 
 // Типы билетов
@@ -58,8 +82,19 @@ export type TicketType = "full" | "child" | "privilege" | "discount";
 // Интерфейс билета
 export interface Ticket {
   id: number;
-  type: TicketType;
+  type: TicketType | "";
   rus: string;
+  seatId?: number;
+  identification?: Identification | null;
+  wayDetails?: WayDetails | null;
+  discount?: Discount | null;
+  baggage?: Baggage | null;
+  payment?: Payment | null;
+  cashier?: Cashier | null;
+  cashRegister?: CashRegister | null;
+  saleDate?: string;
+  saleTime?: string;
+  refund?: Partial<Refund> | null;
 }
 
 // Типы багажа
@@ -71,8 +106,17 @@ export interface Baggage {
   rus: string;
 }
 
+// Типы льгот
+export type PrivilegeType = "none" | "student" | "military" | "half" | "full";
+// Интерфейс льгот
+export interface Privilege {
+  id: number;
+  type: PrivilegeType;
+  rus: string;
+}
+
 // Типы документов
-export type DocumentType = "passport";
+export type DocumentType = "passport" | "driver" | "student" | "military";
 // Интерфейс документов
 export interface Document {
   id: number;
@@ -81,26 +125,28 @@ export interface Document {
 }
 
 export interface Identification {
+  // TODO: Переделать
   series?: string;
   number?: string;
-  documentType?: DocumentType;
+  document?: Document;
+  privilege?: Privilege;
+  studentTicketNumber?: string;
+  militaryCertificateNumber?: string;
+  birthCertificateSeries?: string;
+  birthCertificateNumber?: string;
 }
 
 // Интерфейс пассажира
 export interface Passenger {
-  id: number;
+  readonly id: number;
   firstName: string;
   lastName: string;
   patronymic: string;
   gender: "women" | "men" | null;
   birthday: string;
   phone: string;
-  seatId: number;
   identification: Identification | null;
-  ticket: Ticket | null;
-  baggage: Baggage | null;
-  discount: Discount | null;
-  payment: Payment | null;
+  ticket: Partial<Ticket>;
 }
 
 // Интерфейс маршрута

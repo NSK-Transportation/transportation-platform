@@ -3,11 +3,12 @@ import clsx from "clsx";
 import styles from "./Grid.module.scss";
 
 export interface GridProps extends HTMLAttributes<HTMLDivElement> {
-  columns?: CSSProperties["gridTemplateColumns"];
-  rows?: CSSProperties["gridTemplateRows"];
+  columns?: CSSProperties["gridTemplateColumns"] & CSSProperties["gridColumn"];
+  rows?: CSSProperties["gridTemplateRows"] & CSSProperties["gridRow"];
   gap?: CSSProperties["gap"];
   alignItems?: CSSProperties["alignItems"];
   justifyItems?: CSSProperties["justifyItems"];
+  area?: CSSProperties["gridArea"];
   container?: boolean;
   fullwidth?: boolean;
   fullheight?: boolean;
@@ -19,11 +20,12 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
 const Grid = forwardRef<HTMLDivElement, GridProps>(
   (
     {
-      columns = "repeat(auto-fit, minmax(100px, 1fr))",
+      columns,
       rows,
       gap = "10px",
       alignItems = "stretch",
       justifyItems = "stretch",
+      area,
       container = false,
       fullwidth = false,
       fullheight = false,
@@ -49,6 +51,8 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(
         display: "grid",
         gridTemplateColumns: columns,
         gridTemplateRows: rows,
+        gridArea: area,
+        gridRow: rows,
         gap,
         alignItems,
         justifyItems,
