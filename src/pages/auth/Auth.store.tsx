@@ -1,29 +1,47 @@
+import { Authorization } from "@/app/@types";
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 // Интерфейс хранилища
 interface Store {
   isAuth: boolean;
-  userID: string;
-  password: string;
+  data: Authorization;
 
-  setUserID: (userID: string) => void;
-  setPassword: (password: string) => void;
-  setAuth: (isAuth: boolean) => void;
+  setAuth: (payload: Partial<Authorization> & { isAuth?: boolean }) => void;
 }
 
 const useAuthStore = create<Store>()(
   devtools(
-    immer((set) => ({
-      isAuth: false,
-      userID: "",
-      password: "",
+    persist(
+      immer((set) => ({
+        isAuth: false,
+        data: {
+          userID: "",
+          password: "",
+        },
 
-      setUserID: (userID) => set({ userID }),
-      setPassword: (password) => set({ password }),
-      setIsAuth: (isAuth) => set({ isAuth }), 
-    })),
+        setAuth: (payload) =>
+          set((state) => ({
+            ...state,
+            isAuth: payload.isAuth ?? state.isAuth,
+            data: {
+              ...state.data,
+              ...payload,
+            },
+          })),
+      })),
+      {
+        name: "AuthStore",
+        version: 1,
+        storage: createJSONStorage(() => sessionStorage),
+        partialize: (state) => ({
+          data: {
+            userID: state.data.userID,
+          },
+        }),
+      },
+    ),
     { name: "AuthStore" },
   ),
 );
