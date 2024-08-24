@@ -1,3 +1,9 @@
+// Интерфейс авторизации
+export interface Authorization {
+  userID: string;
+  password: string;
+}
+
 // Типы статусов мест
 export type SeatStatus = "free" | "selected" | "booking" | "occupied";
 // Интерфейс мест
