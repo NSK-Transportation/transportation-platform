@@ -156,6 +156,7 @@ export interface Passenger {
   phone: string;
   identification: Identification | null;
   ticket: Partial<Ticket>;
+  returnTicket: Partial<Ticket> | boolean;
 }
 
 // Интерфейс маршрута
@@ -166,6 +167,7 @@ export interface Way {
 }
 // Интерфейс информации маршрута
 export interface WayMenu {
+  remoteSale: boolean;
   returnHave: boolean;
   return: Way;
   to: Way;
