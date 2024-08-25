@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes, useEffect, useRef } from "react";
+import { CSSProperties, forwardRef, InputHTMLAttributes, useEffect, useRef } from "react";
 import clsx from "clsx";
 import styles from "./Checkbox.module.scss";
 
@@ -8,10 +8,11 @@ interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   disabled?: boolean;
   indeterminate?: boolean;
+  alignSelf?: CSSProperties["alignSelf"];
 }
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, disabled, direction = "row", label, indeterminate, ...props }, ref) => {
+  ({ className, disabled, direction = "row", label, indeterminate, alignSelf, ...props }, ref) => {
     const defaultRef = useRef<HTMLInputElement>(null);
     const resolvedRef = ref || defaultRef;
 
@@ -28,6 +29,9 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           [styles[direction]]: direction,
           [styles.disabled]: disabled,
         })}
+        style={{
+          alignSelf: alignSelf,
+        }}
       >
         <input disabled={disabled} type="checkbox" ref={resolvedRef} {...props} />
         {label}

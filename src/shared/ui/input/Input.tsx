@@ -16,6 +16,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   pointer?: boolean;
   fullWidth?: boolean;
   onWrapperClick?: () => void;
+  message?: string;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -28,12 +29,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       pointer,
       fullWidth,
       onWrapperClick,
+      message,
       ...props
     },
     ref,
   ) => {
     const inputRef = useRef<HTMLInputElement>(null);
-    
+
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
     const handleDivClick = useCallback(() => {
@@ -45,7 +47,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       }
     }, [onWrapperClick]);
 
-
     return (
       <div
         className={clsx(styles.input, className, {
@@ -56,6 +57,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         onClick={handleDivClick}
       >
         <input ref={inputRef} disabled={disabled} {...props} />
+        {message && <div className={styles.input__message}>{message }</div>}
         {slots && (
           <div
             className={clsx(styles.input__slots, {
