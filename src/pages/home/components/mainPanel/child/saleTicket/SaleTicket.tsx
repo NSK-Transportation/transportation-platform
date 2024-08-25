@@ -5,106 +5,116 @@
 
 import { useSearchParams } from "react-router-dom";
 import { useMainStore } from "../../MainPanel.store";
-import { Box, Button, Checkbox, Stacks, Step, Stepper, Typography } from "@/shared/ui";
+import { Button, Stacks, Step, Stepper } from "@/shared/ui";
 import { useStepper } from "@/shared/hooks";
 import { BusIcon, PaymentIcon, ReturnIcon, SeatIcon, UserIcon } from "@/shared/assets";
-import { WayMenu, WayMainList, SeatMainItem, PassengerInfoItem, WayPayment } from "./index";
+import {
+  WayMenu,
+  WayMainList,
+  SeatMainItem,
+  PassengerInfoItem,
+  WayPayment,
+  ReturnInfoItem,
+} from "./index";
+import { useCallback, useMemo } from "react";
 
 export const SaleTicket = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const step = searchParams.get("step") || "0";
+  const step = Number(searchParams.get("step")) || 0;
 
-  const {
-    saleTicket: { activeWay, way, wayDetails, passengers },
-  } = useMainStore();
+  const { activeWay, way, wayDetails, passengers } = useMainStore((state) => state.saleTicket);
 
-  const steps: Step[] = [
-    { icon: <BusIcon /> },
-    { icon: <SeatIcon /> },
-    { icon: <UserIcon /> },
-    { icon: <ReturnIcon />, visible: Boolean(way.returnHave) },
-    { icon: <PaymentIcon /> },
-  ];
+  const steps: Step[] = useMemo(
+    () => [
+      { icon: <BusIcon /> },
+      { icon: <SeatIcon /> },
+      { icon: <UserIcon /> },
+      { icon: <ReturnIcon />, visible: Boolean(way.returnHave) },
+      { icon: <SeatIcon />, visible: Boolean(way.returnHave) },
+      { icon: <UserIcon />, visible: Boolean(way.returnHave) },
+      { icon: <PaymentIcon /> },
+    ],
+    [way.returnHave],
+  );
 
   const { activeStep, nextStep, prevStep, isFirstStep, isLastStep } = useStepper({
-    initialStep: Number(step),
+    initialStep: step,
     steps,
   });
 
+  const validateStep = useCallback(() => {
+    if (activeStep === 0 && !activeWay) return "Выберите маршрут";
+    if (activeStep === 1 && activeWay?.to?.seatsSelected.length === 0) return "Выберите места";
+    if (activeStep === 2 && passengers.some((p) => !p.ticket)) return "Заполните данные пассажира";
+    if (activeStep === 3 && way.returnHave && !wayDetails?.return?.length)
+      return "Выберите обратный рейс";
+    if (activeStep === 4 && way.returnHave && activeWay?.return?.seatsSelected.length === 0)
+      return "Выберите места на обратный рейс";
+    if (activeStep === 5 && way.returnHave && passengers.some((p) => !p.returnTicket))
+      return "Заполните данные пассажира для обратного рейса";
+    return null;
+  }, [activeStep, activeWay, passengers, way, wayDetails]);
+
   const handleNextStep = () => {
-    if (activeStep === 0 && !activeWay) {
-      alert("Выберите маршрут");
+    const validationMessage = validateStep();
+    if (validationMessage) {
+      alert(validationMessage);
       return;
-    } else if (activeStep === 1 && activeWay?.seatsSelected.length === 0) {
-      alert("Выберите места");
-      return;
-    } else if (activeStep === 2 && passengers.some((p) => !p.ticket)) {
-      alert("Заполните данные пассажира");
-      return;
-    } else {
-      setSearchParams({
-        step: String(activeStep + 1),
-      });
-      nextStep();
     }
+    setSearchParams({ step: String(activeStep + 1) });
+    nextStep();
   };
 
   const handlePrevStep = () => {
-    setSearchParams({
-      step: String(activeStep - 1),
-    });
+    setSearchParams({ step: String(activeStep - 1) });
     prevStep();
   };
 
-  const getStepContent = () => {
+  const getStepContent = useMemo(() => {
     switch (activeStep) {
       case 0:
         return (
           <>
             <WayMenu />
-            {way && wayDetails?.to?.length > 0 && <WayMainList data={wayDetails?.to} />}
+            {way && wayDetails?.to?.length > 0 && (
+              <WayMainList data={wayDetails?.to} direction="to" />
+            )}
           </>
         );
       case 1:
-        return <SeatMainItem />;
+        return <SeatMainItem direction="to" />;
       case 2:
-        return <PassengerInfoItem />;
+        return <PassengerInfoItem direction="to" />;
       case 3:
         return way.returnHave ? (
           <>
-            <Box>
-              <Stacks direction="column" gap={16}>
-                <Typography variant="h3">Обратный билет пассажира</Typography>
-                {passengers.map((passenger) => (
-                  <Stacks key={passenger.id} gap={8}>
-                    <Checkbox
-                      label={`${passenger.lastName} ${passenger.firstName} ${passenger.patronymic}`}
-                    />
-                    <Typography color="primary">{passenger?.ticket?.rus}</Typography>
-                  </Stacks>
-                ))}
-              </Stacks>
-            </Box>
+            <ReturnInfoItem />
             <WayMenu returnWay />
             {way.returnHave && wayDetails?.return?.length > 0 && (
-              <WayMainList data={wayDetails?.return} />
+              <WayMainList data={wayDetails?.return} direction="return" />
             )}
           </>
         ) : (
           <WayPayment />
         );
+      case 4:
+        return way.returnHave ? <SeatMainItem direction="return" /> : null;
+      case 5:
+        return way.returnHave ? <PassengerInfoItem direction="return" /> : null;
+      case 6:
+        return <WayPayment />;
       default:
         return null;
     }
-  };
+  }, [activeStep, way, wayDetails, passengers]);
 
   return (
     <Stacks gap={16} direction="column" fullheight>
       <Stepper direction="row" activeStep={activeStep} steps={steps} />
 
-      {getStepContent()}
+      {getStepContent}
 
-      {!(wayDetails.to.length === 0) && (
+      {!(wayDetails.to.length === 0 ?? wayDetails.return.length === 0) && (
         <Stacks gap={16} justifyContent="space-between">
           <Button
             variant="secondary"

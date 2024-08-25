@@ -7,7 +7,7 @@ export const SeatInfoPrice = () => {
     <Box direction="down" border="down" color="blue">
       <Stacks direction="row" gap={4}>
         <Typography variant="h1" color="default-white">
-          {activeWay?.price} руб
+          {activeWay?.to?.price} руб
         </Typography>
       </Stacks>
     </Box>

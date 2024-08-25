@@ -22,7 +22,11 @@ import {
   TicketType,
 } from "@/app/@types";
 
-export const PassengerInfoItem = () => {
+interface PassengerInfoItemProps {
+  direction: "to" | "return";
+}
+
+export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
   const {
     activeWay,
     tickets,
@@ -449,5 +453,10 @@ export const PassengerInfoItem = () => {
     );
   };
 
-  return <>{activeWay && activeWay.seatsSelected.map((seatId) => renderPassengersInfo(seatId))}</>;
+  return (
+    <>
+      {activeWay &&
+        activeWay?.[direction]?.seatsSelected.map((seatId) => renderPassengersInfo(seatId))}
+    </>
+  );
 };

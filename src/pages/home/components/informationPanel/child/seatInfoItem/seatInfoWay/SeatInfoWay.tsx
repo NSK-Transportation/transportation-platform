@@ -4,7 +4,11 @@ import { SeatInfoPlace } from "../seatInfoPlace/SeatInfoPlace";
 import { Tooltip } from "@/shared/ui";
 import { useState } from "react";
 
-export const SeatInfoWay = () => {
+interface SeatInfoWayProps {
+  direction: "to" | "return";
+}
+
+export const SeatInfoWay = ({ direction }: SeatInfoWayProps) => {
   const { activeWay } = useMainStore((state) => state.saleTicket);
   const [visible, setVisible] = useState(true);
 
@@ -13,12 +17,12 @@ export const SeatInfoWay = () => {
       <Stacks gap={8} direction="column" fullwidth>
         <Stacks gap={4} direction="row" justifyContent="space-between">
           <Stacks gap={4} direction="row">
-            <Typography variant="h3">Рейс №{activeWay?.wayNumber}</Typography>
+            <Typography variant="h3">Рейс №{activeWay?.[direction]?.wayNumber}</Typography>
             <Typography variant="h3">
-              {activeWay?.from.city} - {activeWay?.to.city}
+              {activeWay?.[direction]?.from.city} - {activeWay?.[direction]?.to.city}
             </Typography>
           </Stacks>
-          <Tooltip text={activeWay?.whoArive ?? ""} direction="down">
+          <Tooltip text={activeWay?.[direction]?.whoArive ?? ""} direction="down">
             <Typography cursor="pointer" color="secondary" variant="h4">
               Перевозчик
             </Typography>
@@ -28,41 +32,41 @@ export const SeatInfoWay = () => {
           <Stacks direction="column">
             <Stacks gap={4} alignItems="flex-end">
               <Typography variant="h1" weight={600} color="primary-second">
-                {activeWay?.from.time}
+                {activeWay?.[direction]?.from.time}
               </Typography>
               <Typography variant="h3" weight={600} color="primary">
-                {activeWay?.from.date}
+                {activeWay?.[direction]?.from.date}
               </Typography>
             </Stacks>
             <Stacks direction="column">
               <Typography variant="h3" color="secondary">
-                {activeWay?.from.city} - {activeWay?.from.station}
+                {activeWay?.[direction]?.from.city} - {activeWay?.[direction]?.from.station}
               </Typography>
               <Typography variant="h3" color="secondary">
-                {activeWay?.from.street}, {activeWay?.from.house}
+                {activeWay?.[direction]?.from.street}, {activeWay?.[direction]?.from.house}
               </Typography>
             </Stacks>
           </Stacks>
           <Stacks direction="column">
             <Stacks gap={4} alignItems="flex-end">
               <Typography variant="h1" weight={600} color="primary-second">
-                {activeWay?.to.time}
+                {activeWay?.[direction]?.to.time}
               </Typography>
               <Typography variant="h3" weight={600} color="primary">
-                {activeWay?.to.date}
+                {activeWay?.[direction]?.to.date}
               </Typography>
             </Stacks>
             <Stacks direction="column">
               <Typography variant="h3" color="secondary">
-                {activeWay?.to.city} - {activeWay?.to.station}
+                {activeWay?.[direction]?.to.city} - {activeWay?.[direction]?.to.station}
               </Typography>
               <Typography variant="h3" color="secondary">
-                {activeWay?.to.street}, {activeWay?.to.house}
+                {activeWay?.[direction]?.to.street}, {activeWay?.[direction]?.to.house}
               </Typography>
             </Stacks>
           </Stacks>
         </Stacks>
-        {(activeWay?.seatsSelected|| []).length > 0 && (
+        {(activeWay?.[direction]?.seatsSelected || []).length > 0 && (
           <Typography
             onClick={() => setVisible(!visible)}
             cursor="pointer"
@@ -73,7 +77,7 @@ export const SeatInfoWay = () => {
             Детали рейса
           </Typography>
         )}
-        {visible && <SeatInfoPlace />}
+        {visible && <SeatInfoPlace direction={direction} />}
       </Stacks>
     </Box>
   );

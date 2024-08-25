@@ -3,9 +3,12 @@ import { useMainStore } from "@/pages/home/components/mainPanel/MainPanel.store"
 import { Box, Stacks, Typography } from "@/shared/ui";
 import { useSearchParams } from "react-router-dom";
 
+// TODO: Добавить изменение инфы в зависимости от direction
+
 interface SeatInfoPlace {
   passenger: Passenger;
   ticketType?: TicketType;
+  direction: "to" | "return";
 }
 
 const PassengerInfo = ({ label, value }: { label: string; value: string | undefined | number }) => (
@@ -28,7 +31,7 @@ const PassengerDetails = ({ passenger }: SeatInfoPlace) => (
   </Stacks>
 );
 
-const TicketInfo = ({ ticketType, passenger }: SeatInfoPlace) => {
+const TicketInfo = ({ ticketType, passenger, direction }: SeatInfoPlace) => {
   if (!ticketType || !passenger) return null;
 
   switch (ticketType) {
@@ -78,12 +81,12 @@ const TicketInfo = ({ ticketType, passenger }: SeatInfoPlace) => {
   }
 };
 
-export const SeatInfoPlace = () => {
+export const SeatInfoPlace = ({ direction }: { direction: "to" | "return" }) => {
   const { passengers, activeWay } = useMainStore((state) => state.saleTicket);
   const [searchParams] = useSearchParams();
   const step = searchParams.get("step") || "0";
 
-  return activeWay?.seatsSelected.map((seat, index) => {
+  return activeWay?.to?.seatsSelected.map((seat, index) => {
     const passenger = passengers[index];
     const ticketType = passenger?.ticket?.type;
 
@@ -98,8 +101,8 @@ export const SeatInfoPlace = () => {
               {seat}
             </Typography>
           </Stacks>
-          {step === "2" && ticketType !== "" && (
-            <TicketInfo ticketType={ticketType} passenger={passenger} />
+          {step >= "2" && ticketType !== "" && (
+            <TicketInfo ticketType={ticketType} passenger={passenger} direction={direction} />
           )}
         </Stacks>
       </Box>

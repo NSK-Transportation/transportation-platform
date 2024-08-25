@@ -7,11 +7,21 @@
  * @returns {JSX.Element} Отображает форму для выбора рейса и кнопку для поиска рейсов.
  */
 
-import { Box, Button, Calendar, Input, InputGroup, Stacks, Typography } from "@/shared/ui";
-import { ChangeEvent } from "react";
+import {
+  Box,
+  Button,
+  Calendar,
+  Checkbox,
+  Input,
+  InputGroup,
+  Stacks,
+  Typography,
+} from "@/shared/ui";
+import { ChangeEvent, useState } from "react";
 import { useMainStore } from "../../../MainPanel.store";
 import { WayDetails } from "@/app/@types";
 import { useQuery } from "react-query";
+import { formatDate } from "@/shared/utils";
 
 interface WayMenuProps {
   returnWay?: boolean;
@@ -68,30 +78,63 @@ const searchWays = async (wayData: any): Promise<{ to: WayDetails[]; return: Way
   }
 };
 
-const formatDate = (date: Date): string => {
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const year = date.getFullYear();
-  return `${day}.${month}.${year}`;
-};
-
 export const WayMenu = ({ returnWay }: WayMenuProps) => {
   const { way, setWay, setWayDetails } = useMainStore((state) => state.saleTicket);
   const { refetch, isFetching } = useQuery(["searchWays", way], () => searchWays(way), {
     enabled: false,
     refetchOnWindowFocus: false,
   });
+  const [message, setMessage] = useState<{ from?: string; to?: string; date?: string }>({});
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setWay(
       returnWay
         ? { ...way, return: { ...way.return, [name]: value } }
         : { ...way, to: { ...way.to, [name]: value } },
     );
+    setMessage({ ...message, [name]: "" });
+  };
+
+  const handleDateChange = (date: Date | Date[]) => {
+    if (date instanceof Date) {
+      setWay(
+        returnWay
+          ? {
+              ...way,
+              return: { ...way.return, date: formatDate(date) },
+            }
+          : {
+              ...way,
+              to: { ...way.to, date: formatDate(date) },
+            },
+      );
+      setMessage({ ...message, date: "" });
+    }
+  };
+
+  const handleCheckboxChange = () => {
+    setWay({ ...way, remoteSale: !way.remoteSale });
   };
 
   const handleClick = async (direction: "to" | "return") => {
+    const newMessage = { ...message };
+
+    if (!way[direction].from) {
+      newMessage.from = "Пожалуйста, заполните поле";
+    }
+    if (!way[direction].to) {
+      newMessage.to = "Пожалуйста, заполните поле";
+    }
+    if (!way[direction].date) {
+      newMessage.date = "Пожалуйста, выберите дату";
+    }
+
+    setMessage(newMessage);
+
+    if (!way[direction].from || !way[direction].to || !way[direction].date) {
+      return;
+    }
     const { data } = await refetch();
     if (data) {
       setWayDetails(data[direction], direction);
@@ -109,40 +152,28 @@ export const WayMenu = ({ returnWay }: WayMenuProps) => {
           </Typography>
           <InputGroup fullWidth>
             <Calendar
-              onChange={(date: Date | Date[]) => {
-                if (date instanceof Date) {
-                  setWay(
-                    returnWay
-                      ? {
-                          ...way,
-                          return: { ...way.return, date: formatDate(date) },
-                        }
-                      : {
-                          ...way,
-                          to: { ...way.to, date: formatDate(date) },
-                        },
-                  );
-                }
-              }}
+              onChange={handleDateChange}
               name="date"
               placeholder="Дата отправления"
               minDate={new Date()}
               value={dateValue}
+              message={message.date}
             />
-
             <Input
               name="from"
               type="text"
               value={returnWay ? way.return?.from : way.to.from}
-              onChange={handleChange}
+              onChange={handleInputChange}
               placeholder="Станция отправления"
+              message={message.from}
             />
             <Input
               name="to"
               type="text"
               value={returnWay ? way.return?.to : way.to.to}
-              onChange={handleChange}
+              onChange={handleInputChange}
               placeholder="Станция прибытия"
+              message={message.to}
             />
           </InputGroup>
 
@@ -160,12 +191,18 @@ export const WayMenu = ({ returnWay }: WayMenuProps) => {
 
         <Stacks fullwidth justifyContent="center">
           <Button
-            onClick={() => handleClick(way.returnHave ? "return" : "to")}
+            onClick={() => handleClick(returnWay ? "return" : "to")}
             loading={isFetching}
             label="Искать"
           />
         </Stacks>
       </Box>
+      <Checkbox
+        alignSelf="flex-end"
+        label="Удалённая продажа"
+        checked={way.remoteSale}
+        onChange={handleCheckboxChange}
+      />
     </>
   );
 };
