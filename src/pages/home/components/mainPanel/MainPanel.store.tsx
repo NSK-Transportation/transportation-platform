@@ -23,7 +23,10 @@ interface Store {
     // Состояния
     way: WayMenu;
     passengers: Passenger[];
-    activeWay: WayDetails | null;
+    activeWay: {
+      to: WayDetails | null;
+      return: WayDetails | null;
+    };
     wayDetails: {
       to: WayDetails[];
       return: WayDetails[];
@@ -44,7 +47,7 @@ interface Store {
     setWay: (data: WayMenu) => void;
     setPassenger: (passengerId: number, data: Partial<Passenger>) => void;
     setWayDetails: (data: WayDetails[], direction: "to" | "return") => void;
-    setActiveWay: (way: WayDetails | null) => void;
+    setActiveWay: (way: WayDetails | null, direction: "to" | "return") => void;
     toggleSeatStatus: (
       direction: "to" | "return",
       wayId: number,
@@ -65,6 +68,7 @@ const useMainStore = create<Store>()(
     immer((set) => ({
       saleTicket: {
         way: {
+          remoteSale: false,
           returnHave: false,
           return: {
             date: "",
@@ -78,7 +82,10 @@ const useMainStore = create<Store>()(
           },
         },
         passengers: [],
-        activeWay: null,
+        activeWay: {
+          to: null,
+          return: null,
+        },
         wayDetails: {
           to: [],
           return: [],
@@ -136,9 +143,18 @@ const useMainStore = create<Store>()(
             state.saleTicket.wayDetails[direction] = data;
           }),
 
-        setActiveWay: (way) =>
+        setActiveWay: (way, direction) =>
           set((state) => {
-            state.saleTicket.activeWay = way;
+            if (way) {
+              state.saleTicket.activeWay[direction] = {
+                ...way,
+                seatsSelected: [],
+                id: way.id ?? 0,
+                wayNumber: way.wayNumber ?? "",
+                from: way.from ?? {},
+                to: way.to ?? {},
+              };
+            }
           }),
 
         toggleSeatStatus: (
@@ -172,13 +188,13 @@ const useMainStore = create<Store>()(
                     identification: null,
                     ticket: {
                       id: seatId,
-                      type: "",
-                      rus: "",
                       seatId: seat.id,
                       wayDetails: wayDetails,
-                      discount: null,
-                      baggage: null,
-                      payment: null,
+                    },
+                    returnTicket: {
+                      id: seatId,
+                      seatId: seat.id,
+                      wayDetails: wayDetails,
                     },
                   };
 
@@ -206,8 +222,9 @@ const useMainStore = create<Store>()(
               ...wayDetailsList.slice(wayIndex + 1),
             ];
 
-            state.saleTicket.activeWay = {
+            state.saleTicket.activeWay[direction] = {
               ...state.saleTicket.activeWay!,
+              ...wayDetails,
               seats: updatedSeats,
               seatsSelected: wayDetails.seatsSelected,
             };
@@ -238,6 +255,7 @@ const useMainStore = create<Store>()(
           phone: "",
           identification: null,
           ticket: {},
+          returnTicket: {},
         },
         reasons: [{ id: 1, type: "delay", rus: "Опоздание" }],
 
