@@ -1,16 +1,12 @@
-import { Box, Button, Grid, Popup, Stacks, Typography } from "@/shared/ui";
+import { Stacks } from "@/shared/ui";
+import { ActionMenu } from "./ActionMenu";
+import { FilterMenu } from "./FilterMenu";
 
 export const WayManagement = () => {
-    return (
-  <Box direction="center" border="down" color="blue">
-    <Stacks direction="row" gap={3}>
-      <Typography variant="caption" color="default-white" size={20}>
-        1000
-      </Typography>
-      <Typography variant="caption" color="default-white" size={20}>
-        руб
-      </Typography>
+  return (
+    <Stacks direction="column" gap={5}>
+      <ActionMenu />
+      <FilterMenu />
     </Stacks>
-  </Box>
-    );
+  );
 };

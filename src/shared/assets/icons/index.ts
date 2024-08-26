@@ -6,3 +6,4 @@ export { MdOutlinePayments as PaymentIcon } from "react-icons/md";
 export { BsCash as CashReturnIcon } from "react-icons/bs";
 export { GoEye as EyeOpenIcon } from "react-icons/go";
 export { GoEyeClosed as EyeCloseIcon } from "react-icons/go";
+export { IoIosClose as CancelIcon } from "react-icons/io";
