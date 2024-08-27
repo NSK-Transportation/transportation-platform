@@ -3,7 +3,7 @@ import { Box, Button, Stacks } from "@/shared/ui";
 export const ActionMenu = () => {
     return (
         <Stacks direction="row" gap={20}>
-            <Box border={"left"} >
+            <Box border={"default"} >
                 <Stacks direction="row" gap={20}>
                     <Button label="Отменить рейс" justifyContent="start" variant="tertiary" />
                     <Button label="Начать / закончить посадку" justifyContent="start" variant="tertiary" />
