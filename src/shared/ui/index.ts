@@ -30,3 +30,4 @@ export { Textarea } from "./textarea/Textarea";
 export { User } from "./user/User";
 export { Grid } from "./grid/Grid";
 export { CustomCalendar as Calendar } from "./customCalendar/CustomCalendar";
+export { Tooltip } from "./tooltip/Tooltip";

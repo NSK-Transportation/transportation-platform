@@ -13,9 +13,20 @@ import {
 import { useMainStore } from "../../../MainPanel.store";
 import { useNavigate } from "react-router-dom";
 import { ReactNode, useEffect } from "react";
-import { BaggageType, DocumentType, Passenger, PrivilegeType, TicketType } from "@/app/@types";
+import {
+  BaggageType,
+  DocumentType,
+  GenderType,
+  Passenger,
+  PrivilegeType,
+  TicketType,
+} from "@/app/@types";
 
-export const PassengerInfoItem = () => {
+interface PassengerInfoItemProps {
+  direction: "to" | "return";
+}
+
+export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
   const {
     activeWay,
     tickets,
@@ -23,11 +34,12 @@ export const PassengerInfoItem = () => {
     baggages,
     documents,
     privileges,
+    genders,
     passengers,
     setPassenger,
   } = useMainStore((state) => state.saleTicket);
   const navigate = useNavigate();
-  console.log(activeWay)
+
   useEffect(() => {
     if (!activeWay || passengers.length === 0) {
       navigate(
@@ -87,14 +99,18 @@ export const PassengerInfoItem = () => {
         <RadioGroup
           direction="row"
           name="gender"
-          radios={[
-            { value: "men", title: "Мужской" },
-            { value: "women", title: "Женский" },
-          ]}
-          selected={passengersInfo.gender || ""}
+          radios={genders.map((gender) => ({
+            value: gender.type,
+            title: gender.rus,
+          }))}
+          selected={passengersInfo.gender?.type || ""}
           onChange={(value) =>
             setPassenger(passengersInfo.id, {
-              gender: value as "men" | "women",
+              ...passengersInfo,
+              gender: {
+                type: value as GenderType,
+                rus: genders.find((gender) => gender.type === value)?.rus || "",
+              },
             })
           }
         />
@@ -136,6 +152,9 @@ export const PassengerInfoItem = () => {
                           ticket: {
                             ...passengersInfo.ticket,
                             type: event.target.value as TicketType,
+                            rus:
+                              tickets.find((ticket) => ticket.type === event.target.value)?.rus ||
+                              "",
                           },
                         })
                       }
@@ -434,5 +453,10 @@ export const PassengerInfoItem = () => {
     );
   };
 
-  return <>{activeWay && activeWay.seatsSelected.map((seatId) => renderPassengersInfo(seatId))}</>;
+  return (
+    <>
+      {activeWay &&
+        activeWay?.[direction]?.seatsSelected.map((seatId) => renderPassengersInfo(seatId))}
+    </>
+  );
 };

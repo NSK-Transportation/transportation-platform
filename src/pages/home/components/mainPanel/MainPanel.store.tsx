@@ -2,6 +2,7 @@ import {
   Baggage,
   Discount,
   Document,
+  Gender,
   Passenger,
   Payment,
   Privilege,
@@ -22,7 +23,10 @@ interface Store {
     // Состояния
     way: WayMenu;
     passengers: Passenger[];
-    activeWay: WayDetails | null;
+    activeWay: {
+      to: WayDetails | null;
+      return: WayDetails | null;
+    };
     wayDetails: {
       to: WayDetails[];
       return: WayDetails[];
@@ -37,12 +41,13 @@ interface Store {
     documents: Document[];
     privileges: Privilege[];
     payments: Payment[];
+    genders: Gender[];
 
     // Методы для изменения состояния
     setWay: (data: WayMenu) => void;
     setPassenger: (passengerId: number, data: Partial<Passenger>) => void;
     setWayDetails: (data: WayDetails[], direction: "to" | "return") => void;
-    setActiveWay: (way: WayDetails | null) => void;
+    setActiveWay: (way: WayDetails | null, direction: "to" | "return") => void;
     toggleSeatStatus: (
       direction: "to" | "return",
       wayId: number,
@@ -63,6 +68,7 @@ const useMainStore = create<Store>()(
     immer((set) => ({
       saleTicket: {
         way: {
+          remoteSale: false,
           returnHave: false,
           return: {
             date: "",
@@ -76,48 +82,10 @@ const useMainStore = create<Store>()(
           },
         },
         passengers: [],
-        activeWay: null,
-        // wayDetails: [
-        //   // {
-        //   //   id: 1,
-        //   //   way: "Москва - Кемерово",
-        //   //   wayNumber: "7345",
-        //   //   whoArive: "ООО “Кузбасские междугородние перевозки”",
-        //   //   price: 1276,
-        //   //   seatsSelected: [],
-        //   //   seats: [
-        //   //     { id: 1, status: "free" },
-        //   //     { id: 2, status: "free" },
-        //   //     { id: 3, status: "booking" },
-        //   //     { id: 4, status: "occupied" },
-        //   //     { id: 5, status: "free" },
-        //   //     { id: 6, status: "free" },
-        //   //     { id: 7, status: "free" },
-        //   //     { id: 8, status: "free" },
-        //   //     { id: 9, status: "free" },
-        //   //     { id: 10, status: "free" },
-        //   //     { id: 11, status: "free" },
-        //   //     { id: 12, status: "free" },
-        //   //     { id: 13, status: "free" },
-        //   //   ],
-        //   //   from: {
-        //   //     city: "Москва",
-        //   //     street: "ул.Ленина",
-        //   //     house: "67",
-        //   //     station: "ЖД Вокзал",
-        //   //     time: "13:20",
-        //   //     date: "2022-05-01",
-        //   //   },
-        //   //   to: {
-        //   //     city: "Кемерово",
-        //   //     street: "пр.Кузнецкий",
-        //   //     house: "81",
-        //   //     station: "",
-        //   //     time: "17:50",
-        //   //     date: "2022-05-01",
-        //   //   },
-        //   // },
-        // ],
+        activeWay: {
+          to: null,
+          return: null,
+        },
         wayDetails: {
           to: [],
           return: [],
@@ -160,6 +128,10 @@ const useMainStore = create<Store>()(
           { id: 2, type: "card", rus: "Карта" },
           { id: 3, type: "qr", rus: "QR Код" },
         ],
+        genders: [
+          { id: 1, type: "male", rus: "Мужчина" },
+          { id: 2, type: "female", rus: "Женщина" },
+        ],
 
         setWay: (data) =>
           set((state) => {
@@ -171,9 +143,18 @@ const useMainStore = create<Store>()(
             state.saleTicket.wayDetails[direction] = data;
           }),
 
-        setActiveWay: (way) =>
+        setActiveWay: (way, direction) =>
           set((state) => {
-            state.saleTicket.activeWay = way;
+            if (way) {
+              state.saleTicket.activeWay[direction] = {
+                ...way,
+                seatsSelected: [],
+                id: way.id ?? 0,
+                wayNumber: way.wayNumber ?? "",
+                from: way.from ?? {},
+                to: way.to ?? {},
+              };
+            }
           }),
 
         toggleSeatStatus: (
@@ -207,13 +188,13 @@ const useMainStore = create<Store>()(
                     identification: null,
                     ticket: {
                       id: seatId,
-                      type: "",
-                      rus: "",
                       seatId: seat.id,
                       wayDetails: wayDetails,
-                      discount: null,
-                      baggage: null,
-                      payment: null,
+                    },
+                    returnTicket: {
+                      id: seatId,
+                      seatId: seat.id,
+                      wayDetails: wayDetails,
                     },
                   };
 
@@ -241,8 +222,9 @@ const useMainStore = create<Store>()(
               ...wayDetailsList.slice(wayIndex + 1),
             ];
 
-            state.saleTicket.activeWay = {
+            state.saleTicket.activeWay[direction] = {
               ...state.saleTicket.activeWay!,
+              ...wayDetails,
               seats: updatedSeats,
               seatsSelected: wayDetails.seatsSelected,
             };
@@ -273,6 +255,7 @@ const useMainStore = create<Store>()(
           phone: "",
           identification: null,
           ticket: {},
+          returnTicket: {},
         },
         reasons: [{ id: 1, type: "delay", rus: "Опоздание" }],
 

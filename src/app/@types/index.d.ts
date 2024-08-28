@@ -142,17 +142,27 @@ export interface Identification {
   birthCertificateNumber?: string;
 }
 
+// Типи гендеров
+export type GenderType = "male" | "female";
+// Интерфейс гендеров
+export interface Gender {
+  id: number;
+  type: GenderType;
+  rus: string;
+}
+
 // Интерфейс пассажира
 export interface Passenger {
   readonly id: number;
   firstName: string;
   lastName: string;
   patronymic: string;
-  gender: "women" | "men" | null;
+  gender: Partial<Gender> | null;
   birthday: string;
   phone: string;
   identification: Identification | null;
   ticket: Partial<Ticket>;
+  returnTicket: Partial<Ticket> | boolean;
 }
 
 // Интерфейс маршрута
@@ -163,6 +173,7 @@ export interface Way {
 }
 // Интерфейс информации маршрута
 export interface WayMenu {
+  remoteSale: boolean;
   returnHave: boolean;
   return: Way;
   to: Way;

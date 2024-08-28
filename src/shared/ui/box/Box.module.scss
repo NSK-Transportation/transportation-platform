@@ -51,22 +51,21 @@
     background: var(--box-blue-color);
   }
   //border-radius
-  &.default{
+  &.border-default {
     border-radius: 16px;
   }
-  &.right{
+  &.border-right {
     border-radius: 0 16px 16px 0;
   }
-  &.left{
+  &.border-left {
     border-radius: 16px 0 0 16px;
   }
-  &.up{
+  &.border-up {
     border-radius: 16px 16px 0 0;
   }
-  &.down{
+  &.border-down {
     border-radius: 0 0 16px 16px;
   }
-
 
   &__text {
     position: absolute;
