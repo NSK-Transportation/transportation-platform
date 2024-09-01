@@ -7,9 +7,10 @@ import { Box, Button, Label, Stacks, Typography } from "@/shared/ui";
 import { useMainStore } from "../../../MainPanel.store";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Direction } from "@/app/@types";
 
 interface SeatMainItemProps {
-  direction: "to" | "return";
+  direction: Direction;
 }
 
 export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
@@ -39,7 +40,7 @@ export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
         <Stacks justifyContent="space-between">
           <Stacks direction="column" gap={4}>
             <Typography variant="h3">
-              Количество мест: {activeWay?.to?.seatsSelected.length}
+              Количество мест: {activeWay?.[direction]?.seatsSelected.length}
             </Typography>
             <Typography color="secondary" variant="h4">
               Макс. количество: 10
@@ -70,7 +71,7 @@ export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
                   key={seat.id}
                   variant={seat.status}
                   onClick={() =>
-                    toggleSeatStatus("to", activeWay?.[direction]?.id || 0, seat.id, 10)
+                    toggleSeatStatus(direction, activeWay?.[direction]?.id || 0, seat.id, 10)
                   }
                   disabled={seat.status === "booking" || seat.status === "occupied"}
                   label={`Место ${seat.id}`}

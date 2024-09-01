@@ -1,19 +1,21 @@
-import { Stacks } from "@/shared/ui";
+import { Box, Stacks } from "@/shared/ui";
 import { SeatInfoPrice } from "./seatInfoPrice/SeatInfoPrice";
 import { SeatInfoWay } from "./seatInfoWay/SeatInfoWay";
-import { useMainStore } from "../../../mainPanel/MainPanel.store";
-import { useSearchParams } from "react-router-dom";
+import { SeatInfoPlace } from "./seatInfoPlace/SeatInfoPlace";
+import { useState } from "react";
 
 export const SeatInfoItem = () => {
-  const { activeWay } = useMainStore((state) => state.saleTicket);
-  const [searchParams] = useSearchParams();
-  const step = searchParams.get("step") || "0";
+  const [visible, setVisible] = useState(true);
 
   return (
     <Stacks direction="column">
-      <SeatInfoWay direction="to" />
-      {step >= "3" && activeWay.return && <SeatInfoWay direction="return" />}
-      <SeatInfoPrice />
+      <Box border="up">
+        <SeatInfoWay visible={visible} setVisible={setVisible} />
+        {visible && <SeatInfoPlace />}
+      </Box>
+      <Box direction="down" border="down" color="blue">
+        <SeatInfoPrice />
+      </Box>
     </Stacks>
   );
 };
