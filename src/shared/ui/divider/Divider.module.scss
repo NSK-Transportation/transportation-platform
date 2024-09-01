@@ -1,6 +1,6 @@
 .divider {
   border-radius: 16px;
-  border: 1px solid var(--divider-border-color);
+  border: 1px solid;
 
   &.horizontal {
     height: 0;
@@ -13,5 +13,13 @@
     width: 0;
     max-width: 0;
     border-width: 0 1px 0 0;
+  }
+
+  &.default {
+    border-color: var(--divider-border-default-color);
+  }
+
+  &.blue {
+    border-color: var(--divider-border-blue-color);
   }
 }
