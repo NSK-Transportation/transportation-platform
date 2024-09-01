@@ -248,7 +248,8 @@
   /* END Spinner */
 
   /* START Divider */
-  --divider-border-color: var(--color-gray-40);
+  --divider-border-default-color: var(--color-gray-40);
+  --divider-border-blue-color: var(--color-blue-60);
   /* END Divider */
 
   /* START Box */
