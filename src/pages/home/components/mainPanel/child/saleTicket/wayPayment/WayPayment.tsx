@@ -15,7 +15,7 @@ export const WayPayment = () => {
           <Stacks gap={4}>
             <Typography variant="h3">К оплате:</Typography>
             <Typography variant="h3" weight="bold" color="info">
-              {activeWay?.price} рублей
+              {} рублей
             </Typography>
           </Stacks>
           <Divider orientation="vertical" />
@@ -23,29 +23,35 @@ export const WayPayment = () => {
             <Typography variant="h5" color="secondary">
               Из чего состоит сумма:
             </Typography>
-            <Typography variant="h5">Пассажирский билет: {activeWay?.price} рублей</Typography>
+            <Typography variant="h5">Пассажирский билет: {} рублей</Typography>
             <Typography variant="h5">Багажный билет: 0 рублей</Typography>
             <Typography variant="h5">Дополнительные услуги: 0 рублей</Typography>
           </Stacks>
         </Stacks>
 
-        <Grid gap={16}>
-          {payments.map((payment) => {
+        <Grid gap={16} columns={"1fr 1fr 1fr"}>
+          {payments.map((payment, index) => {
             return (
               <Button
                 key={payment.id}
-                variant={passengers[0]?.ticket.payment?.id === payment?.id ? "selected" : "payment"}
+                variant={
+                  passengers[index]?.ticket.there.payment?.id === payment?.id
+                    ? "selected"
+                    : "payment"
+                }
                 label={payment.rus}
                 size="large"
                 onClick={() => {
                   setPassenger(passengers[0].id, {
+                    ...passengers[0],
                     ticket: {
                       ...passengers[0].ticket,
-                      payment: {
-                        ...passengers[0].ticket.payment,
-                        id: payment.id,
-                        rus: payment.rus,
-                        type: payment.type,
+                      there: {
+                        ...passengers[0].ticket.there,
+                        payment: {
+                          ...passengers[0].ticket.there.payment,
+                          id: payment.id,
+                        },
                       },
                     },
                   });

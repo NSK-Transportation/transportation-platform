@@ -80,16 +80,16 @@
 
 .secondary {
   color: var(--button-secondary-color);
-  outline: 1px solid var(--button-secondary-border-color);
+  border: 1px solid var(--button-secondary-border-color);
 
   &:hover {
     color: var(--button-secondary-hover-color);
-    outline-color: var(--button-secondary-hover-border);
+    border-color: var(--button-secondary-hover-border);
   }
 
   &:active {
     color: var(--button-secondary-click-color);
-    outline-color: var(--button-secondary-click-border);
+    border-color: var(--button-secondary-click-border);
   }
 }
 
@@ -127,7 +127,7 @@
 }
 
 .free {
-  outline: 1px solid var(--color-blue-50);
+  border: 1px solid var(--color-blue-50);
 }
 
 .selected {
@@ -136,21 +136,17 @@
 }
 
 .booking {
-  outline: 1px solid var(--color-gray-50);
+  border: 1px solid var(--color-gray-50);
 }
 
 .occupied {
-  outline: 1px solid var(--color-gray-30);
+  border: 1px solid var(--color-gray-30);
 }
 
 .payment {
   background-color: var(--color-gray-10);
   box-shadow: 0px 0px 8px 0px #00000033;
   transition: none;
-
-  &:hover {
-    outline: 1px solid var(--color-blue-60);
-  }
 }
 
 // Sizes

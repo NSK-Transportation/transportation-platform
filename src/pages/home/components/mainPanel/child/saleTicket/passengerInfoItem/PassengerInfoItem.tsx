@@ -13,9 +13,20 @@ import {
 import { useMainStore } from "../../../MainPanel.store";
 import { useNavigate } from "react-router-dom";
 import { ReactNode, useEffect } from "react";
-import { BaggageType, DocumentType, Passenger, PrivilegeType, TicketType } from "@/app/@types";
+import {
+  BaggageType,
+  DocumentType,
+  GenderType,
+  Passenger,
+  PrivilegeType,
+  TicketType,
+} from "@/app/@types";
 
-export const PassengerInfoItem = () => {
+interface PassengerInfoItemProps {
+  direction: "to" | "return";
+}
+
+export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
   const {
     activeWay,
     tickets,
@@ -23,11 +34,12 @@ export const PassengerInfoItem = () => {
     baggages,
     documents,
     privileges,
+    genders,
     passengers,
     setPassenger,
   } = useMainStore((state) => state.saleTicket);
   const navigate = useNavigate();
-  console.log(activeWay)
+
   useEffect(() => {
     if (!activeWay || passengers.length === 0) {
       navigate(
@@ -87,14 +99,18 @@ export const PassengerInfoItem = () => {
         <RadioGroup
           direction="row"
           name="gender"
-          radios={[
-            { value: "men", title: "Мужской" },
-            { value: "women", title: "Женский" },
-          ]}
-          selected={passengersInfo.gender || ""}
+          radios={genders.map((gender) => ({
+            value: gender.type,
+            title: gender.rus,
+          }))}
+          selected={passengersInfo.gender?.type || ""}
           onChange={(value) =>
             setPassenger(passengersInfo.id, {
-              gender: value as "men" | "women",
+              ...passengersInfo,
+              gender: {
+                type: value as GenderType,
+                rus: genders.find((gender) => gender.type === value)?.rus || "",
+              },
             })
           }
         />
@@ -103,7 +119,9 @@ export const PassengerInfoItem = () => {
   );
 
   const renderPassengersInfo = (seatId: number) => {
-    const passengersInfo = passengers.find((p) => p.ticket?.seatId === seatId);
+    const passengersInfo = passengers.find(
+      (passenger) => passenger.ticket?.[direction]?.seatId === seatId,
+    );
     if (!passengersInfo) return null;
 
     return (
@@ -135,7 +153,13 @@ export const PassengerInfoItem = () => {
                         setPassenger(passengersInfo.id, {
                           ticket: {
                             ...passengersInfo.ticket,
-                            type: event.target.value as TicketType,
+                            [direction]: {
+                              ...passengersInfo.ticket[direction],
+                              type: event.target.value as TicketType,
+                              rus:
+                                tickets.find((ticket) => ticket.type === event.target.value)?.rus ||
+                                "",
+                            },
                           },
                         })
                       }
@@ -149,14 +173,21 @@ export const PassengerInfoItem = () => {
                         label: baggage.rus,
                         value: baggage.type,
                       }))}
-                      value={passengersInfo?.ticket?.baggage?.type}
+                      value={passengersInfo?.ticket?.[direction].baggage?.type}
                       onChange={(event) => {
                         setPassenger(passengersInfo.id, {
                           ticket: {
                             ...passengersInfo.ticket,
-                            baggage: baggages.find(
-                              (baggage) => baggage.type === (event.target.value as BaggageType),
-                            ),
+                            [direction]: {
+                              ...passengersInfo.ticket[direction],
+                              baggage: {
+                                ...passengersInfo.ticket[direction].baggage,
+                                type: event.target.value as BaggageType,
+                                rus:
+                                  baggages.find((baggage) => baggage.type === event.target.value)
+                                    ?.rus || "",
+                              },
+                            },
                           },
                         });
                       }}
@@ -164,7 +195,7 @@ export const PassengerInfoItem = () => {
                   </Label>
                 </Grid>
 
-                {passengersInfo?.ticket?.type === "discount" && (
+                {passengersInfo?.ticket?.[direction].type === "discount" && (
                   <>
                     <Divider />
                     <Typography variant="h3">Выберите скидку</Typography>
@@ -172,17 +203,20 @@ export const PassengerInfoItem = () => {
                       {discounts?.discount?.map((discount) => (
                         <Chip
                           key={discount.id}
-                          selected={passengersInfo.ticket?.discount?.id === discount.id}
+                          selected={passengersInfo.ticket?.[direction].discount?.id === discount.id}
                           onClick={() =>
                             setPassenger(passengersInfo.id, {
                               ticket: {
                                 ...passengersInfo.ticket,
-                                discount: {
-                                  ...passengersInfo.ticket.discount,
-                                  id: discount.id,
-                                  rus: discount.rus,
-                                  value: discount.value,
-                                  type: discount.type,
+                                [direction]: {
+                                  ...passengersInfo.ticket[direction],
+                                  discount: {
+                                    // Убрали избыточное вложение
+                                    id: discount.id,
+                                    rus: discount.rus,
+                                    value: discount.value,
+                                    type: discount.type,
+                                  },
                                 },
                               },
                             })
@@ -194,7 +228,7 @@ export const PassengerInfoItem = () => {
                       ))}
                       <Chip size="extra-large" label="+ Добавить скидку" />
                     </Stacks>
-                    {passengersInfo?.ticket.discount?.id === 1 && (
+                    {passengersInfo?.ticket?.[direction].discount?.id === 1 && (
                       <Grid container columns="repeat(2, 1fr)" gap={16}>
                         {renderInputFields(
                           passengersInfo,
@@ -243,7 +277,7 @@ export const PassengerInfoItem = () => {
                   </>
                 )}
 
-                {passengersInfo?.ticket?.type === "privilege" && (
+                {passengersInfo?.ticket?.[direction].type === "privilege" && (
                   <>
                     <Divider />
                     <Grid container columns="repeat(2, 1fr)" gap={16}>
@@ -304,7 +338,7 @@ export const PassengerInfoItem = () => {
                   </>
                 )}
 
-                {passengersInfo?.ticket?.type === "full" && (
+                {passengersInfo?.ticket?.[direction].type === "full" && (
                   <>
                     <Divider />
                     <Grid container columns="repeat(2, 1fr)" gap={16}>
@@ -337,7 +371,7 @@ export const PassengerInfoItem = () => {
                             onChange={(e) =>
                               setPassenger(passengersInfo.id, {
                                 identification: {
-                                  ...passengersInfo.identification,
+                                  ...passengersInfo?.identification,
                                   series: e.target.value,
                                 },
                               })
@@ -351,7 +385,7 @@ export const PassengerInfoItem = () => {
                             onChange={(e) =>
                               setPassenger(passengersInfo.id, {
                                 identification: {
-                                  ...passengersInfo.identification,
+                                  ...passengersInfo?.identification,
                                   number: e.target.value,
                                 },
                               })
@@ -434,5 +468,5 @@ export const PassengerInfoItem = () => {
     );
   };
 
-  return <>{activeWay && activeWay.seatsSelected.map((seatId) => renderPassengersInfo(seatId))}</>;
+  return <>{activeWay?.[direction]?.seatsSelected.map((seatId) => renderPassengersInfo(seatId))}</>;
 };

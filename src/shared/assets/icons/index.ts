@@ -7,3 +7,5 @@ export { BsCash as CashReturnIcon } from "react-icons/bs";
 export { GoEye as EyeOpenIcon } from "react-icons/go";
 export { GoEyeClosed as EyeCloseIcon } from "react-icons/go";
 export { IoIosClose as CancelIcon } from "react-icons/io";
+export { MdLuggage as BaggageAdd } from "react-icons/md";
+export { MdNoLuggage as BaggageDelete } from "react-icons/md";

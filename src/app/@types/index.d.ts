@@ -1,3 +1,9 @@
+// Интерфейс авторизации
+export interface Authorization {
+  userID: string;
+  password: string;
+}
+
 // Типы статусов мест
 export type SeatStatus = "free" | "selected" | "booking" | "occupied";
 // Интерфейс мест
@@ -82,18 +88,18 @@ export type TicketType = "full" | "child" | "privilege" | "discount";
 // Интерфейс билета
 export interface Ticket {
   id: number;
-  type: TicketType | "";
+  type: Required<TicketType>;
   rus: string;
-  seatId?: number;
-  identification?: Identification | null;
-  wayDetails?: WayDetails | null;
+  seatId: number;
+  identification: Identification | null;
+  wayDetails: WayDetails | null;
   discount?: Discount | null;
   baggage?: Baggage | null;
-  payment?: Payment | null;
-  cashier?: Cashier | null;
-  cashRegister?: CashRegister | null;
-  saleDate?: string;
-  saleTime?: string;
+  payment: Payment | null;
+  cashier: Cashier | null;
+  cashRegister: CashRegister | null;
+  saleDate: string;
+  saleTime: string;
   refund?: Partial<Refund> | null;
 }
 
@@ -136,18 +142,33 @@ export interface Identification {
   birthCertificateNumber?: string;
 }
 
+// Типи гендеров
+export type GenderType = "male" | "female";
+// Интерфейс гендеров
+export interface Gender {
+  id: number;
+  type: GenderType;
+  rus: string;
+}
+
 // Интерфейс пассажира
 export interface Passenger {
   readonly id: number;
   firstName: string;
   lastName: string;
   patronymic: string;
-  gender: "women" | "men" | null;
+  gender: Partial<Gender> | null;
   birthday: string;
   phone: string;
   identification: Identification | null;
-  ticket: Partial<Ticket>;
+  ticket: {
+    there: Partial<Ticket>;
+    return: Partial<Ticket>;
+  };
 }
+
+// Интерфейс пути
+export type Direction = "there" | "return";
 
 // Интерфейс маршрута
 export interface Way {
@@ -157,7 +178,8 @@ export interface Way {
 }
 // Интерфейс информации маршрута
 export interface WayMenu {
+  remoteSale: boolean;
   returnHave: boolean;
   return: Way;
-  to: Way;
+  there: Way;
 }

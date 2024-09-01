@@ -7,13 +7,18 @@ import { Box, Button, Label, Stacks, Typography } from "@/shared/ui";
 import { useMainStore } from "../../../MainPanel.store";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Direction } from "@/app/@types";
 
-export const SeatMainItem = () => {
+interface SeatMainItemProps {
+  direction: Direction;
+}
+
+export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
   const { activeWay, statuses, toggleSeatStatus } = useMainStore((state) => state.saleTicket);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!activeWay) {
+    if (!activeWay[direction]) {
       navigate(
         {
           pathname: "/home/sale-ticket",
@@ -25,7 +30,7 @@ export const SeatMainItem = () => {
     }
   }, [activeWay, navigate]);
 
-  if (!activeWay) {
+  if (!activeWay[direction]) {
     return <Typography variant="h3">Маршрут не найден</Typography>;
   }
 
@@ -34,15 +39,19 @@ export const SeatMainItem = () => {
       <Stacks fullwidth direction="column" gap={16}>
         <Stacks justifyContent="space-between">
           <Stacks direction="column" gap={4}>
-            <Typography variant="h3">Количество мест: {activeWay.seatsSelected.length}</Typography>
+            <Typography variant="h3">
+              Количество мест: {activeWay?.[direction]?.seatsSelected.length}
+            </Typography>
             <Typography color="secondary" variant="h4">
               Макс. количество: 10
             </Typography>
           </Stacks>
 
           <Stacks alignItems="flex-end" direction="column" gap={4}>
-            <Typography variant="h3">Автобус: №{activeWay.wayNumber}</Typography>
-            <Typography variant="h3">Пассажирских мест: {activeWay.seats.length}</Typography>
+            <Typography variant="h3">Автобус: №{activeWay?.[direction]?.wayNumber}</Typography>
+            <Typography variant="h3">
+              Пассажирских мест: {activeWay?.[direction]?.seats.length}
+            </Typography>
             <Typography variant="h3">Багажных мест: 0</Typography>
           </Stacks>
         </Stacks>
@@ -57,11 +66,13 @@ export const SeatMainItem = () => {
               }}
               gap={16}
             >
-              {activeWay.seats.map((seat) => (
+              {activeWay?.[direction]?.seats.map((seat) => (
                 <Button
                   key={seat.id}
                   variant={seat.status}
-                  onClick={() => toggleSeatStatus("to", activeWay.id, seat.id, 10)}
+                  onClick={() =>
+                    toggleSeatStatus(direction, activeWay?.[direction]?.id || 0, seat.id, 10)
+                  }
                   disabled={seat.status === "booking" || seat.status === "occupied"}
                   label={`Место ${seat.id}`}
                 />

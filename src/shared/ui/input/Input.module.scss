@@ -1,4 +1,5 @@
 .input {
+  position: relative;
   display: flex;
   align-items: center;
   border: 1px solid var(--input-default-border-color);
@@ -6,6 +7,7 @@
   border-radius: 8px;
   font-size: 14px;
   padding: 10px 16px;
+  overflow: hidden;
   transition: all var(--transition-duration) var(--transition-timing-function);
   cursor: text;
 
@@ -17,6 +19,17 @@
     &::placeholder {
       opacity: 0.5;
     }
+  }
+
+  &__message {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    font-size: 8px;
+    padding: 0 2px 0 2px;
+    background-color: var(--color-blue-10);
+    color: var(--color-gray-50);
   }
 
   &.fullWidth {

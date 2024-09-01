@@ -42,6 +42,7 @@ const useAsideStore = create<Store>()(
             cashier: [
               { to: "/home/sale-ticket?step=0", text: "Продажа билетов" },
               { to: "/home/refund-ticket", text: "Возврат билетов" },
+              { to: "/home/plus-baggage", text: "Багаж" },
             ],
             dispatcher: [{ to: "/home/way-management", text: "Управление рейсами" }],
             administrator: [
