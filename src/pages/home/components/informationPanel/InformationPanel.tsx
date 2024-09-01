@@ -6,7 +6,7 @@ import styles from "./InformationPanel.module.scss";
 export const InformationPanel = () => {
   const { activeWay } = useMainStore((state) => state.saleTicket);
 
-  if (!activeWay.to) {
+  if (!activeWay.there) {
     return <Box direction="center" className={styles.informationPanel} text="Данных нет" />;
   } else {
     return <SeatInfoItem />;

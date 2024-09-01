@@ -12,15 +12,18 @@ export const ReturnInfoItem = () => {
           <Stacks key={passenger.id} gap={8}>
             <Checkbox
               label={`${passenger.lastName} ${passenger.firstName} ${passenger.patronymic}`}
-              checked={Boolean(passenger.returnTicket)}
+              checked={Boolean(passenger.ticket.return)}
               onChange={(event) => {
                 setPassenger(passenger.id, {
                   ...passenger,
-                  returnTicket: event.target.checked,
+                  ticket: {
+                    ...passenger.ticket,
+                    return: event.target.checked,
+                  },
                 });
               }}
             />
-            <Typography color="primary">{passenger?.ticket?.rus}</Typography>
+            <Typography color="primary">{passenger?.ticket?.there.rus}</Typography>
           </Stacks>
         ))}
       </Stacks>

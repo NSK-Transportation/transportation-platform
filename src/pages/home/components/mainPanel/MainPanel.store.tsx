@@ -1,5 +1,6 @@
 import {
   Baggage,
+  Direction,
   Discount,
   Document,
   Gender,
@@ -24,15 +25,15 @@ interface Store {
     way: WayMenu;
     passengers: Passenger[];
     activeWay: {
-      to: WayDetails | null;
+      there: WayDetails | null;
       return: WayDetails | null;
     };
     wayDetails: {
-      to: WayDetails[];
+      there: WayDetails[];
       return: WayDetails[];
     };
     statuses: Status[];
-    tickets: Ticket[];
+    tickets: Partial<Ticket>[];
     discounts: {
       discount: Discount[] | null;
       child: Discount[] | null;
@@ -44,12 +45,12 @@ interface Store {
     genders: Gender[];
 
     // Методы для изменения состояния
-    setWay: (data: WayMenu) => void;
+    setWay: (way: WayMenu) => void;
     setPassenger: (passengerId: number, data: Partial<Passenger>) => void;
-    setWayDetails: (data: WayDetails[], direction: "to" | "return") => void;
-    setActiveWay: (way: WayDetails | null, direction: "to" | "return") => void;
+    setWayDetails: (wayDetails: WayDetails[], direction: Direction) => void;
+    setActiveWay: (activeWay: WayDetails | null, direction: Direction) => void;
     toggleSeatStatus: (
-      direction: "to" | "return",
+      direction: Direction,
       wayId: number,
       seatId: number,
       maxSeats: number,
@@ -71,23 +72,23 @@ const useMainStore = create<Store>()(
           remoteSale: false,
           returnHave: false,
           return: {
-            date: "",
-            from: "",
-            to: "",
+            date: "31.02.2024",
+            from: "1",
+            to: "2",
           },
-          to: {
-            date: "",
-            from: "",
-            to: "",
+          there: {
+            date: "30.02.2024",
+            from: "2",
+            to: "1",
           },
         },
         passengers: [],
         activeWay: {
-          to: null,
+          there: null,
           return: null,
         },
         wayDetails: {
-          to: [],
+          there: [],
           return: [],
         },
         statuses: [
@@ -133,36 +134,22 @@ const useMainStore = create<Store>()(
           { id: 2, type: "female", rus: "Женщина" },
         ],
 
-        setWay: (data) =>
+        setWay: (way) =>
           set((state) => {
-            state.saleTicket.way = data;
+            state.saleTicket.way = way;
           }),
 
-        setWayDetails: (data: WayDetails[], direction: "to" | "return") =>
+        setWayDetails: (wayDetails, direction) =>
           set((state) => {
-            state.saleTicket.wayDetails[direction] = data;
+            state.saleTicket.wayDetails[direction] = wayDetails;
           }),
 
-        setActiveWay: (way, direction) =>
+        setActiveWay: (activeWay, direction) =>
           set((state) => {
-            if (way) {
-              state.saleTicket.activeWay[direction] = {
-                ...way,
-                seatsSelected: [],
-                id: way.id ?? 0,
-                wayNumber: way.wayNumber ?? "",
-                from: way.from ?? {},
-                to: way.to ?? {},
-              };
-            }
+            state.saleTicket.activeWay[direction] = activeWay;
           }),
 
-        toggleSeatStatus: (
-          direction: "to" | "return",
-          wayId: number,
-          seatId: number,
-          maxSeats: number,
-        ) =>
+        toggleSeatStatus: (direction, wayId, seatId, maxSeats) =>
           set((state) => {
             const wayDetailsList = state.saleTicket.wayDetails[direction];
             const wayIndex = wayDetailsList.findIndex((way) => way.id === wayId);
@@ -187,14 +174,16 @@ const useMainStore = create<Store>()(
                     phone: "",
                     identification: null,
                     ticket: {
-                      id: seatId,
-                      seatId: seat.id,
-                      wayDetails: wayDetails,
-                    },
-                    returnTicket: {
-                      id: seatId,
-                      seatId: seat.id,
-                      wayDetails: wayDetails,
+                      there: {
+                        id: seatId,
+                        seatId: seat.id,
+                        wayDetails: wayDetails,
+                      },
+                      return: {
+                        id: seatId,
+                        seatId: seat.id,
+                        wayDetails: wayDetails,
+                      },
                     },
                   };
 
@@ -205,7 +194,7 @@ const useMainStore = create<Store>()(
                   wayDetails.seatsSelected = wayDetails.seatsSelected.filter((id) => id !== seatId);
 
                   state.saleTicket.passengers = state.saleTicket.passengers.filter(
-                    (passenger) => passenger.ticket?.seatId !== seatId,
+                    (passenger) => passenger.ticket[direction].seatId !== seatId,
                   );
 
                   return { ...seat, status: "free" as SeatStatus };
@@ -223,7 +212,6 @@ const useMainStore = create<Store>()(
             ];
 
             state.saleTicket.activeWay[direction] = {
-              ...state.saleTicket.activeWay!,
               ...wayDetails,
               seats: updatedSeats,
               seatsSelected: wayDetails.seatsSelected,
@@ -254,7 +242,10 @@ const useMainStore = create<Store>()(
           birthday: "",
           phone: "",
           identification: null,
-          ticket: {},
+          ticket: {
+            there: {},
+            return: {},
+          },
           returnTicket: {},
         },
         reasons: [{ id: 1, type: "delay", rus: "Опоздание" }],

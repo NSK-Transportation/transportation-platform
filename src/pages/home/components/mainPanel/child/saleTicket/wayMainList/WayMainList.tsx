@@ -1,19 +1,22 @@
 import { Box, Stacks, Typography } from "@/shared/ui";
 import { WayMainItem } from "../wayMainItem/WayMainItem";
 import { useMainStore } from "../../../MainPanel.store";
-import { WayDetails } from "@/app/@types";
+import { Direction, WayDetails } from "@/app/@types";
 
 interface WayMainListProps {
-  data: WayDetails[];
-  direction: "to" | "return";
+  direction: Direction;
 }
 
-export const WayMainList = ({ data, direction }: WayMainListProps) => {
-  const { way, activeWay, setActiveWay } = useMainStore((state) => state.saleTicket);
+export const WayMainList = ({ direction }: WayMainListProps) => {
+  const { way, activeWay, wayDetails, setActiveWay } = useMainStore((state) => state.saleTicket);
 
   const handleItemClick = (item: WayDetails) => {
     setActiveWay(item, direction);
   };
+
+  if (!wayDetails[direction] || wayDetails[direction].length === 0) {
+    return null;
+  }
 
   return (
     <Box style={{ overflow: "auto" }}>
@@ -21,9 +24,8 @@ export const WayMainList = ({ data, direction }: WayMainListProps) => {
         <Typography variant="h4" color="secondary">
           {way.remoteSale ? "Удалённая продажа" : "Прямая продажа"}
         </Typography>
-
         <Stacks fullwidth direction="column" gap={12}>
-          {data.map((item: WayDetails, index) => (
+          {wayDetails[direction].map((item: WayDetails, index) => (
             <WayMainItem
               key={index}
               item={item}

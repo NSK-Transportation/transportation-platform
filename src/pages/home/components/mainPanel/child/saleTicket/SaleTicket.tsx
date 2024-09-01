@@ -44,13 +44,13 @@ export const SaleTicket = () => {
 
   const validateStep = useCallback(() => {
     if (activeStep === 0 && !activeWay) return "Выберите маршрут";
-    if (activeStep === 1 && activeWay?.to?.seatsSelected.length === 0) return "Выберите места";
+    if (activeStep === 1 && activeWay?.there?.seatsSelected.length === 0) return "Выберите места";
     if (activeStep === 2 && passengers.some((p) => !p.ticket)) return "Заполните данные пассажира";
     if (activeStep === 3 && way.returnHave && !wayDetails?.return?.length)
       return "Выберите обратный рейс";
     if (activeStep === 4 && way.returnHave && activeWay?.return?.seatsSelected.length === 0)
       return "Выберите места на обратный рейс";
-    if (activeStep === 5 && way.returnHave && passengers.some((p) => !p.returnTicket))
+    if (activeStep === 5 && way.returnHave && passengers.some((p) => !p.ticket.return))
       return "Заполните данные пассажира для обратного рейса";
     return null;
   }, [activeStep, activeWay, passengers, way, wayDetails]);
@@ -75,32 +75,28 @@ export const SaleTicket = () => {
       case 0:
         return (
           <>
-            <WayMenu />
-            {way && wayDetails?.to?.length > 0 && (
-              <WayMainList data={wayDetails?.to} direction="to" />
-            )}
+            <WayMenu direction="there" />
+            <WayMainList direction="there" />
           </>
         );
       case 1:
-        return <SeatMainItem direction="to" />;
+        return <SeatMainItem direction="there" />;
       case 2:
-        return <PassengerInfoItem direction="to" />;
+        return <PassengerInfoItem direction="there" />;
       case 3:
         return way.returnHave ? (
           <>
             <ReturnInfoItem />
-            <WayMenu returnWay />
-            {way.returnHave && wayDetails?.return?.length > 0 && (
-              <WayMainList data={wayDetails?.return} direction="return" />
-            )}
+            <WayMenu direction="return" />
+            <WayMainList direction="return" />
           </>
         ) : (
           <WayPayment />
         );
       case 4:
-        return way.returnHave ? <SeatMainItem direction="return" /> : null;
+        return way.returnHave && <SeatMainItem direction="return" />;
       case 5:
-        return way.returnHave ? <PassengerInfoItem direction="return" /> : null;
+        return way.returnHave && <PassengerInfoItem direction="return" />;
       case 6:
         return <WayPayment />;
       default:
@@ -114,7 +110,7 @@ export const SaleTicket = () => {
 
       {getStepContent}
 
-      {!(wayDetails.to.length === 0 ?? wayDetails.return.length === 0) && (
+      {!(wayDetails?.there?.length === 0 ?? wayDetails?.return?.length === 0) && (
         <Stacks gap={16} justifyContent="space-between">
           <Button
             variant="secondary"
