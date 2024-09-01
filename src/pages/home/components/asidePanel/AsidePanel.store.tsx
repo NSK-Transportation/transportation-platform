@@ -44,7 +44,7 @@ const useAsideStore = create<Store>()(
               { to: "/home/refund-ticket", text: "Возврат билетов" },
               { to: "/home/plus-baggage", text: "Багаж" },
             ],
-            dispatcher: [{ to: "/3", text: "Управление рейсами" }],
+            dispatcher: [{ to: "/home/way-management", text: "Управление рейсами" }],
             administrator: [
               { to: "/4", text: "Автовокзал" },
               { to: "/5", text: "Права доступа" },
