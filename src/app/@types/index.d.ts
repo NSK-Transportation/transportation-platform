@@ -88,18 +88,18 @@ export type TicketType = "full" | "child" | "privilege" | "discount";
 // Интерфейс билета
 export interface Ticket {
   id: number;
-  type: TicketType | "";
+  type: Required<TicketType>;
   rus: string;
-  seatId?: number;
-  identification?: Identification | null;
-  wayDetails?: WayDetails | null;
+  seatId: number;
+  identification: Identification | null;
+  wayDetails: WayDetails | null;
   discount?: Discount | null;
   baggage?: Baggage | null;
-  payment?: Payment | null;
-  cashier?: Cashier | null;
-  cashRegister?: CashRegister | null;
-  saleDate?: string;
-  saleTime?: string;
+  payment: Payment | null;
+  cashier: Cashier | null;
+  cashRegister: CashRegister | null;
+  saleDate: string;
+  saleTime: string;
   refund?: Partial<Refund> | null;
 }
 
@@ -161,9 +161,14 @@ export interface Passenger {
   birthday: string;
   phone: string;
   identification: Identification | null;
-  ticket: Partial<Ticket>;
-  returnTicket: Partial<Ticket> | boolean;
+  ticket: {
+    there: Partial<Ticket>;
+    return: Partial<Ticket>;
+  };
 }
+
+// Интерфейс пути
+export type Direction = "there" | "return";
 
 // Интерфейс маршрута
 export interface Way {
@@ -176,5 +181,5 @@ export interface WayMenu {
   remoteSale: boolean;
   returnHave: boolean;
   return: Way;
-  to: Way;
+  there: Way;
 }
