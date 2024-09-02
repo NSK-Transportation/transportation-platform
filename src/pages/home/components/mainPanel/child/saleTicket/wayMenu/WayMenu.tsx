@@ -17,18 +17,18 @@ import {
   Typography,
 } from "@/shared/ui";
 import { ChangeEvent, useState } from "react";
-import { useMainStore } from "../../../MainPanel.store";
 import { Direction, Way } from "@/app/@types";
 import { useQuery } from "react-query";
 import { formatDate } from "@/shared/utils";
 import { getWays } from "@/shared/api/queries";
+import { useSaleTicket } from "../SaleTicket.store";
 
 interface WayMenuProps {
   direction: Direction;
 }
 
 export const WayMenu = ({ direction }: WayMenuProps) => {
-  const { way, setWay, setWayDetails } = useMainStore((state) => state.saleTicket);
+  const { way, setWay, setWayDetails } = useSaleTicket();
 
   const { refetch, isFetching } = useQuery(
     ["ways", way],

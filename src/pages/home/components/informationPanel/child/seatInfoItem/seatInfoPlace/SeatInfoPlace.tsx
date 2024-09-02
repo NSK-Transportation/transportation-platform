@@ -4,6 +4,7 @@ import { Box, Divider, Stacks, Typography } from "@/shared/ui";
 import { useSearchParams } from "react-router-dom";
 import { SeatInfoWay } from "../seatInfoWay/SeatInfoWay";
 import { useState } from "react";
+import { useSaleTicket } from "@/pages/home/components/mainPanel";
 
 const PassengerInfo = ({ label, value }: { label: string; value: string | undefined | number }) => (
   <Stacks direction="row" gap={8}>
@@ -77,7 +78,7 @@ const TicketInfo = ({
 };
 
 export const SeatInfoPlace = () => {
-  const { direction, passengers, activeWay } = useMainStore((state) => state.saleTicket);
+  const { direction, passengers, activeWay } = useSaleTicket();
   const [searchParams] = useSearchParams();
   const step = searchParams.get("step") || "0";
   const [visible, setVisible] = useState(false);

@@ -1,14 +1,14 @@
 import { Box, Stacks, Typography } from "@/shared/ui";
 import { WayMainItem } from "../wayMainItem/WayMainItem";
-import { useMainStore } from "../../../MainPanel.store";
 import { Direction, WayDetails } from "@/app/@types";
+import { useSaleTicket } from "../SaleTicket.store";
 
 interface WayMainListProps {
   direction: Direction;
 }
 
 export const WayMainList = ({ direction }: WayMainListProps) => {
-  const { way, activeWay, wayDetails, setActiveWay } = useMainStore((state) => state.saleTicket);
+  const { way, activeWay, wayDetails, setActiveWay } = useSaleTicket();
 
   const handleItemClick = (item: WayDetails) => {
     setActiveWay(item, direction);

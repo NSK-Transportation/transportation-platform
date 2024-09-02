@@ -10,7 +10,6 @@ import {
   Stacks,
   Typography,
 } from "@/shared/ui";
-import { useMainStore } from "../../../MainPanel.store";
 import { useNavigate } from "react-router-dom";
 import { ReactNode, useEffect } from "react";
 import {
@@ -22,6 +21,7 @@ import {
   PrivilegeType,
   TicketType,
 } from "@/app/@types";
+import { useSaleTicket } from "../SaleTicket.store";
 
 interface PassengerInfoItemProps {
   direction: Direction;
@@ -38,7 +38,7 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
     genders,
     passengers,
     setPassenger,
-  } = useMainStore((state) => state.saleTicket);
+  } = useSaleTicket();
   const navigate = useNavigate();
 
   useEffect(() => {

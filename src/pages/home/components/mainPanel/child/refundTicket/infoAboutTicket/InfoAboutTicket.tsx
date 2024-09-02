@@ -1,8 +1,8 @@
 import { Box, Stacks, Typography } from "@/shared/ui";
-import { useMainStore } from "../../../MainPanel.store";
+import { useRefundTicket } from "../RefundTicket.store";
 
 export const InfoAboutTicket = () => {
-  const { passenger } = useMainStore((state) => state.refundTicket);
+  const { passenger } = useRefundTicket();
 
   const fields: { label: string; value: string | number | undefined; color?: string }[] = [
     {

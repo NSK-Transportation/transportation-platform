@@ -1,9 +1,9 @@
 import { Box, Button, Input, Label, Stacks } from "@/shared/ui";
-import { useMainStore } from "../../../MainPanel.store";
 import { useQuery } from "react-query";
+import { usePlusBaggage } from "../PlusBaggage.store";
 
 export const EnterDataPassenger = () => {
-  const { passenger, setPassenger } = useMainStore((state) => state.refundTicket);
+  const { passenger, setPassenger } = usePlusBaggage();
 
   // FIXME: Убрать фейк запрос - заменить на реальный
   const fetchPassenger = async (series: string, _number: string) => {

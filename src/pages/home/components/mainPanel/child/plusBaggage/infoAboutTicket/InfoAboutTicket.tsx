@@ -1,8 +1,9 @@
 import { Box, Stacks, Typography } from "@/shared/ui";
 import { useMainStore } from "../../../MainPanel.store";
+import { usePlusBaggage } from "../PlusBaggage.store";
 
 export const InfoAboutTicket = () => {
-  const { passenger } = useMainStore((state) => state.refundTicket);
+  const { passenger } = usePlusBaggage();
 
   const fields: { label: string; value: string | number | undefined; color?: string }[] = [
     {

@@ -3,13 +3,13 @@ import { EnterDataPassenger } from "./enterDataPassenger/EnterDataPassenger";
 import { InfoAboutRefund } from "./infoAboutRefund/InfoAboutRefund";
 import { InfoAboutPassenger } from "./infoAboutPassenger/InfoAboutPassenger";
 import { InfoAboutTicket } from "./infoAboutTicket/InfoAboutTicket";
-import { useMainStore } from "../../MainPanel.store";
 import { useState } from "react";
 import { CashReturnIcon } from "@/shared/assets";
 import { useMutation } from "react-query";
+import { useRefundTicket } from "./RefundTicket.store";
 
 export const RefundTicket = () => {
-  const { passenger } = useMainStore((state) => state.refundTicket);
+  const { passenger } = useRefundTicket();
   const [isOpen, setIsOpen] = useState(false);
 
   const { mutate, isLoading } = useMutation(async (data: any) => {
