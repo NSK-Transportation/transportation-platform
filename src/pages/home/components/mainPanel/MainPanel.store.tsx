@@ -1,13 +1,25 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { useSaleTicket, useRefundTicket } from "./child";
-import { SaleTicketStore } from "./child/saleTicket/SaleTicket.store";
-import { RefundTicketStore } from "./child/refundTicket/RefundTicket.store";
+import {
+  // Хуки
+  useSaleTicket,
+  useRefundTicket,
+  usePlusBaggage,
+  useWayManagement,
+
+  // Типизация
+  SaleTicketStore,
+  RefundTicketStore,
+  PlusBaggageStore,
+  WayManagementStore,
+} from "./child";
 
 // Интерфейс хранилища
 interface Store {
   saleTicket: SaleTicketStore;
   refundTicket: RefundTicketStore;
+  plusBaggage: PlusBaggageStore;
+  wayManagement: WayManagementStore;
 }
 
 export const useMainStore = create<Store>()(
@@ -15,6 +27,8 @@ export const useMainStore = create<Store>()(
     (_set, _get) => ({
       saleTicket: useSaleTicket.getState(),
       refundTicket: useRefundTicket.getState(),
+      plusBaggage: usePlusBaggage.getState(),
+      wayManagement: useWayManagement.getState(),
     }),
     { name: "MainPanelStore" },
   ),
