@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { ReactNode, useEffect } from "react";
 import {
   BaggageType,
+  Direction,
   DocumentType,
   GenderType,
   Passenger,
@@ -23,7 +24,7 @@ import {
 } from "@/app/@types";
 
 interface PassengerInfoItemProps {
-  direction: "to" | "return";
+  direction: Direction;
 }
 
 export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
