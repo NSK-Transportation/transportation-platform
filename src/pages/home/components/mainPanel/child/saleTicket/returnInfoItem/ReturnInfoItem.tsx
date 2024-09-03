@@ -1,8 +1,8 @@
 import { Box, Checkbox, Stacks, Typography } from "@/shared/ui";
-import { useMainStore } from "../../../MainPanel.store";
+import { useSaleTicket } from "../SaleTicket.store";
 
 export const ReturnInfoItem = () => {
-  const { passengers, setPassenger } = useMainStore((state) => state.saleTicket);
+  const { passengers, setPassenger } = useSaleTicket();
 
   return (
     <Box>

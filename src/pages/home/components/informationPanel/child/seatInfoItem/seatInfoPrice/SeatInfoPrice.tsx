@@ -1,8 +1,8 @@
-import { useMainStore } from "@/pages/home/components/mainPanel/MainPanel.store";
+import { useSaleTicket } from "@/pages/home/components/mainPanel";
 import { Stacks, Typography } from "@/shared/ui";
 
 export const SeatInfoPrice = () => {
-  const { activeWay } = useMainStore((state) => state.saleTicket);
+  const { activeWay } = useSaleTicket();
 
   return (
     <Stacks direction="row" gap={4}>

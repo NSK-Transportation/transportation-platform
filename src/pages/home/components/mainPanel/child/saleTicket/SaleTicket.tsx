@@ -4,7 +4,6 @@
  */
 
 import { useSearchParams } from "react-router-dom";
-import { useMainStore } from "../../MainPanel.store";
 import { Button, Stacks, Step, Stepper } from "@/shared/ui";
 import { useStepper } from "@/shared/hooks";
 import { BusIcon, PaymentIcon, ReturnIcon, SeatIcon, UserIcon } from "@/shared/assets";
@@ -17,12 +16,13 @@ import {
   ReturnInfoItem,
 } from "./index";
 import { useCallback, useMemo } from "react";
+import { useSaleTicket } from "./SaleTicket.store";
 
 export const SaleTicket = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const step = Number(searchParams.get("step")) || 0;
 
-  const { activeWay, way, wayDetails, passengers } = useMainStore((state) => state.saleTicket);
+  const { activeWay, way, wayDetails, passengers } = useSaleTicket();
 
   const steps: Step[] = useMemo(
     () => [

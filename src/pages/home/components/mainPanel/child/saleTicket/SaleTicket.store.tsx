@@ -17,7 +17,7 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 // Интерфейс хранилища
-export interface SaleTicketStore {
+export interface Store {
   // Состояния
   way: WayMenu;
   passengers: Passenger[];
@@ -49,7 +49,7 @@ export interface SaleTicketStore {
   toggleSeatStatus: (direction: Direction, wayId: number, seatId: number, maxSeats: number) => void;
 }
 
-export const useSaleTicket = create<SaleTicketStore>()(
+export const useSaleTicket = create<Store>()(
   immer((set) => ({
     way: {
       remoteSale: false,

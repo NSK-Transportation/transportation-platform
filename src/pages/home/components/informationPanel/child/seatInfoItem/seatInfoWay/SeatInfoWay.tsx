@@ -1,4 +1,4 @@
-import { useMainStore } from "@/pages/home/components/mainPanel/MainPanel.store";
+import { useSaleTicket } from "@/pages/home/components/mainPanel";
 import { Stacks, Typography } from "@/shared/ui";
 import { Tooltip } from "@/shared/ui";
 
@@ -8,7 +8,7 @@ interface SeatInfoWayProps {
 }
 
 export const SeatInfoWay = ({ visible, setVisible }: SeatInfoWayProps) => {
-  const { direction, activeWay } = useMainStore((state) => state.saleTicket);
+  const { direction, activeWay } = useSaleTicket();
 
   return (
     <Stacks gap={8} direction="column" fullwidth>

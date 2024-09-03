@@ -3,13 +3,13 @@ import { EnterDataPassenger } from "./enterDataPassenger/EnterDataPassenger";
 import { InfoAboutBaggage } from "./infoAboutBaggage/InfoAboutBaggage";
 import { InfoAboutPassenger } from "./infoAboutPassenger/InfoAboutPassenger";
 import { InfoAboutTicket } from "./infoAboutTicket/InfoAboutTicket";
-import { useMainStore } from "../../MainPanel.store";
 import { useState } from "react";
 import { CashReturnIcon } from "@/shared/assets";
 import { useMutation } from "react-query";
+import { usePlusBaggage } from "./PlusBaggage.store";
 
 export const PlusBaggage = () => {
-  const { passenger } = useMainStore((state) => state.refundTicket);
+  const { passenger } = usePlusBaggage();
   const [isOpen, setIsOpen] = useState(false);
 
   const { mutate, isLoading } = useMutation(async (data: any) => {

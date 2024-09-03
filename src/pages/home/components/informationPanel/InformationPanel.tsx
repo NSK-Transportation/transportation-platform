@@ -1,10 +1,10 @@
 import { Box } from "@/shared/ui";
-import { useMainStore } from "../mainPanel/MainPanel.store";
 import { SeatInfoItem } from "./child/seatInfoItem/SeatInfoItem";
 import styles from "./InformationPanel.module.scss";
+import { useSaleTicket } from "../mainPanel";
 
 export const InformationPanel = () => {
-  const { activeWay } = useMainStore((state) => state.saleTicket);
+  const { activeWay } = useSaleTicket();
 
   if (!activeWay.there) {
     return <Box direction="center" className={styles.informationPanel} text="Данных нет" />;

@@ -4,17 +4,17 @@
  */
 
 import { Box, Button, Label, Stacks, Typography } from "@/shared/ui";
-import { useMainStore } from "../../../MainPanel.store";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Direction } from "@/app/@types";
+import { useSaleTicket } from "../SaleTicket.store";
 
 interface SeatMainItemProps {
   direction: Direction;
 }
 
 export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
-  const { activeWay, statuses, toggleSeatStatus } = useMainStore((state) => state.saleTicket);
+  const { activeWay, statuses, toggleSeatStatus } = useSaleTicket();
   const navigate = useNavigate();
 
   useEffect(() => {

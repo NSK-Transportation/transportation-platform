@@ -1,10 +1,8 @@
 import { Box, Button, Divider, Grid, Stacks, Typography } from "@/shared/ui";
-import { useMainStore } from "../../../MainPanel.store";
+import { useSaleTicket } from "../SaleTicket.store";
 
 export const WayPayment = () => {
-  const { passengers, payments, setPassenger, activeWay } = useMainStore(
-    (state) => state.saleTicket,
-  );
+  const { passengers, payments, setPassenger, activeWay } = useSaleTicket();
 
   return (
     <Box>

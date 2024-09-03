@@ -1,9 +1,9 @@
 import { Box, Label, Select, Stacks, Typography } from "@/shared/ui";
-import { useMainStore } from "../../../MainPanel.store";
 import { RefundType } from "@/app/@types";
+import { useRefundTicket } from "../RefundTicket.store";
 
 export const InfoAboutRefund = () => {
-  const { passenger, reasons, setPassenger } = useMainStore((state) => state.refundTicket);
+  const { passenger, reasons, setPassenger } = useRefundTicket();
 
   return (
     <Box fullWidth style={{ alignSelf: "flex-start" }}>
