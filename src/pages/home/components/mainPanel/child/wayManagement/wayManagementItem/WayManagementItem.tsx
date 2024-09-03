@@ -1,8 +1,11 @@
 import { Box, Button, Checkbox, Chip, Stacks, Typography } from "@/shared/ui";
+import { useWayManagement } from "../WayManagement.store"; 
+
+
 
 
 export const WayManagementItem = () => {
-    
+    const { wayDate } = useWayManagement();
     return (
         <Box 
             style={{
@@ -21,7 +24,7 @@ export const WayManagementItem = () => {
                         <Typography variant="h1" weight={600} color="primary-second">{"13:20"}</Typography>
                     </Stacks>
                     <Typography color="info" variant="h4">
-                        {"Регулярный"}
+                        {wayDate.from}
                     </Typography>
                 </Stacks>
 

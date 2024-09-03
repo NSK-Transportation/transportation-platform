@@ -183,3 +183,8 @@ export interface WayMenu {
   return: Way;
   there: Way;
 }
+
+export interface ManagementDate {
+  date: string;
+  from?: string;
+}
