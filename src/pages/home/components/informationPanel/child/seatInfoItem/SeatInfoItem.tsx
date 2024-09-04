@@ -10,8 +10,12 @@ export const SeatInfoItem = () => {
   return (
     <Stacks direction="column">
       <Box border="up">
-        <SeatInfoWay visible={visible} setVisible={setVisible} />
-        {visible && <SeatInfoPlace />}
+        <Stacks direction="column" gap={8}>
+          <SeatInfoWay direction="there" visible={visible} setVisible={setVisible} />
+          <Stacks direction="column" gap={8}>
+            {visible && <SeatInfoPlace />}
+          </Stacks>
+        </Stacks>
       </Box>
       <Box direction="down" border="down" color="blue">
         <SeatInfoPrice />

@@ -31,7 +31,7 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
   const { way, setWay, setWayDetails } = useSaleTicket();
 
   const { refetch, isFetching } = useQuery(
-    ["ways", way],
+    [`way-${direction}`, way[direction]],
     () => getWays(way[direction], direction),
     {
       enabled: false,
@@ -97,7 +97,6 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
           <Typography variant="h3" color="default-white">
             {direction === "return" ? "Выберите обратный рейс" : "Выберите рейс"}
           </Typography>
-          {direction}
           <InputGroup fullWidth>
             <Calendar
               onChange={handleDateChange}
@@ -143,6 +142,7 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
       </Box>
       {direction === "there" && (
         <Checkbox
+          name="remoteSale"
           alignSelf="flex-end"
           label="Удалённая продажа"
           checked={way.remoteSale}
