@@ -11,11 +11,11 @@ const formatDate = (date: Date): string => {
 
 export const FilterMenu = () => {
   // Используем хранилище для управления состоянием пути
-  const { wayDate, setWayDate } = useWayManagement(); 
-  console.log(wayDate)
+  const { way, setWay } = useWayManagement();
   // Определяем текущее значение даты и откуда
-  const dateValue = wayDate?.date || "";
-  const fromValue = wayDate?.from || ""; // Убедитесь, что значение по умолчанию - пустая строка
+  const dateValue = way?.date || "";
+  const fromValue = way?.from || "";
+  const toValue = way?.to || ""; // Убедитесь, что значение по умолчанию - пустая строка
 
   return (
     <Stacks direction="row" gap={15}>
@@ -24,32 +24,41 @@ export const FilterMenu = () => {
           <Calendar
             onChange={(date: Date | Date[]) => {
               if (date instanceof Date) {
-                // Устанавливаем новую дату в состояние хранилища
-                setWayDate({
-                  date: formatDate(date), // Обновляем дату
+                setWay({
+                  date: formatDate(date),
                 });
               }
             }}
             name="date"
             placeholder="Дата отправления"
-            minDate={new Date()} // Минимальная дата - сегодня
-            value={dateValue} // Текущее значение даты
+            minDate={new Date()}
+            value={dateValue}
           />
           <Input
             style={{ width: "270px" }}
             name="from"
             type="text"
-            value={fromValue} // Текущее значение для поля 'from'
+            value={fromValue}
             onChange={(e) => {
-              // Обновляем значение 'from' в состояние хранилища
-              setWayDate({
+              setWay({
                 from: e.target.value,
               });
             }}
             placeholder="Рейс"
-            slots={
-              <CancelIcon cursor={"pointer"} onClick={() => alert("Open date")} />
-            }
+            slots={<CancelIcon cursor={"pointer"} onClick={() => alert("Open date")} />}
+          />
+          <Input
+            style={{ width: "270px" }}
+            name="to"
+            type="text"
+            value={toValue}
+            onChange={(e) => {
+              setWay({
+                to: e.target.value,
+              });
+            }}
+            placeholder="Рейс"
+            slots={<CancelIcon cursor={"pointer"} onClick={() => alert("Open date")} />}
           />
         </InputGroup>
       </Stacks>

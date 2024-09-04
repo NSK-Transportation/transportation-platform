@@ -5,7 +5,8 @@ import { useWayManagement } from "../WayManagement.store";
 
 
 export const WayManagementItem = () => {
-    const { wayDate } = useWayManagement();
+    const { way,wayDetails } = useWayManagement();
+    console.log(wayDetails)
     return (
         <Box 
             style={{
@@ -24,7 +25,7 @@ export const WayManagementItem = () => {
                         <Typography variant="h1" weight={600} color="primary-second">{"13:20"}</Typography>
                     </Stacks>
                     <Typography color="info" variant="h4">
-                        {wayDate.from}
+                        {way.from}
                     </Typography>
                 </Stacks>
 

@@ -13,6 +13,7 @@ export const WayMainList = ({ direction }: WayMainListProps) => {
   const handleItemClick = (item: WayDetails) => {
     setActiveWay(item, direction);
   };
+  console.log(wayDetails)
 
   if (!wayDetails[direction] || wayDetails[direction].length === 0) {
     return null;

@@ -1,25 +1,35 @@
-import { ManagementDate } from "@/app/@types";
+import { Way, WayDetails } from "@/app/@types";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 // Интерфейс хранилища
 export interface Store {
-  wayDate: ManagementDate; // Убираем | null, так как состояние всегда должно быть определено
-  setWayDate: (update: Partial<ManagementDate>) => void; // Метод для изменения даты и других данных
+  way: Way;
+  wayDetails: WayDetails[]; // Исправление на правильное название
+
+  setWay: (update: Partial<Way>) => void;
+  setWayDetails: (wayDetails: WayDetails[]) => void;
 }
 
 export const useWayManagement = create<Store>()(
   immer((set) => ({
-    wayDate: {
-      date: "30.02.2024", // Значение по умолчанию
-      from: "2" // Значение по умолчанию
+    way: {
+      date: "",
+      from: "",
+      to: "",
     },
-    setWayDate: (update: Partial<ManagementDate>) =>
+    wayDetails:[],
+    setWay: (update: Partial<Way>) =>
       set((state) => ({
-        wayDate: {
-          ...state.wayDate,
+        way: {
+          ...state.way,
           ...update,
         },
       })),
-  }))
+
+    setWayDetails: (wayDetails: WayDetails[]) =>
+      set((state) => {
+        state.wayDetails = wayDetails; 
+      }),
+  })),
 );
