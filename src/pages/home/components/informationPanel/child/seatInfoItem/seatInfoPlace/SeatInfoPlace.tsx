@@ -38,24 +38,22 @@ export const SeatInfoPlace = () => {
   };
 
   return (
-    <>
-      <Box variant="dashed">
-        <Stacks direction="column" gap={16}>
-          {renderSeatInfo("there")}
-          {step >= 3 && (
-            <Stacks gap={8}>
-              <Divider color="blue" orientation="vertical" width={2} />
-              <Stacks direction="column" gap={8}>
-                <Typography variant="h3" color="primary-second">
-                  Обратный билет
-                </Typography>
-                <SeatInfoWay direction={"return"} visible={visible} setVisible={setVisible} />
-                {visible && renderSeatInfo("return")}
-              </Stacks>
+    <Box variant="dashed">
+      <Stacks direction="column" gap={16}>
+        {renderSeatInfo("there")}
+        {step >= 3 && activeWay.return && (
+          <Stacks gap={8}>
+            <Divider color="blue" orientation="vertical" width={2} />
+            <Stacks direction="column" gap={8} fullwidth>
+              <Typography variant="h3" color="primary-second">
+                Обратный билет
+              </Typography>
+              <SeatInfoWay direction={"return"} visible={visible} setVisible={setVisible} />
+              {visible && renderSeatInfo("return")}
             </Stacks>
-          )}
-        </Stacks>
-      </Box>
-    </>
+          </Stacks>
+        )}
+      </Stacks>
+    </Box>
   );
 };

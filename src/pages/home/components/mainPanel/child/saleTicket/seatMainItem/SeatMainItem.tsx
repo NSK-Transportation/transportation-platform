@@ -6,7 +6,7 @@
 import { Box, Button, Label, Stacks, Typography } from "@/shared/ui";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Direction } from "@/app/@types";
+import { Direction, Seat } from "@/app/@types";
 import { useSaleTicket } from "../SaleTicket.store";
 
 interface SeatMainItemProps {
@@ -14,7 +14,7 @@ interface SeatMainItemProps {
 }
 
 export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
-  const { activeWay, statuses, toggleSeatStatus } = useSaleTicket();
+  const { activeWay, statuses, toggleSeatStatus, setPassenger } = useSaleTicket();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,6 +33,11 @@ export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
   if (!activeWay[direction]) {
     return <Typography variant="h3">Маршрут не найден</Typography>;
   }
+
+  const handleClick = (seat: Seat) => {
+    setPassenger(seat.id, direction, activeWay?.[direction]);
+    toggleSeatStatus(direction, activeWay?.[direction], seat.id, 10);
+  };
 
   return (
     <Box>
@@ -70,9 +75,7 @@ export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
                 <Button
                   key={seat.id}
                   variant={seat.status}
-                  onClick={() =>
-                    toggleSeatStatus(direction, activeWay?.[direction]?.id || 0, seat.id, 10)
-                  }
+                  onClick={() => handleClick(seat)}
                   disabled={seat.status === "booking" || seat.status === "occupied"}
                   label={`Место ${seat.id}`}
                 />

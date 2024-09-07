@@ -1,13 +1,16 @@
-import { useSaleTicket } from "@/pages/home/components/mainPanel";
 import { Stacks, Typography } from "@/shared/ui";
+import { useInformationStore } from "../../../InformationPanel.store";
+import { getSumValues } from "@/shared/utils";
 
 export const SeatInfoPrice = () => {
-  const { activeWay } = useSaleTicket();
+  const { activeWay } = useInformationStore();
+
+  const sum = getSumValues(activeWay.there?.price, activeWay.return?.price);
 
   return (
     <Stacks direction="row" gap={4}>
       <Typography variant="h1" color="default-white">
-        {activeWay?.there?.price} руб
+        {sum} руб
       </Typography>
     </Stacks>
   );

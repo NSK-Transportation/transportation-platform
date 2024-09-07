@@ -3,8 +3,10 @@ import { SeatInfoPrice } from "./seatInfoPrice/SeatInfoPrice";
 import { SeatInfoWay } from "./seatInfoWay/SeatInfoWay";
 import { SeatInfoPlace } from "./seatInfoPlace/SeatInfoPlace";
 import { useState } from "react";
+import { useInformationStore } from "../../InformationPanel.store";
 
 export const SeatInfoItem = () => {
+  const { activeWay } = useInformationStore();
   const [visible, setVisible] = useState(true);
 
   return (
@@ -13,7 +15,7 @@ export const SeatInfoItem = () => {
         <Stacks direction="column" gap={8}>
           <SeatInfoWay direction="there" visible={visible} setVisible={setVisible} />
           <Stacks direction="column" gap={8}>
-            {visible && <SeatInfoPlace />}
+            {visible && activeWay.there?.seatsSelected.length != 0 && <SeatInfoPlace />}
           </Stacks>
         </Stacks>
       </Box>
