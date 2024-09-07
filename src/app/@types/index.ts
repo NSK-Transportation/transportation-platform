@@ -1,6 +1,6 @@
 // Интерфейс авторизации
 export interface Authorization {
-  userID: string;
+  readonly userID: string;
   password: string;
 }
 
@@ -8,13 +8,13 @@ export interface Authorization {
 export type SeatStatus = "free" | "selected" | "booking" | "occupied";
 // Интерфейс мест
 export interface Seat {
-  id: number;
+  readonly id: number;
   status: SeatStatus;
 }
 
 // Интерфейс статусов
 export interface Status {
-  id: number;
+  readonly id: number;
   status: SeatStatus;
   rus: string;
 }
@@ -31,7 +31,7 @@ export interface Location {
 
 // Интерфейс детализации информации маршрута
 export interface WayDetails {
-  id: number;
+  readonly id: number;
   wayNumber: string;
   whoArive: string;
   price: number;
@@ -41,11 +41,15 @@ export interface WayDetails {
   to: Location;
 }
 
-// Типы оплаты
-export type PaymentType = "cash" | "card" | "qr";
+// Enum оплаты
+export enum PaymentType {
+  CASH = "cash",
+  CARD = "card",
+  QRCODE = "qrcode",
+}
 // Интерфейс оплаты
 export interface Payment {
-  id: number;
+  readonly id: number;
   type: PaymentType;
   rus: string;
 }
@@ -54,17 +58,23 @@ export interface Payment {
 export type RefundType = "delay";
 // Интерфейс возврата
 export interface Refund {
-  id: number;
-  type: RefundReasonType;
+  readonly id: number;
+  type: RefundType;
   rus: string;
   amount?: number;
 }
 
-// Типы скидок
-export type DiscountType = "none" | "student" | "military" | "half" | "full";
+// Enum скидок
+export enum DiscountType {
+  NONE = "none",
+  STUDENT = "student",
+  MILITARY = "military",
+  HALF = "half",
+  FULL = "full",
+}
 // Интерфейс скидок
 export interface Discount {
-  id: number;
+  readonly id: number;
   type: DiscountType;
   value: number;
   rus: string;
@@ -72,23 +82,29 @@ export interface Discount {
 
 // Интерфейс кассира
 export interface Cashier {
-  id: number;
+  readonly id: number;
   name: string;
 }
 
 // Интерфейс кассы
 export interface CashRegister {
-  id: number;
+  readonly id: number;
   location: string;
   number: string;
 }
 
-// Типы билетов
-export type TicketType = "full" | "child" | "privilege" | "discount";
+// Enum билетов
+export enum TicketType {
+  FULL = "full",
+  CHILD = "child",
+  PRIVILEGE = "privilege",
+  DISCOUNT = "discount",
+}
+
 // Интерфейс билета
 export interface Ticket {
-  id: number;
-  type: Required<TicketType>;
+  readonly id: number;
+  type: TicketType;
   rus: string;
   seatId: number;
   identification: Identification | null;
@@ -103,8 +119,13 @@ export interface Ticket {
   refund?: Partial<Refund> | null;
 }
 
-// Типы багажа
-export type BaggageType = "none" | "small" | "big" | "huge";
+// Enum багажа
+export enum BaggageType {
+  NONE = "none",
+  SMALL = "small",
+  BIG = "big",
+  HUGE = "huge",
+}
 // Интерфейс багажа
 export interface Baggage {
   id: number;
@@ -112,20 +133,30 @@ export interface Baggage {
   rus: string;
 }
 
-// Типы льгот
-export type PrivilegeType = "none" | "student" | "military" | "half" | "full";
+// Enum льгот
+export enum PrivilegeType {
+  NONE = "none",
+  STUDENT = "student",
+  MILITARY = "military",
+  HALF = "half",
+  FULL = "full",
+}
 // Интерфейс льгот
 export interface Privilege {
-  id: number;
+  readonly id: number;
   type: PrivilegeType;
   rus: string;
 }
 
-// Типы документов
-export type DocumentType = "passport" | "driver" | "student" | "military";
+// Enum документов
+export enum DocumentType {
+  NONE = "none",
+  PASSPORT = "passport",
+  DRIVER = "driver",
+}
 // Интерфейс документов
 export interface Document {
-  id: number;
+  readonly id: number;
   type: DocumentType;
   rus: string;
 }
@@ -142,11 +173,15 @@ export interface Identification {
   birthCertificateNumber?: string;
 }
 
-// Типи гендеров
-export type GenderType = "male" | "female";
+// Enum гендеров
+export enum GenderType {
+  NONE = "none",
+  MALE = "male",
+  FEMALE = "female",
+}
 // Интерфейс гендеров
 export interface Gender {
-  id: number;
+  readonly id: number;
   type: GenderType;
   rus: string;
 }
@@ -157,13 +192,13 @@ export interface Passenger {
   firstName: string;
   lastName: string;
   patronymic: string;
-  gender: Partial<Gender> | null;
+  gender: Gender | null;
   birthday: string;
   phone: string;
   identification: Identification | null;
   ticket: {
-    there: Partial<Ticket>;
-    return: Partial<Ticket>;
+    there: Partial<Ticket> | null;
+    return: Partial<Ticket> | null;
   };
 }
 
