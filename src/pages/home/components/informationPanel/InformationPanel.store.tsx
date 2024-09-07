@@ -14,19 +14,17 @@ export interface Store {
 }
 
 export const useInformationStore = create<Store>()(
-  subscribeWithSelector(
-    devtools(
-      immer((_set, _get) => ({
-        activeWay: {
-          there: useSaleTicket.getState().activeWay.there,
-          return: useSaleTicket.getState().activeWay.return,
-        },
-        passengers: useSaleTicket.getState().passengers,
-      })),
-      {
-        name: "InformationPanel",
+  devtools(
+    immer((_set, _get) => ({
+      activeWay: {
+        there: useSaleTicket.getState().activeWay.there,
+        return: useSaleTicket.getState().activeWay.return,
       },
-    ),
+      passengers: useSaleTicket.getState().passengers,
+    })),
+    {
+      name: "InformationPanel",
+    },
   ),
 );
 
@@ -36,5 +34,6 @@ useSaleTicket.subscribe((state) => {
       there: state.activeWay.there,
       return: state.activeWay.return,
     },
+    passengers: state.passengers,
   });
 });
