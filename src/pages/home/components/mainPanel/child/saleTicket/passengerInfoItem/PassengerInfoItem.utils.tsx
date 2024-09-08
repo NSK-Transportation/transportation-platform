@@ -96,20 +96,18 @@ export const Field = ({
     case "chip":
       return (
         <>
-          <Label variant="h3" text={label || ""}>
-            <Stacks gap={16}>
-              {options?.[optionsKey || ""]?.map((chip: any) => (
-                <Chip
-                  key={chip.id}
-                  selected={passengerInfo.ticket?.[direction]?.discount === chip.type}
-                  onClick={() => handleChange({ target: { value: chip.type } })}
-                  size="extra-large"
-                  variant="outline"
-                  label={`${chip.rus} ${chip.value}%`}
-                />
-              ))}
-            </Stacks>
-          </Label>
+          <Stacks gap={16}>
+            {options?.[optionsKey || ""]?.map((chip: any) => (
+              <Chip
+                key={chip.id}
+                selected={passengerInfo.ticket?.[direction]?.discount?.type === chip.type}
+                onClick={() => handleChange({ target: { value: chip.type } })}
+                size="extra-large"
+                variant="outline"
+                label={`${chip.rus} ${chip.value}%`}
+              />
+            ))}
+          </Stacks>
         </>
       );
 

@@ -1,10 +1,11 @@
-import { Box, Chip, Grid, Stacks, Typography } from "@/shared/ui";
+import { Box, Chip, Divider, Grid, Stacks, Typography } from "@/shared/ui";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useSaleTicket } from "../SaleTicket.store";
-import { Field } from "./PassengerInfoItem.utils";
-import { Direction, Passenger, Seat } from "@/app/@types";
-import { Config, config } from "./PassengerInfoItem.config";
+import { Direction, Seat } from "@/app/@types";
+import { config } from "./PassengerInfoItem.config";
+import _ from "lodash";
+import { FormFields } from "./PassengerInfoItem.form";
 
 interface PassengerInfoItemProps {
   direction: Direction;
@@ -19,6 +20,7 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
     discount: { main, child },
     baggages,
     privileges,
+    documents,
     genders,
   } = useSaleTicket();
   const navigate = useNavigate();
@@ -40,27 +42,6 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
     return <Typography variant="h3">Маршрут или пассажиры не найдены</Typography>;
   }
 
-  const renderFields = (fields: Config[], passengerInfo: Passenger) => {
-    return fields?.map((field) => (
-      <Field
-        key={field.key}
-        config={field}
-        passengerInfo={passengerInfo}
-        options={{
-          tickets,
-          main,
-          child,
-          baggages,
-          privileges,
-          genders,
-        }}
-        setPassenger={setPassenger}
-        direction={direction}
-        activeWay={activeWay}
-      />
-    ));
-  };
-
   return (
     <Box>
       {activeWay[direction]?.seatsSelected.map((seatId: Seat["id"]) => {
@@ -78,18 +59,79 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
             </Stacks>
             <Grid gap={16} key={seatId}>
               <Grid columns="repeat(2, 1fr)" gap={16}>
-                {renderFields(config.step1, passengerInfo)}
+                <FormFields
+                  configGroup={config.step1}
+                  passengerInfo={passengerInfo}
+                  setPassenger={setPassenger}
+                  options={{
+                    tickets,
+                    main,
+                    child,
+                    baggages,
+                    privileges,
+                    genders,
+                  }}
+                  direction={direction}
+                  activeWay={activeWay}
+                />
               </Grid>
 
-              <Grid columns="repeat(2, 1fr)" gap={16}>
-                {passengerInfo.ticket?.[direction]?.type &&
-                  renderFields(config.step2[passengerInfo.ticket[direction].type], passengerInfo)}
-              </Grid>
+              {passengerInfo.ticket[direction]?.type && (
+                <>
+                  <Divider />
 
-              <Grid columns="repeat(2, 1fr)" gap={16}>
-                {passengerInfo.ticket?.[direction]?.type &&
-                  renderFields(config.common, passengerInfo)}
-              </Grid>
+                  <Grid columns="repeat(2, 1fr)" gap={16} alignItems="flex-start">
+                    {passengerInfo.ticket?.[direction]?.type && (
+                      <FormFields
+                        configGroup={config.step2[passengerInfo.ticket[direction].type]}
+                        passengerInfo={passengerInfo}
+                        setPassenger={setPassenger}
+                        options={{
+                          tickets,
+                          main,
+                          child,
+                          baggages,
+                          documents,
+                          privileges,
+                        }}
+                        direction={direction}
+                        activeWay={activeWay}
+                      />
+                    )}
+
+                    {(passengerInfo.ticket?.[direction]?.discount?.type === "student" ||
+                      passengerInfo.ticket?.[direction]?.discount?.type === "military") &&
+                      passengerInfo.ticket?.[direction]?.type === "discount" && (
+                        <FormFields
+                          configGroup={
+                            config.step3[passengerInfo?.ticket?.[direction]?.discount?.type || ""]
+                          }
+                          passengerInfo={passengerInfo}
+                          setPassenger={setPassenger}
+                          direction={direction}
+                          activeWay={activeWay}
+                        />
+                      )}
+                  </Grid>
+
+                  <Divider />
+
+                  <Grid columns="repeat(2, 1fr)" gap={16}>
+                    {passengerInfo.ticket?.[direction]?.type && (
+                      <FormFields
+                        configGroup={config.common}
+                        passengerInfo={passengerInfo}
+                        setPassenger={setPassenger}
+                        options={{
+                          genders,
+                        }}
+                        direction={direction}
+                        activeWay={activeWay}
+                      />
+                    )}
+                  </Grid>
+                </>
+              )}
             </Grid>
           </Stacks>
         );

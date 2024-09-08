@@ -5,11 +5,13 @@ export interface Config {
   placeholder?: string;
   inputType?: string;
   optionsKey?: string;
+  group?: string;
 }
 
 export interface ConfigGroup {
   step1: Config[];
   step2: { [key: string]: Config[] };
+  step3: { [key: string]: Config[] };
   common: Config[];
 }
 
@@ -25,43 +27,123 @@ export const config: ConfigGroup = {
     {
       type: "select",
       label: "Багажный билет",
-      key: "baggage",
+      key: "ticket.[direction].baggage.type",
       optionsKey: "baggages",
       placeholder: "Выберите багаж",
     },
   ],
+
   step2: {
+    full: [
+      {
+        type: "select",
+        label: "Тип документа",
+        key: "identification.document.type",
+        optionsKey: "documents",
+        placeholder: "Выберите скидку",
+      },
+      {
+        type: "input",
+        label: "Серия",
+        key: "identification.document.series",
+        placeholder: "-- --",
+        group: "series-number",
+      },
+      {
+        type: "input",
+        label: "Номер",
+        key: "identification.document.number",
+        placeholder: "--- ---",
+        group: "series-number",
+      },
+    ],
     discount: [
       {
         type: "chip",
-        label: "Скидка",
-        key: "ticket.[direction].discount",
+        label: "",
+        key: "ticket.[direction].discount.type",
         optionsKey: "main",
-        placeholder: "Выберите скидку",
       },
     ],
     privilege: [
       {
         type: "select",
         label: "Тип льготы",
-        key: "privilegeType",
+        key: "identification.privilege.type",
         optionsKey: "privileges",
         placeholder: "Выберите льготу",
       },
       {
         type: "input",
-        label: "Документ на право льготы - Серия",
-        key: "privilegeSeries",
+        label: "Серия",
+        key: "identification.privilege.series",
         placeholder: "-- --",
+        group: "privilege-series-number",
       },
       {
         type: "input",
-        label: "Документ на право льготы - Номер",
-        key: "privilegeNumber",
+        label: "Номер",
+        key: "identification.privilege.number",
         placeholder: "--- ---",
+        group: "privilege-series-number",
+      },
+      {
+        type: "select",
+        label: "Тип документа",
+        key: "identification.document.type",
+        optionsKey: "documents",
+        placeholder: "Выберите документ",
+      },
+      {
+        type: "input",
+        label: "Серия",
+        key: "identification.document.series",
+        placeholder: "-- --",
+        group: "document-series-number",
+      },
+      {
+        type: "input",
+        label: "Номер",
+        key: "identification.document.number",
+        placeholder: "--- ---",
+        group: "document-series-number",
+      },
+    ],
+    child: [
+      {
+        type: "chip",
+        label: "",
+        key: "ticket.[direction].discount.type",
+        optionsKey: "child",
+      },
+      {
+        type: "input",
+        label: "Свидетельтво о рождении",
+        key: "identification.child.number",
+        placeholder: "Введите номер",
       },
     ],
   },
+
+  step3: {
+    student: [
+      {
+        type: "input",
+        label: "Номер студенческого",
+        key: "identification.student.number",
+        placeholder: "Введите номер",
+      },
+    ],
+    military: [
+      {
+        type: "input",
+        label: "Номер справки",
+        key: "identification.military.number",
+        placeholder: "Введите номер",
+      },
+    ],
+  },
+
   common: [
     {
       type: "input",
