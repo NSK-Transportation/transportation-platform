@@ -111,8 +111,8 @@ export const useSaleTicket = create<Store>()(
           { id: 2, type: DiscountType.MILITARY, value: 50, rus: "СВО" },
         ],
         child: [
-          { id: 1, type: DiscountType.HALF, value: 50, rus: "" },
-          { id: 2, type: DiscountType.FULL, value: 100, rus: "" },
+          { id: 1, type: DiscountType.HALF, value: 50, rus: "скидка" },
+          { id: 2, type: DiscountType.FULL, value: 100, rus: "скидка" },
         ],
       },
       baggages: [
@@ -125,7 +125,10 @@ export const useSaleTicket = create<Store>()(
         { id: 1, type: DocumentType.PASSPORT, rus: "Паспорт" },
         { id: 2, type: DocumentType.DRIVER, rus: "Водительские" },
       ],
-      privileges: [{ id: 1, type: PrivilegeType.STUDENT, rus: "Студент" }],
+      privileges: [
+        { id: 1, type: PrivilegeType.STUDENT, rus: "Студент" },
+        { id: 2, type: PrivilegeType.MILITARY, rus: "СВО" },
+      ],
       payments: [
         { id: 1, type: PaymentType.CASH, rus: "Наличные" },
         { id: 2, type: PaymentType.CARD, rus: "Карта" },
