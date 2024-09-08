@@ -138,8 +138,6 @@ export enum PrivilegeType {
   NONE = "none",
   STUDENT = "student",
   MILITARY = "military",
-  HALF = "half",
-  FULL = "full",
 }
 // Интерфейс льгот
 export interface Privilege {
@@ -162,15 +160,23 @@ export interface Document {
 }
 
 export interface Identification {
-  // TODO: Переделать
-  series?: string;
-  number?: string;
-  document?: Document;
-  privilege?: Privilege;
-  studentTicketNumber?: string;
-  militaryCertificateNumber?: string;
-  birthCertificateSeries?: string;
-  birthCertificateNumber?: string;
+  document?: Document & {
+    series: string;
+    number: string;
+  };
+  privilege?: Privilege & {
+    series: string;
+    number: string;
+  };
+  student?: {
+    number: string;
+  };
+  military?: {
+    number: string;
+  };
+  child?: {
+    number: string;
+  };
 }
 
 // Enum гендеров
