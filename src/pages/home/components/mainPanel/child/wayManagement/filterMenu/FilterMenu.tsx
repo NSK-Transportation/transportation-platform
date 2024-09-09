@@ -1,6 +1,9 @@
-import { Calendar, Input, InputGroup, Stacks } from "@/shared/ui";
-import { useWayManagement } from "../WayManagement.store"; // Импорт хранилища
+import { Button, Calendar, Input, InputGroup, Stacks } from "@/shared/ui";
+import { useWayManagement } from "../WayManagement.store";
 import { CancelIcon } from "@/shared/assets";
+import { useQuery } from "react-query";
+import { getWays, getWaysManagement } from "@/shared/api/queries";
+// import { useSaleTicket } from "./../../saleTicket/SaleTicket.store";
 
 const formatDate = (date: Date): string => {
   const day = date.getDate().toString().padStart(2, "0");
@@ -10,13 +13,30 @@ const formatDate = (date: Date): string => {
 };
 
 export const FilterMenu = () => {
-  // Используем хранилище для управления состоянием пути
-  const { way, setWay } = useWayManagement();
-  // Определяем текущее значение даты и откуда
+  const { way, setWay, setWayDetails } = useWayManagement();
   const dateValue = way?.date || "";
   const fromValue = way?.from || "";
-  const toValue = way?.to || ""; // Убедитесь, что значение по умолчанию - пустая строка
+  const toValue = way?.to || "";
+  const { refetch, isFetching } = useQuery(
+    ["ways", way],
+    () => getWaysManagement(way),
+    {
+      enabled: false,
+      refetchOnWindowFocus: false,
+    },
+  );
 
+  const handleClick = async () => {
+
+    if (!way.from || !way.to || !way.date) {
+      return;
+    }
+    const { data } = await refetch();
+    if (data) {
+      setWayDetails(data);
+      // console.log(data);
+    }
+  };
   return (
     <Stacks direction="row" gap={15}>
       <Stacks direction="row" gap={1}>
@@ -61,6 +81,9 @@ export const FilterMenu = () => {
             slots={<CancelIcon cursor={"pointer"} onClick={() => alert("Open date")} />}
           />
         </InputGroup>
+        <Stacks fullwidth justifyContent="center">
+          <Button onClick={handleClick} loading={isFetching} label="Искать" />
+        </Stacks>
       </Stacks>
     </Stacks>
   );

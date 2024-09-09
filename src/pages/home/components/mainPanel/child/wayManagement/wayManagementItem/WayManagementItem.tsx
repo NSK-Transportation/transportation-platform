@@ -1,12 +1,17 @@
 import { Box, Button, Checkbox, Chip, Stacks, Typography } from "@/shared/ui";
 import { useWayManagement } from "../WayManagement.store"; 
+import { FC } from "react";
+import { WayDetails } from "@/app/@types";
 
+interface WayManagementItemProps {
+    item: WayDetails;
+    isSelected: boolean;
+    onClick: () => void;
+  }
 
-
-
-export const WayManagementItem = () => {
-    const { way,wayDetails } = useWayManagement();
-    console.log(wayDetails)
+export const WayManagementItem: FC<WayManagementItemProps> = ({ item, isSelected, onClick }) => {
+    const { way, wayDetails } = useWayManagement();
+    console.log(item)
     return (
         <Box 
             style={{
@@ -22,7 +27,7 @@ export const WayManagementItem = () => {
                 <Stacks gap={10} alignItems="flex-start" justifyContent="space-between" direction="column">
                     <Stacks gap={20} direction="row">
                         <Checkbox label="" />
-                        <Typography variant="h1" weight={600} color="primary-second">{"13:20"}</Typography>
+                        <Typography variant="h1" weight={600} color="primary-second">{item.from.station}</Typography>
                     </Stacks>
                     <Typography color="info" variant="h4">
                         {way.from}

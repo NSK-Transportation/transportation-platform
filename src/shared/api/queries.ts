@@ -54,3 +54,34 @@ export const getWays = async (data: Way, direction: Direction) => {
 
   return formattedData;
 };
+
+export const getWaysManagement = async (data: Way) => {
+  const response = await axiosInstance.get<WayDetails[]>(`/users/`, { data });
+
+  const formattedData: WayDetails[] = response.data.map((user: any) => ({
+    id: user.id,
+    wayNumber: user.id,
+    whoArive: user.name,
+    price: 1276,
+    seatsSelected: [],
+    seats: [],
+    from: {
+      city: "Москва",
+      street: "ул.Ленина",
+      house: "67",
+      station: "ЖД Вокзал",
+      time: "13:20",
+      date: "26 июня",
+    },
+    to: {
+      city: "Кемерово",
+      street: "пр.Кузнецкий",
+      house: "81",
+      station: "",
+      time: "17:50",
+      date: "26 июня",
+    },
+  }));
+
+  return formattedData;
+};
