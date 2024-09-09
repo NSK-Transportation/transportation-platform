@@ -1,14 +1,16 @@
-import { useSaleTicket } from "@/pages/home/components/mainPanel";
+import { Direction } from "@/app/@types";
 import { Stacks, Typography } from "@/shared/ui";
 import { Tooltip } from "@/shared/ui";
+import { useInformationStore } from "../../../InformationPanel.store";
 
 interface SeatInfoWayProps {
+  direction: Direction;
   visible: boolean;
   setVisible: (visible: boolean) => void;
 }
 
-export const SeatInfoWay = ({ visible, setVisible }: SeatInfoWayProps) => {
-  const { direction, activeWay } = useSaleTicket();
+export const SeatInfoWay = ({ direction, visible, setVisible }: SeatInfoWayProps) => {
+  const { activeWay } = useInformationStore();
 
   return (
     <Stacks gap={8} direction="column" fullwidth>

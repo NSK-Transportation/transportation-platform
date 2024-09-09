@@ -32,7 +32,7 @@ const Box = forwardRef<HTMLDivElement, BoxProps>(
       ref={ref}
       className={clsx(styles.box, className, {
         [styles[direction]]: direction,
-        // [styles[variant]]: variant,
+        [styles[variant]]: variant,
         [styles[color]]: color,
         [styles[`border-${border}`]]: border,
         [styles.fullWidth]: fullWidth,
