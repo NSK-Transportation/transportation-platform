@@ -39,8 +39,22 @@ export interface WayDetails {
   seats: Seat[];
   from: Location;
   to: Location;
-}
+  bus:BusInfo;
 
+}
+export interface BusInfo {
+  id: number;
+  occupied: number;
+  free: number;
+  busNumber: string;
+  driver: string;
+  nameBus: string;
+  atpType: string;
+  typeBus: string;
+
+
+
+}
 // Типы оплаты
 export type PaymentType = "cash" | "card" | "qr";
 // Интерфейс оплаты
