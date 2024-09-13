@@ -139,7 +139,10 @@
   /* START Input */
   /* Default */
   --input-default-color: var(--color-blue-30);
+
   --input-default-background: var(--color-gray-10);
+  --input-blue-background: var(--color-blue-10);
+
   --input-default-border-color: var(--color-gray-50);
 
   --input-default-hover-color: var(--color-blue-50);
