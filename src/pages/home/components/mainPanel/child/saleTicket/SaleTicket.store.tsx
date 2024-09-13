@@ -38,17 +38,19 @@ export interface Store {
     there: WayDetails[];
     return: WayDetails[];
   };
-  statuses: Status[];
-  tickets: Partial<Ticket>[];
-  discount: {
-    main: Discount[];
-    child: Discount[];
+  options: {
+    statuses: Status[];
+    tickets: Partial<Ticket>[];
+    discount: {
+      main: Discount[];
+      child: Discount[];
+    };
+    baggages: Baggage[];
+    documents: Document[];
+    privileges: Privilege[];
+    payments: Payment[];
+    genders: Gender[];
   };
-  baggages: Baggage[];
-  documents: Document[];
-  privileges: Privilege[];
-  payments: Payment[];
-  genders: Gender[];
 
   // Методы для изменения состояния
   setWay: (way: WayMenu) => void;
@@ -94,51 +96,53 @@ export const useSaleTicket = create<Store>()(
         there: [],
         return: [],
       },
-      statuses: [
-        { id: 1, status: "free", rus: "Свободно" },
-        { id: 2, status: "selected", rus: "Выбрано" },
-        { id: 3, status: "booking", rus: "Есть бронь" },
-        { id: 4, status: "occupied", rus: "Занято" },
-      ],
-      tickets: [
-        { id: 1, type: TicketType.FULL, rus: "Полный билет" },
-        { id: 2, type: TicketType.CHILD, rus: "Детский билет" },
-        { id: 3, type: TicketType.PRIVILEGE, rus: "Льготный билет" },
-        { id: 4, type: TicketType.DISCOUNT, rus: "Скидочный билет" },
-      ],
-      discount: {
-        main: [
-          { id: 1, type: DiscountType.STUDENT, value: 50, rus: "Студент" },
-          { id: 2, type: DiscountType.MILITARY, value: 50, rus: "СВО" },
+      options: {
+        statuses: [
+          { id: 1, status: "free", rus: "Свободно" },
+          { id: 2, status: "selected", rus: "Выбрано" },
+          { id: 3, status: "booking", rus: "Есть бронь" },
+          { id: 4, status: "occupied", rus: "Занято" },
         ],
-        child: [
-          { id: 1, type: DiscountType.HALF, value: 50, rus: "скидка" },
-          { id: 2, type: DiscountType.FULL, value: 100, rus: "скидка" },
+        tickets: [
+          { id: 1, type: TicketType.FULL, rus: "Полный билет" },
+          { id: 2, type: TicketType.CHILD, rus: "Детский билет" },
+          { id: 3, type: TicketType.PRIVILEGE, rus: "Льготный билет" },
+          { id: 4, type: TicketType.DISCOUNT, rus: "Скидочный билет" },
+        ],
+        discount: {
+          main: [
+            { id: 1, type: DiscountType.STUDENT, value: 50, rus: "Студент" },
+            { id: 2, type: DiscountType.MILITARY, value: 50, rus: "СВО" },
+          ],
+          child: [
+            { id: 1, type: DiscountType.HALF, value: 50, rus: "скидка" },
+            { id: 2, type: DiscountType.FULL, value: 100, rus: "скидка" },
+          ],
+        },
+        baggages: [
+          { id: 1, type: BaggageType.NONE, rus: "Нет багажа" },
+          { id: 2, type: BaggageType.SMALL, rus: "Маленький (20 кг)" },
+          { id: 3, type: BaggageType.BIG, rus: "Большой (40 кг)" },
+          { id: 4, type: BaggageType.HUGE, rus: "Огромный (60 кг)" },
+        ],
+        documents: [
+          { id: 1, type: DocumentType.PASSPORT, rus: "Паспорт" },
+          { id: 2, type: DocumentType.DRIVER, rus: "Водительские" },
+        ],
+        privileges: [
+          { id: 1, type: PrivilegeType.STUDENT, rus: "Студент" },
+          { id: 2, type: PrivilegeType.MILITARY, rus: "СВО" },
+        ],
+        payments: [
+          { id: 1, type: PaymentType.CASH, rus: "Наличные" },
+          { id: 2, type: PaymentType.CARD, rus: "Карта" },
+          { id: 3, type: PaymentType.QRCODE, rus: "QR Код" },
+        ],
+        genders: [
+          { id: 1, type: GenderType.MALE, rus: "Мужчина" },
+          { id: 2, type: GenderType.FEMALE, rus: "Женщина" },
         ],
       },
-      baggages: [
-        { id: 1, type: BaggageType.NONE, rus: "Нет багажа" },
-        { id: 2, type: BaggageType.SMALL, rus: "Маленький (20 кг)" },
-        { id: 3, type: BaggageType.BIG, rus: "Большой (40 кг)" },
-        { id: 4, type: BaggageType.HUGE, rus: "Огромный (60 кг)" },
-      ],
-      documents: [
-        { id: 1, type: DocumentType.PASSPORT, rus: "Паспорт" },
-        { id: 2, type: DocumentType.DRIVER, rus: "Водительские" },
-      ],
-      privileges: [
-        { id: 1, type: PrivilegeType.STUDENT, rus: "Студент" },
-        { id: 2, type: PrivilegeType.MILITARY, rus: "СВО" },
-      ],
-      payments: [
-        { id: 1, type: PaymentType.CASH, rus: "Наличные" },
-        { id: 2, type: PaymentType.CARD, rus: "Карта" },
-        { id: 3, type: PaymentType.QRCODE, rus: "QR Код" },
-      ],
-      genders: [
-        { id: 1, type: GenderType.MALE, rus: "Мужчина" },
-        { id: 2, type: GenderType.FEMALE, rus: "Женщина" },
-      ],
 
       setWay: (way) =>
         set((state) => {
@@ -232,7 +236,7 @@ export const useSaleTicket = create<Store>()(
             state.passengers = state.passengers.filter(
               (passenger) => passenger.ticket?.there?.seatId !== seatId,
             );
-            
+
             seatToToggle.status = "free";
           } else if (direction === "return" && isSeatSelected) {
             state.passengers.forEach((passenger) => {
