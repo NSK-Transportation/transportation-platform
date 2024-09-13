@@ -3,7 +3,12 @@ import { useSaleTicket } from "../SaleTicket.store";
 import { getCapitalizeFirstLetter } from "@/shared/utils";
 
 export const ReturnInfoItem = () => {
-  const { activeWay, passengers, setPassenger, tickets } = useSaleTicket();
+  const {
+    activeWay,
+    passengers,
+    setPassenger,
+    options: { tickets },
+  } = useSaleTicket();
 
   return (
     <Box>

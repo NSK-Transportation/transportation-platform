@@ -1,10 +1,16 @@
-import { Box, Button, Divider, Grid, Stacks, Typography } from "@/shared/ui";
+import { Box, Button, Divider, Grid, Stacks, Tooltip, Typography } from "@/shared/ui";
 import { useSaleTicket } from "../SaleTicket.store";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { getSumValues } from "@/shared/utils";
 
 export const WayPayment = () => {
-  const { passengers, payments, setPassenger, activeWay } = useSaleTicket();
+  const {
+    passengers,
+    options: { payments },
+    setPassenger,
+    activeWay,
+  } = useSaleTicket();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,6 +30,8 @@ export const WayPayment = () => {
     return <Typography variant="h3">Маршрут не найден</Typography>;
   }
 
+  const sum = getSumValues(activeWay.there?.price, activeWay.return?.price);
+
   return (
     <Box>
       <Stacks fullwidth direction="column" gap={16}>
@@ -32,8 +40,8 @@ export const WayPayment = () => {
         <Stacks gap={32} justifyContent="center">
           <Stacks gap={4}>
             <Typography variant="h3">К оплате:</Typography>
-            <Typography variant="h3" weight="bold" color="info">
-              {} рублей
+            <Typography variant="h3" weight="bold" color="primary-second">
+              {sum} рублей
             </Typography>
           </Stacks>
           <Divider orientation="vertical" />
@@ -41,7 +49,25 @@ export const WayPayment = () => {
             <Typography variant="h5" color="secondary">
               Из чего состоит сумма:
             </Typography>
-            <Typography variant="h5">Пассажирский билет: {} рублей</Typography>
+            <Typography variant="h5">
+              Пассажирский билет:{" "}
+              <Tooltip
+                text={
+                  <>
+                    <Typography variant="h5" color="secondary">
+                      Туда: {activeWay.there?.price} руб
+                    </Typography>
+                    <Typography variant="h5" color="secondary">
+                      Обратно: {activeWay.return?.price} руб
+                    </Typography>
+                  </>
+                }
+              >
+                <Typography variant="h5" color="info" style={{ textDecorationLine: "underline" }}>
+                  {sum} руб.
+                </Typography>
+              </Tooltip>{" "}
+            </Typography>
             <Typography variant="h5">Багажный билет: 0 рублей</Typography>
             <Typography variant="h5">Дополнительные услуги: 0 рублей</Typography>
           </Stacks>
@@ -59,21 +85,7 @@ export const WayPayment = () => {
                 }
                 label={payment.rus}
                 size="large"
-                onClick={() => {
-                  setPassenger(passengers[0].id, {
-                    ...passengers[0],
-                    ticket: {
-                      ...passengers[0].ticket,
-                      there: {
-                        ...passengers[0].ticket.there,
-                        payment: {
-                          ...passengers[0].ticket.there.payment,
-                          id: payment.id,
-                        },
-                      },
-                    },
-                  });
-                }}
+                onClick={() => {}}
               />
             );
           })}

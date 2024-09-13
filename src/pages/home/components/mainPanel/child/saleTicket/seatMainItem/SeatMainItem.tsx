@@ -14,7 +14,12 @@ interface SeatMainItemProps {
 }
 
 export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
-  const { passengers, activeWay, statuses, toggleSeat } = useSaleTicket();
+  const {
+    passengers,
+    activeWay,
+    options: { statuses },
+    toggleSeat,
+  } = useSaleTicket();
   const navigate = useNavigate();
 
   useMount(() => {
@@ -58,8 +63,7 @@ export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
             {passengers.map((passenger, index) => (
               <Typography key={index} variant="h5">
                 {passenger.id} - {Boolean(passenger.ticket.return).valueOf().toString()} -{" "}
-                {passenger.ticket.there?.seatId} - {" "}
-                {passenger.ticket.return?.seatId || "~"} 
+                {passenger.ticket.there?.seatId} - {passenger.ticket.return?.seatId || "~"}
               </Typography>
             ))}
           </Stacks>
