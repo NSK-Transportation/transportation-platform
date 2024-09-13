@@ -13,13 +13,14 @@ import {
   PaymentType,
   Privilege,
   PrivilegeType,
-  SeatStatus,
+  Seat,
   Status,
   Ticket,
   TicketType,
   WayDetails,
   WayMenu,
 } from "@/app/@types";
+import { getUniqueId } from "@/shared/utils";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -52,17 +53,17 @@ export interface Store {
   // Методы для изменения состояния
   setWay: (way: WayMenu) => void;
   setPassenger: (
-    seatId: number,
+    passengerId: Passenger["id"],
     direction: Direction,
     activeWay: WayDetails | null,
     data?: Partial<Passenger>,
   ) => void;
   setWayDetails: (wayDetails: WayDetails[], direction: Direction) => void;
   setActiveWay: (activeWay: WayDetails | null, direction: Direction) => void;
-  toggleSeatStatus: (
+  toggleSeat: (
     direction: Direction,
     activeWay: WayDetails | null,
-    seatId: number,
+    seatId: Seat["id"],
     maxSeats: number,
   ) => void;
 }
@@ -74,9 +75,9 @@ export const useSaleTicket = create<Store>()(
         remoteSale: false,
         returnHave: false,
         return: {
-          date: "",
-          from: "",
-          to: "",
+          date: "21.12.2024",
+          from: "1",
+          to: "1",
         },
         there: {
           date: "21.12.2024",
@@ -154,100 +155,124 @@ export const useSaleTicket = create<Store>()(
           state.activeWay[direction] = activeWay;
         }),
 
-      toggleSeatStatus: (direction, activeWay, seatId, maxSeats) =>
+      toggleSeat: (direction, activeWay, seatId, maxSeats) =>
         set((state) => {
-          const wayDetailsList = state.wayDetails[direction];
-          const wayIndex = wayDetailsList.findIndex((way) => way.id === activeWay?.id);
-          if (wayIndex === -1) return;
+          if (!activeWay) return;
 
-          const wayDetails = wayDetailsList[wayIndex];
+          const passengersWithReturnTickets = state.passengers
+            .map((passenger, index) => (passenger.ticket.return ? index : -1))
+            .filter((index) => index !== -1);
 
-          const updatedSeats = wayDetails.seats.map((seat) => {
-            if (seat.id === seatId) {
-              if (seat.status === "free" && wayDetails.seatsSelected.length < maxSeats) {
-                wayDetails.seatsSelected.push(seatId);
-                return { ...seat, status: "selected" as SeatStatus };
-              } else if (seat.status === "selected") {
-                wayDetails.seatsSelected = wayDetails.seatsSelected.filter((id) => id !== seatId);
+          if (direction === "return" && passengersWithReturnTickets.length === 0) {
+            console.log("Нет пассажиров с обратными билетами.");
+            return;
+          }
 
-                state.passengers = state.passengers.map((passenger) => {
-                  if (passenger.ticket[direction]?.seatId === seatId) {
-                    passenger.ticket[direction] = null;
-                  }
-                  return passenger;
-                });
+          const currentWay = state.wayDetails[direction]?.find(
+            (wayDetail) => wayDetail.id === activeWay?.id,
+          );
+          if (!currentWay) return;
 
-                state.passengers = state.passengers.filter(
-                  (passenger) => passenger.ticket.there || passenger.ticket.return,
-                );
+          const seatToToggle = currentWay.seats.find((seat) => seat.id === seatId);
+          if (!seatToToggle) return;
 
-                return { ...seat, status: "free" as SeatStatus };
-              }
-            }
-            return seat;
-          });
+          const selectedSeatsCount = currentWay.seats.filter(
+            (seat) => seat.status === "selected",
+          ).length;
 
-          wayDetails.seats = updatedSeats;
+          const isSeatFree = seatToToggle.status === "free";
+          const isSeatSelected = seatToToggle.status === "selected";
 
-          state.wayDetails[direction] = [
-            ...wayDetailsList.slice(0, wayIndex),
-            { ...wayDetails, seats: updatedSeats, seatsSelected: wayDetails.seatsSelected },
-            ...wayDetailsList.slice(wayIndex + 1),
-          ];
-
-          state.activeWay[direction] = {
-            ...wayDetails,
-            seats: updatedSeats,
-            seatsSelected: wayDetails.seatsSelected,
-          };
-        }),
-
-      setPassenger: (seatId, direction, activeWay, data) =>
-        set((state) => {
-          const existingPassenger = state.passengers.find(
+          const passenger = state.passengers.find(
             (passenger) => passenger.ticket[direction]?.seatId === seatId,
           );
 
-          if (existingPassenger) {
-            const updatedPassenger = {
-              ...existingPassenger,
-              ...data,
-              ticket: {
-                ...existingPassenger.ticket,
-                [direction]: {
-                  ...existingPassenger.ticket[direction],
-                  ...data?.ticket?.[direction],
+          if (direction === "there" && isSeatFree && selectedSeatsCount < maxSeats) {
+            if (!passenger) {
+              const newPassenger: Passenger = {
+                id: getUniqueId(),
+                firstName: "",
+                lastName: "",
+                patronymic: "",
+                gender: null,
+                birthday: "",
+                phone: "",
+                identification: null,
+                ticket: {
+                  there: { wayDetails: activeWay, seatId: seatId },
+                  return: null,
                 },
-              },
-            };
-
-            if (!updatedPassenger.ticket.there && !updatedPassenger.ticket.return) {
-              state.passengers = state.passengers.filter(
-                (passenger) => passenger.id !== existingPassenger.id,
-              );
+              };
+              state.passengers.push(newPassenger);
             } else {
-              state.passengers = state.passengers.map((passenger) =>
-                passenger.id === existingPassenger.id ? updatedPassenger : passenger,
-              );
+              passenger.ticket.there = { wayDetails: activeWay, seatId: seatId };
             }
-          } else {
-            const newPassenger: Passenger = {
-              id: seatId,
-              firstName: "",
-              lastName: "",
-              patronymic: "",
-              gender: null,
-              birthday: "",
-              phone: "",
-              identification: null,
-              ticket: {
-                there: direction === "there" ? { id: seatId, seatId, wayDetails: activeWay } : null,
-                return:
-                  direction === "return" ? { id: seatId, seatId, wayDetails: activeWay } : null,
-              },
-            };
 
-            state.passengers.push(newPassenger);
+            seatToToggle.status = "selected";
+          }
+
+          if (direction === "return" && isSeatFree && selectedSeatsCount < maxSeats) {
+            const passengerWithoutReturnSeat = state.passengers.find(
+              (passenger) => !passenger.ticket.return?.seatId,
+            );
+
+            if (passengerWithoutReturnSeat) {
+              passengerWithoutReturnSeat.ticket.return = {
+                wayDetails: activeWay,
+                seatId: seatId,
+              };
+
+              seatToToggle.status = "selected";
+            } else {
+              console.log("Все пассажиры уже имеют обратные билеты.");
+            }
+          }
+
+          if (direction === "there" && isSeatSelected) {
+            state.passengers = state.passengers.filter(
+              (passenger) => passenger.ticket?.there?.seatId !== seatId,
+            );
+            
+            seatToToggle.status = "free";
+          } else if (direction === "return" && isSeatSelected) {
+            state.passengers.forEach((passenger) => {
+              if (passenger.ticket.return?.seatId === seatId) {
+                passenger.ticket.return = {
+                  ...passenger.ticket.return,
+                  seatId: null,
+                };
+              }
+            });
+
+            seatToToggle.status = "free";
+          }
+
+          state.activeWay[direction] = { ...currentWay };
+        }),
+
+      setPassenger: (passengerId, direction, activeWay, data) =>
+        set((state) => {
+          const existingPassenger = state.passengers.find(
+            (passenger) => passenger.id === passengerId,
+          );
+
+          if (!existingPassenger) return;
+
+          const currentTicket = existingPassenger.ticket[direction] || {};
+
+          const updatedTicket = {
+            ...existingPassenger.ticket,
+            [direction]: {
+              wayDetails: activeWay || currentTicket.wayDetails,
+              seatId: data?.ticket?.[direction]?.seatId || null,
+            },
+          };
+
+          if (!updatedTicket.there?.seatId && !updatedTicket.return?.seatId) {
+            state.passengers = state.passengers.filter((passenger) => passenger.id !== passengerId);
+          } else {
+            existingPassenger.ticket = updatedTicket;
+            Object.assign(existingPassenger, data);
           }
         }),
     })),
