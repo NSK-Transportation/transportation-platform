@@ -14,9 +14,11 @@ export const SeatInfoItem = () => {
       <Box border="up">
         <Stacks direction="column" gap={8}>
           <SeatInfoWay direction="there" visible={visible} setVisible={setVisible} />
-          <Stacks direction="column" gap={8}>
-            {visible && activeWay.there?.seatsSelected.length != 0 && <SeatInfoPlace />}
-          </Stacks>
+          {visible && (
+            <Stacks direction="column" gap={8}>
+              {activeWay.there?.seatsSelected.length != 0 && <SeatInfoPlace />}
+            </Stacks>
+          )}
         </Stacks>
       </Box>
       <Box direction="down" border="down" color="blue">
