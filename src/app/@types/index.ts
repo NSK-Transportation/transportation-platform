@@ -35,7 +35,6 @@ export interface WayDetails {
   wayNumber: string;
   whoArive: string;
   price: number;
-  seatsSelected: number[];
   seats: Seat[];
   from: Location;
   to: Location;
@@ -106,7 +105,7 @@ export interface Ticket {
   readonly id: number;
   type: TicketType;
   rus: string;
-  seatId: number;
+  seatId: number | null;
   identification: Identification | null;
   wayDetails: WayDetails | null;
   discount?: Discount | null;
@@ -194,7 +193,7 @@ export interface Gender {
 
 // Интерфейс пассажира
 export interface Passenger {
-  readonly id: number;
+  readonly id: number | string;
   firstName: string;
   lastName: string;
   patronymic: string;
