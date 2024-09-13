@@ -1,8 +1,28 @@
 import { Box, Button, Divider, Grid, Stacks, Typography } from "@/shared/ui";
 import { useSaleTicket } from "../SaleTicket.store";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export const WayPayment = () => {
   const { passengers, payments, setPassenger, activeWay } = useSaleTicket();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!activeWay.there?.id) {
+      navigate(
+        {
+          pathname: "/home/sale-ticket",
+          search: "?step=0",
+        },
+        { replace: true },
+      );
+      navigate(0);
+    }
+  }, [activeWay, navigate]);
+
+  if (!activeWay.there?.id) {
+    return <Typography variant="h3">Маршрут не найден</Typography>;
+  }
 
   return (
     <Box>
@@ -33,7 +53,7 @@ export const WayPayment = () => {
               <Button
                 key={payment.id}
                 variant={
-                  passengers[index]?.ticket.there.payment?.id === payment?.id
+                  passengers[index]?.ticket?.there?.payment?.id === payment?.id
                     ? "selected"
                     : "payment"
                 }

@@ -7,7 +7,7 @@ import { Stacks } from "@/shared/ui";
 
 interface FormFieldsProps {
   configGroup: Config[];
-  passengerInfo: Passenger;
+  passenger: Passenger;
   setPassenger: Store["setPassenger"];
   options?: any;
   direction: Direction;
@@ -16,7 +16,7 @@ interface FormFieldsProps {
 
 export const FormFields = ({
   configGroup,
-  passengerInfo,
+  passenger,
   setPassenger,
   options,
   direction,
@@ -25,14 +25,13 @@ export const FormFields = ({
   const groupedFields = _.groupBy(configGroup, "group");
 
   const ungroupedFields = groupedFields["undefined"] || [];
-
   return (
     <>
       {ungroupedFields.map((field: Config) => (
         <Field
           key={field.key}
           config={field}
-          passengerInfo={passengerInfo}
+          passenger={passenger}
           options={options}
           setPassenger={setPassenger}
           direction={direction}
@@ -49,7 +48,7 @@ export const FormFields = ({
               <Field
                 key={field.key}
                 config={field}
-                passengerInfo={passengerInfo}
+                passenger={passenger}
                 options={options}
                 setPassenger={setPassenger}
                 direction={direction}
