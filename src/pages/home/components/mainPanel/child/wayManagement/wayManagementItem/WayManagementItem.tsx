@@ -1,5 +1,4 @@
-import { Box, Button, Checkbox, Chip, Stacks, Typography } from "@/shared/ui";
-import { useWayManagement } from "../WayManagement.store";
+import { Box, Checkbox, Chip, Stacks, Typography } from "@/shared/ui";
 import { FC } from "react";
 import { WayDetails } from "@/app/@types";
 
@@ -10,16 +9,13 @@ interface WayManagementItemProps {
 }
 
 export const WayManagementItem: FC<WayManagementItemProps> = ({ item, isSelected, onClick }) => {
-  console.log(item);
   return (
     <Box
       style={{
         cursor: "pointer",
-        // border: isSelected ? "1px solid var(--color-blue-70)" : "1px solid transparent",
-        border: "1px solid transparent",
+        border: isSelected ? "1px solid var(--color-blue-70)" : "1px solid transparent",
       }}
-
-      //   onClick={onClick}
+      onClick={onClick}
     >
       <Stacks justifyContent="space-between" gap={30} direction="row">
         <Stacks gap={10} alignItems="flex-start" justifyContent="space-between" direction="column">
@@ -38,19 +34,21 @@ export const WayManagementItem: FC<WayManagementItemProps> = ({ item, isSelected
           <Typography variant="h3" weight={400} color="primary">
             {item.from.station} - {item.to.station}
           </Typography>
-          <Stacks gap={3} direction="row">
-            <Typography color="default-black" variant="h4">
-              Водитель:
-            </Typography>
-            <Typography color="default-black" weight={600} variant="h4">
-              {item.bus.driver}
-            </Typography>
-          </Stacks>
+          {isSelected && (
+            <Stacks gap={3} direction="row">
+              <Typography color="default-black" variant="h4">
+                Водитель:
+              </Typography>
+              <Typography color="default-black" weight={600} variant="h4">
+                {item.bus.driver}
+              </Typography>
+            </Stacks>
+          )}
         </Stacks>
 
         <Stacks gap={10} alignItems="flex-start" justifyContent="space-between" direction="column">
           <Stacks gap={20} direction="row">
-            <Chip size="small" variant= "warning" label={"Отправлен"} />
+            <Chip size="small" variant="warning" label={"Отправлен"} />
             <Stacks gap={3} direction="row">
               <Typography color="default-black" variant="h3" weight={200}>
                 Свободных мест:
@@ -60,14 +58,16 @@ export const WayManagementItem: FC<WayManagementItemProps> = ({ item, isSelected
               </Typography>
             </Stacks>
           </Stacks>
-          <Stacks gap={20} direction="row">
-            <Typography color="default-black" variant="h4" weight={200}>
-              АТП. сокр
-            </Typography>
-            <Typography color="default-black" weight={600} variant="h4">
-              {"ООО НСК-АВТО"}
-            </Typography>
-          </Stacks>
+          {isSelected && (
+            <Stacks gap={20} direction="row">
+              <Typography color="default-black" variant="h4" weight={200}>
+                АТП. сокр
+              </Typography>
+              <Typography color="default-black" weight={600} variant="h4">
+                {item.bus.atpType}
+              </Typography>
+            </Stacks>
+          )}
         </Stacks>
 
         <Stacks gap={10} alignItems="flex-start" justifyContent="space-between" direction="column">
@@ -81,18 +81,22 @@ export const WayManagementItem: FC<WayManagementItemProps> = ({ item, isSelected
               </Typography>
             </Stacks>
           </Stacks>
-          <Typography color="default-black" weight={500} variant="h4">
-            {item.bus.atpType}
-          </Typography>
+          {isSelected && (
+            <Typography color="default-black" weight={500} variant="h4">
+              {item.bus.busNumber}
+            </Typography>
+          )}
         </Stacks>
 
         <Stacks gap={10} alignItems="flex-start" justifyContent="space-between" direction="column">
           <Typography color="default-black" weight={500} variant="h3">
             {item.bus.busNumber}
           </Typography>
-          <Typography color="default-black" weight={500} variant="h4">
-            {item.bus.typeBus}
-          </Typography>
+          {isSelected && (
+            <Typography color="default-black" weight={500} variant="h4">
+              {item.bus.typeBus}
+            </Typography>
+          )}
         </Stacks>
 
         <Stacks direction="row" gap={8} justifyContent="space-between">

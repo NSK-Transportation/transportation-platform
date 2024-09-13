@@ -1,27 +1,25 @@
-import { Box, Stacks } from "@/shared/ui";
+import { FC } from "react";
 import { WayDetails } from "@/app/@types";
 import { useWayManagement } from "../WayManagement.store";
-import { FC } from "react"; 
 import { WayManagementItem } from "../wayManagementItem/WayManagementItem";
 
 export const WayManagementList: FC = () => {
-  const { wayDetails } = useWayManagement(); // Получаем массив WayDetails из store
+  const { wayDetails, selectedWays, toggleSelectWay } = useWayManagement();
+
+  const handleItemClick = (item: WayDetails) => {
+    toggleSelectWay(item);
+  };
+
   return (
-    <Box
-      style={{
-        overflow: "auto",
-      }}
-    >
-      <Stacks fullwidth direction="column" gap={12}>
-      {wayDetails.map((item: WayDetails, index: number) => (
-                <WayManagementItem
-                    key={index}
-                    item={item}
-                    isSelected={false}  // Например, для выбора элемента
-                    onClick={() => console.log("Clicked", item)} // Обработчик клика
-                />
-            ))}
-      </Stacks>
-    </Box>
+    <>
+      {wayDetails.map((item) => (
+        <WayManagementItem
+          key={item.id}
+          item={item}
+          isSelected={selectedWays.some((selectedItem) => selectedItem.id === item.id)}
+          onClick={() => handleItemClick(item)}
+        />
+      ))}
+    </>
   );
 };
