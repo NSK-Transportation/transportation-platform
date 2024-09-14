@@ -105,6 +105,7 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
               minDate={new Date()}
               value={way[direction]?.date}
               message={message.date}
+              border={false}
             />
             <Input
               name="from"
@@ -113,6 +114,7 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
               onChange={handleInputChange}
               placeholder="Станция отправления"
               message={message.from}
+              border={false}
             />
             <Input
               name="to"
@@ -121,6 +123,7 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
               onChange={handleInputChange}
               placeholder="Станция прибытия"
               message={message.to}
+              border={false}
             />
           </InputGroup>
 
