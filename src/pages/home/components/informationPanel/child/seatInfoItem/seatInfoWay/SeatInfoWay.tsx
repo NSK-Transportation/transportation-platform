@@ -12,6 +12,8 @@ interface SeatInfoWayProps {
 export const SeatInfoWay = ({ direction, visible, setVisible }: SeatInfoWayProps) => {
   const { activeWay } = useInformationStore();
 
+  const selectedSeats = activeWay?.there?.seats?.filter((seat) => seat.status === "selected");
+
   return (
     <Stacks gap={8} direction="column" fullwidth>
       <Stacks gap={4} direction="row" justifyContent="space-between">
@@ -65,7 +67,7 @@ export const SeatInfoWay = ({ direction, visible, setVisible }: SeatInfoWayProps
           </Stacks>
         </Stacks>
       </Stacks>
-      {(activeWay?.[direction]?.seatsSelected || []).length > 0 && (
+      {selectedSeats && selectedSeats?.length > 0 && (
         <Typography
           onClick={() => setVisible(!visible)}
           cursor="pointer"

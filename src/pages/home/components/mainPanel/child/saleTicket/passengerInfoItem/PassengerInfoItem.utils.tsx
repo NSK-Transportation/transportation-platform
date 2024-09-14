@@ -2,11 +2,12 @@ import { Chip, Input, Label, RadioGroup, Select, Stacks } from "@/shared/ui";
 import { Config } from "./PassengerInfoItem.config";
 import { Direction, Passenger } from "@/app/@types";
 import { Store } from "../SaleTicket.store";
+import { getResolveKeyPath } from "@/shared/utils";
 import _ from "lodash";
 
 interface FieldProps {
   config: Partial<Config>;
-  passengerInfo: Passenger;
+  passenger: Passenger;
   options: any;
   setPassenger: Store["setPassenger"];
   direction: Direction;
@@ -15,7 +16,7 @@ interface FieldProps {
 
 export const Field = ({
   config,
-  passengerInfo,
+  passenger,
   options,
   setPassenger,
   direction,
@@ -23,15 +24,7 @@ export const Field = ({
 }: FieldProps) => {
   const { type, label, key, placeholder, inputType, optionsKey } = config;
 
-  // Функция для преобразования ключа
-  const resolveKeyPath = (key: string, params: { [key: string]: string }) => {
-    return key
-      .replace(/\[([^\]]+)\]/g, (_, match) => params[match] || match)
-      .split(".")
-      .map((part) => part.trim());
-  };
-
-  const value = _.get(passengerInfo, resolveKeyPath(key || "", { direction }));
+  const value = _.get(passenger, getResolveKeyPath(key || "", { direction }));
 
   const updatePassengerField = (passenger: Passenger, path: string[], value: any) => {
     let updatedPassenger = _.cloneDeep(passenger);
@@ -42,17 +35,17 @@ export const Field = ({
   const handleChange = (event: any) => {
     const newValue = event.target ? event.target.value : event;
     setPassenger(
-      passengerInfo.id,
+      passenger.id,
       direction,
       activeWay[direction],
-      updatePassengerField(passengerInfo, resolveKeyPath(key || "", { direction }), newValue),
+      updatePassengerField(passenger, getResolveKeyPath(key || "", { direction }), newValue),
     );
   };
 
   switch (type) {
     case "input":
       return (
-        <Label variant="h3" text={label || ""}>
+        <Label variant="h3" text={label || ""} required>
           <Input
             value={value}
             placeholder={placeholder}
@@ -64,7 +57,7 @@ export const Field = ({
 
     case "select":
       return (
-        <Label variant="h3" text={label || ""}>
+        <Label variant="h3" text={label || ""} required>
           <Select
             placeholder={placeholder}
             options={options?.[optionsKey || ""]?.map((option: any) => ({
@@ -79,7 +72,7 @@ export const Field = ({
 
     case "radioGroup":
       return (
-        <Label variant="h3" text={label || ""}>
+        <Label variant="h3" text={label || ""} required>
           <RadioGroup
             direction="row"
             name={key || ""}
@@ -100,7 +93,7 @@ export const Field = ({
             {options?.[optionsKey || ""]?.map((chip: any) => (
               <Chip
                 key={chip.id}
-                selected={passengerInfo.ticket?.[direction]?.discount?.type === chip.type}
+                selected={passenger.ticket?.[direction]?.discount?.type === chip.type}
                 onClick={() => handleChange({ target: { value: chip.type } })}
                 size="extra-large"
                 variant="outline"

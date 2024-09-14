@@ -17,6 +17,7 @@ interface CalendarProps {
   placeholder?: string;
   value: string | number;
   message?: string;
+  border?: false;
 }
 
 export const CustomCalendar: FC<CalendarProps> = ({
@@ -30,6 +31,7 @@ export const CustomCalendar: FC<CalendarProps> = ({
   placeholder,
   value,
   message,
+  border = true,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -52,6 +54,7 @@ export const CustomCalendar: FC<CalendarProps> = ({
         ref={refs.setReference}
         name={name}
         message={message}
+        border={border}
         placeholder={placeholder}
         value={value}
         readOnly

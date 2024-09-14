@@ -1,5 +1,11 @@
 import { Passenger, Direction, TicketType } from "@/app/@types";
 import { Stacks, Typography } from "@/shared/ui";
+import { type Config, config } from "./TicketInfo.config";
+import _ from "lodash";
+import { getResolveKeyPath } from "@/shared/utils";
+import { Store } from "../../../InformationPanel.store";
+
+type PassengerWithDirection = Passenger & { direction: Direction };
 
 export const PassengerInfo = ({
   label,
@@ -16,64 +22,52 @@ export const PassengerInfo = ({
   </Stacks>
 );
 
-export const PassengerDetails = ({ passenger }: { passenger?: Passenger }) => (
-  <Stacks direction="column" gap={4}>
-    <PassengerInfo label="Фамилия:" value={passenger?.lastName} />
-    <PassengerInfo label="Имя:" value={passenger?.firstName} />
-    <PassengerInfo label="Отчество:" value={passenger?.patronymic} />
-    <PassengerInfo label="Дата рождения:" value={passenger?.birthday} />
-    <PassengerInfo label="Пол:" value={passenger?.gender?.rus} />
-    <PassengerInfo label="Телефон:" value={passenger?.phone} />
-  </Stacks>
-);
-
 export const TicketInfo = ({
   ticketType,
   passenger,
   direction,
+  options,
 }: {
   ticketType: TicketType;
   passenger: Passenger;
   direction: Direction;
+  options: Store["options"];
 }) => {
+  const renderFields = (config: Config[], passenger: Passenger) => {
+    return config.map(({ label, key, optionsKey }, index) => {
+      const value = _.get(passenger, getResolveKeyPath(key, { direction }));
+      const option = _.get(options, optionsKey); // TODO: Изменить на rus значение
+      return <PassengerInfo key={index} label={label} value={value} />;
+    });
+  };
+
   if (!ticketType || !passenger) return null;
+
+  let ticketConfig: Config[];
+
+  switch (ticketType) {
+    case "full":
+      ticketConfig = config.fullTicket;
+      break;
+    case "child":
+      ticketConfig = config.childTicket;
+      break;
+    case "privilege":
+      ticketConfig = config.privilegeTicket;
+      break;
+    case "discount":
+      ticketConfig = config.discountTicket;
+      break;
+    default:
+      return null;
+  }
 
   return (
     <>
-      <PassengerInfo label="Багажное место:" value={passenger?.ticket[direction].baggage?.rus} />
-      <PassengerInfo label="Тип билета:" value={passenger.ticket[direction]?.rus} />
-      {ticketType === "full" && (
-        <>
-          <PassengerInfo label="Тип документа:" value={passenger.identification?.document?.rus} />
-          <PassengerDetails passenger={passenger} />
-        </>
-      )}
-      {ticketType === "child" && (
-        <>
-          <PassengerInfo
-            label="Скидка:"
-            value={`${passenger.ticket[direction].discount?.value}%`}
-          />
-          <PassengerInfo
-            label="Свидетельство о рожд.:"
-            value={`${passenger.identification?.birthCertificateSeries} ${passenger.identification?.birthCertificateNumber}`}
-          />
-          <PassengerDetails passenger={passenger} />
-        </>
-      )}
-      {ticketType === "privilege" && (
-        <>
-          <PassengerInfo label="Тип льготы:" value={passenger.identification?.privilege?.rus} />
-          <PassengerDetails passenger={passenger} />
-        </>
-      )}
-      {ticketType === "discount" && (
-        <>
-          <PassengerInfo label="Вид скидки:" value={passenger.ticket[direction].discount?.rus} />
-          <PassengerInfo label="Номер документа:" value={passenger.identification?.number} />
-          <PassengerDetails passenger={passenger} />
-        </>
-      )}
+      {renderFields(ticketConfig, { ...passenger, direction } as PassengerWithDirection)}
+      <Stacks direction="column" gap={4}>
+        {renderFields(config.passenger, passenger)}
+      </Stacks>
     </>
   );
 };

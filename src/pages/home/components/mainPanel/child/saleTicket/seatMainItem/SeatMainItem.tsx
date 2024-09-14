@@ -4,20 +4,25 @@
  */
 
 import { Box, Button, Label, Stacks, Typography } from "@/shared/ui";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Direction, Seat } from "@/app/@types";
 import { useSaleTicket } from "../SaleTicket.store";
+import { useMount } from "@siberiacancode/reactuse";
 
 interface SeatMainItemProps {
   direction: Direction;
 }
 
 export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
-  const { activeWay, statuses, toggleSeatStatus, setPassenger } = useSaleTicket();
+  const {
+    passengers,
+    activeWay,
+    options: { statuses },
+    toggleSeat,
+  } = useSaleTicket();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useMount(() => {
     if (!activeWay[direction]) {
       navigate(
         {
@@ -28,28 +33,39 @@ export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
       );
       navigate(0);
     }
-  }, [activeWay, navigate]);
+  });
 
   if (!activeWay[direction]) {
     return <Typography variant="h3">Маршрут не найден</Typography>;
   }
 
+  const countWithReturnTrip = passengers.filter((passenger) => passenger.ticket.return).length;
+  const maxSeatsAvailable =
+    countWithReturnTrip && direction === "return" ? countWithReturnTrip : 10;
+
   const handleClick = (seat: Seat) => {
-    setPassenger(seat.id, direction, activeWay?.[direction]);
-    toggleSeatStatus(direction, activeWay?.[direction], seat.id, 10);
+    toggleSeat(direction, activeWay?.[direction], seat.id, maxSeatsAvailable);
   };
+
+  const seatsSelected = activeWay?.[direction]?.seats.filter(
+    (seat) => seat.status === "selected",
+  ).length;
 
   return (
     <Box>
       <Stacks fullwidth direction="column" gap={16}>
         <Stacks justifyContent="space-between">
           <Stacks direction="column" gap={4}>
-            <Typography variant="h3">
-              Количество мест: {activeWay?.[direction]?.seatsSelected.length}
-            </Typography>
+            <Typography variant="h3">Количество мест: {seatsSelected}</Typography>
             <Typography color="secondary" variant="h4">
-              Макс. количество: 10
+              Макс. количество: {maxSeatsAvailable}
             </Typography>
+            {passengers.map((passenger, index) => (
+              <Typography key={index} variant="h5">
+                {passenger.id} - {Boolean(passenger.ticket.return).valueOf().toString()} -{" "}
+                {passenger.ticket.there?.seatId} - {passenger.ticket.return?.seatId || "~"}
+              </Typography>
+            ))}
           </Stacks>
 
           <Stacks alignItems="flex-end" direction="column" gap={4}>
@@ -60,7 +76,6 @@ export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
             <Typography variant="h3">Багажных мест: 0</Typography>
           </Stacks>
         </Stacks>
-
         <Stacks alignItems="center" direction="column" gap={8}>
           <Box variant="dashed">
             <Stacks

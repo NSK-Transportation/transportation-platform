@@ -2,12 +2,11 @@
   position: relative;
   display: flex;
   align-items: center;
-  border: 1px solid var(--input-default-border-color);
-  background-color: var(--input-default-background);
   border-radius: 8px;
   font-size: 14px;
   padding: 10px 16px;
   overflow: hidden;
+  background-color: var(--input-default-background);
   transition: all var(--transition-duration) var(--transition-timing-function);
   cursor: text;
 
@@ -19,6 +18,10 @@
     &::placeholder {
       opacity: 0.5;
     }
+  }
+
+  &.border {
+    border: 1px solid var(--input-default-border-color);
   }
 
   &__message {
@@ -135,5 +138,13 @@
     input {
       color: var(--input-disabled-color);
     }
+  }
+}
+
+.blue {
+  background-color: var(--input-blue-background);
+
+  input {
+    background-color: var(--input-blue-background);
   }
 }
