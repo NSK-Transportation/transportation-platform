@@ -1,6 +1,7 @@
-import { Box, Checkbox, Chip, Stacks, Typography } from "@/shared/ui";
-import { FC } from "react";
+import { Box, Button, Checkbox, Chip, Modal, Stacks, Typography } from "@/shared/ui";
+import { FC, useState } from "react";
 import { WayDetails } from "@/app/@types";
+import { WayInformation } from "../wayInformation/WayInformation";
 
 interface WayManagementItemProps {
   item: WayDetails;
@@ -9,6 +10,11 @@ interface WayManagementItemProps {
 }
 
 export const WayManagementItem: FC<WayManagementItemProps> = ({ item, isSelected, onClick }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleTypographyClick = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <Box
       style={{
@@ -31,9 +37,25 @@ export const WayManagementItem: FC<WayManagementItemProps> = ({ item, isSelected
         </Stacks>
 
         <Stacks gap={10} alignItems="flex-start" justifyContent="space-between" direction="column">
-          <Typography variant="h3" weight={400} color="primary">
+          <Typography variant="h3" weight={400} color="primary" onClick={handleTypographyClick}>
             {item.from.station} - {item.to.station}
           </Typography>
+          <Modal
+            isOpen={isOpen}
+            actions={
+              <>
+                <Stacks justifyContent="space-between" gap={30} direction="column">
+                  <Button
+                    label="Отмена"
+                    variant="secondary"
+                    fullWidth
+                    onClick={() => setIsOpen(!isOpen)}
+                  />
+                  <WayInformation item={item} />
+                </Stacks>
+              </>
+            }
+          ></Modal>
           {isSelected && (
             <Stacks gap={3} direction="row">
               <Typography color="default-black" variant="h4">

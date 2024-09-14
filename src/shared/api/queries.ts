@@ -59,6 +59,8 @@ export const getWays = async (data: Way, direction: Direction) => {
       occupied: 22,
       free: 15,
       typeBus: "Люкс",
+      standPlace: 106,
+      bagPlace: 15,
     }
   }));
 
@@ -100,6 +102,8 @@ export const getWaysManagement = async (data: Way) => {
       occupied: 22,
       free: 15,
       typeBus: "Автобус",
+      standPlace: 106,
+      bagPlace: 15,
   }
   }));
 

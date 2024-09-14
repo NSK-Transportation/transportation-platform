@@ -5,7 +5,7 @@ import { WayManagementItem } from "../wayManagementItem/WayManagementItem";
 
 export const WayManagementList: FC = () => {
   const { wayDetails, selectedWays, toggleSelectWay } = useWayManagement();
-
+console.log(selectedWays)
   const handleItemClick = (item: WayDetails) => {
     toggleSelectWay(item);
   };

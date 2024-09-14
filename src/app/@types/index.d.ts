@@ -40,7 +40,6 @@ export interface WayDetails {
   from: Location;
   to: Location;
   bus:BusInfo;
-
 }
 export interface BusInfo {
   id: number;
@@ -51,6 +50,8 @@ export interface BusInfo {
   nameBus: string;
   atpType: string;
   typeBus: string;
+  standPlace: number;
+  bagPlace: number;
 
 
 
