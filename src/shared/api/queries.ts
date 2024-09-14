@@ -50,6 +50,61 @@ export const getWays = async (data: Way, direction: Direction) => {
       time: "17:50",
       date: "26 июня",
     },
+    bus: {
+      id: 1,
+      busNumber: "А-123",
+      driver: "Иванов И.И.",
+      nameBus: "Автобус",
+      atpType: "АТП",
+      occupied: 22,
+      free: 15,
+      typeBus: "Люкс",
+      standPlace: 106,
+      bagPlace: 15,
+    }
+  }));
+
+  return formattedData;
+};
+
+export const getWaysManagement = async (data: Way) => {
+  const response = await axiosInstance.get<WayDetails[]>(`/users/`, { data });
+
+  const formattedData: WayDetails[] = response.data.map((user: any) => ({
+    id: user.id,
+    wayNumber: user.id,
+    whoArive: user.name,
+    price: 1276,
+    seatsSelected: [],
+    seats: [],
+    from: {
+      city: "Москва",
+      street: "ул.Ленина",
+      house: "67",
+      station: "ЖД Вокзал",
+      time: "13:20",
+      date: "26 июня",
+    },
+    to: {
+      city: "Кемерово",
+      street: "пр.Кузнецкий",
+      house: "81",
+      station: "Кемерово АВ",
+      time: "17:50",
+      date: "26 июня",
+    },
+    bus: {
+      id: 1,
+      busNumber: "О452УВ 154",
+      driver: "Гусев А",
+      nameBus: "YUTONG ZK6",
+      atpType: "ООО “НСК-АВТО”",
+      occupied: 22,
+      free: 15,
+      typeBus: "Автобус",
+      standPlace: 106,
+      bagPlace: 15,
+  }
   }));
 
   return formattedData;

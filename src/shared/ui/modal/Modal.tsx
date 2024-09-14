@@ -7,7 +7,7 @@ export interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
   className?: string;
   direction?: "left";
-  children: ReactNode;
+  children?: ReactNode;
   actions?: ReactNode;
 }
 
