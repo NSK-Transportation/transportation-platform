@@ -9,45 +9,75 @@
  *
  */
 
-import { Direction, Way, WayDetails } from "@/app/@types";
+import { Direction, DiscountType, SeatStatus, Way, WayDetail, WayDetailStatus } from "@/app/@types";
 import { axiosInstance } from "./axiosInstance";
+import { random, sampleSize } from "lodash";
 
 export const getWays = async (data: Way, direction: Direction) => {
-  const response = await axiosInstance.get<WayDetails[]>(`/users/?direction=${direction}`, { data });
+  const response = await axiosInstance.get<WayDetail[]>(`/users/?direction=${direction}`, {
+    data,
+  });
 
-  const formattedData: WayDetails[] = response.data.map((user: any) => ({
+  const generateSeats = (numSeats: number) => {
+    const statuses: SeatStatus[] = ["free", "occupied", "booking"];
+    return Array.from({ length: numSeats }, (_, index) => ({
+      id: index + 1,
+      status: statuses[random(0, statuses.length - 1)],
+    }));
+  };
+
+  const generateRandomDiscounts = () => {
+    const availableDiscounts = [
+      {
+        id: 1,
+        type: DiscountType.STUDENT,
+        value: 50,
+        rus: "Студенческий",
+      },
+      {
+        id: 2,
+        type: DiscountType.MILITARY,
+        value: 50,
+        rus: "СВО",
+      },
+    ];
+
+    return sampleSize(availableDiscounts, random(1, 2));
+  };
+
+  const generateRandomStatus = () => {
+    const availableStatuses: WayDetailStatus[] = ["sale", "closed"];
+    return availableStatuses[random(0, availableStatuses.length - 1)];
+  };
+
+  const formattedData: WayDetail[] = response.data.map((user: any) => ({
     id: user.id,
     wayNumber: user.id,
     whoArive: user.name,
-    price: 1276,
-    seatsSelected: [],
-    seats: [
-      { id: 1, status: "free" },
-      { id: 2, status: "free" },
-      { id: 3, status: "booking" },
-      { id: 4, status: "occupied" },
-      { id: 5, status: "free" },
-      { id: 6, status: "free" },
-      { id: 7, status: "free" },
-      { id: 8, status: "free" },
-      { id: 9, status: "free" },
-      { id: 10, status: "free" },
-      { id: 11, status: "free" },
-    ],
+    status: generateRandomStatus(),
+    ticket: {
+      price: random(1000, 10000, false),
+    },
+    baggage: {
+      price: random(240, 1000, false),
+      count: random(20, 40, false),
+    },
+    discounts: generateRandomDiscounts(),
+    seats: generateSeats(random(20, 40)),
     from: {
       city: "Москва",
       street: "ул.Ленина",
       house: "67",
       station: "ЖД Вокзал",
-      time: "13:20",
+      time: `${random(0, 23, false)}:${random(0, 59, false)}`,
       date: "26 июня",
     },
     to: {
       city: "Кемерово",
       street: "пр.Кузнецкий",
       house: "81",
-      station: "",
-      time: "17:50",
+      station: "ЖД Вокзал",
+      time: `${random(0, 23, false)}:${random(0, 59, false)}`,
       date: "26 июня",
     },
   }));
