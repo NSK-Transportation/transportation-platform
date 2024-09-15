@@ -17,7 +17,7 @@ import {
   Status,
   Ticket,
   TicketType,
-  WayDetails,
+  WayDetail,
   WayMenu,
 } from "@/app/@types";
 import { getUniqueId } from "@/shared/utils";
@@ -31,12 +31,12 @@ export interface Store {
   way: WayMenu;
   passengers: Passenger[];
   activeWay: {
-    there: WayDetails | null;
-    return: WayDetails | null;
+    there: WayDetail | null;
+    return: WayDetail | null;
   };
-  wayDetails: {
-    there: WayDetails[];
-    return: WayDetails[];
+  wayDetail: {
+    there: WayDetail[];
+    return: WayDetail[];
   };
   options: {
     statuses: Status[];
@@ -57,14 +57,14 @@ export interface Store {
   setPassenger: (
     passengerId: Passenger["id"],
     direction: Direction,
-    activeWay: WayDetails | null,
+    activeWay: WayDetail | null,
     data?: Partial<Passenger>,
   ) => void;
-  setWayDetails: (wayDetails: WayDetails[], direction: Direction) => void;
-  setActiveWay: (activeWay: WayDetails | null, direction: Direction) => void;
+  setWayDetail: (wayDetail: WayDetail[] | null, direction: Direction) => void;
+  setActiveWay: (activeWay: WayDetail | null, direction: Direction) => void;
   toggleSeat: (
     direction: Direction,
-    activeWay: WayDetails | null,
+    activeWay: WayDetail | null,
     seatId: Seat["id"],
     maxSeats: number,
   ) => void;
@@ -92,7 +92,7 @@ export const useSaleTicket = create<Store>()(
         there: null,
         return: null,
       },
-      wayDetails: {
+      wayDetail: {
         there: [],
         return: [],
       },
@@ -110,20 +110,17 @@ export const useSaleTicket = create<Store>()(
           { id: 4, type: TicketType.DISCOUNT, rus: "Скидочный билет" },
         ],
         discount: {
-          main: [
-            { id: 1, type: DiscountType.STUDENT, value: 50, rus: "Студент" },
-            { id: 2, type: DiscountType.MILITARY, value: 50, rus: "СВО" },
-          ],
+          main: [],
           child: [
             { id: 1, type: DiscountType.HALF, value: 50, rus: "скидка" },
             { id: 2, type: DiscountType.FULL, value: 100, rus: "скидка" },
           ],
         },
         baggages: [
-          { id: 1, type: BaggageType.NONE, rus: "Нет багажа" },
-          { id: 2, type: BaggageType.SMALL, rus: "Маленький (20 кг)" },
-          { id: 3, type: BaggageType.BIG, rus: "Большой (40 кг)" },
-          { id: 4, type: BaggageType.HUGE, rus: "Огромный (60 кг)" },
+          { id: 1, type: BaggageType.NONE, price: 0, rus: "Нет багажа" },
+          { id: 2, type: BaggageType.SMALL, price: 270, rus: "Маленький (5 кг)" },
+          { id: 3, type: BaggageType.BIG, price: 540, rus: "Большой (10 кг)" },
+          { id: 4, type: BaggageType.HUGE, price: 810, rus: "Огромный (20 кг)" },
         ],
         documents: [
           { id: 1, type: DocumentType.PASSPORT, rus: "Паспорт" },
@@ -149,14 +146,15 @@ export const useSaleTicket = create<Store>()(
           state.way = way;
         }),
 
-      setWayDetails: (wayDetails, direction) =>
+      setWayDetail: (wayDetail, direction) =>
         set((state) => {
-          state.wayDetails[direction] = wayDetails;
+          state.wayDetail[direction] = wayDetail || [];
         }),
 
       setActiveWay: (activeWay, direction) =>
         set((state) => {
           state.activeWay[direction] = activeWay;
+          state.options.discount.main = activeWay?.discounts || [];
         }),
 
       toggleSeat: (direction, activeWay, seatId, maxSeats) =>
@@ -172,7 +170,7 @@ export const useSaleTicket = create<Store>()(
             return;
           }
 
-          const currentWay = state.wayDetails[direction]?.find(
+          const currentWay = state.wayDetail[direction]?.find(
             (wayDetail) => wayDetail.id === activeWay?.id,
           );
           if (!currentWay) return;
@@ -203,13 +201,13 @@ export const useSaleTicket = create<Store>()(
                 phone: "",
                 identification: null,
                 ticket: {
-                  there: { wayDetails: activeWay, seatId: seatId },
+                  there: { wayDetail: activeWay, seatId: seatId },
                   return: null,
                 },
               };
               state.passengers.push(newPassenger);
             } else {
-              passenger.ticket.there = { wayDetails: activeWay, seatId: seatId };
+              passenger.ticket.there = { wayDetail: activeWay, seatId: seatId };
             }
 
             seatToToggle.status = "selected";
@@ -222,7 +220,7 @@ export const useSaleTicket = create<Store>()(
 
             if (passengerWithoutReturnSeat) {
               passengerWithoutReturnSeat.ticket.return = {
-                wayDetails: activeWay,
+                wayDetail: activeWay,
                 seatId: seatId,
               };
 
@@ -267,7 +265,7 @@ export const useSaleTicket = create<Store>()(
           const updatedTicket = {
             ...existingPassenger.ticket,
             [direction]: {
-              wayDetails: activeWay || currentTicket.wayDetails,
+              wayDetail: activeWay || currentTicket.wayDetail,
               seatId: data?.ticket?.[direction]?.seatId || null,
             },
           };
