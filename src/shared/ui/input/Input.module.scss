@@ -6,7 +6,6 @@
   font-size: 14px;
   padding: 10px 16px;
   overflow: hidden;
-  background-color: var(--input-default-background);
   transition: all var(--transition-duration) var(--transition-timing-function);
   cursor: text;
 
@@ -141,10 +140,20 @@
   }
 }
 
-.blue {
-  background-color: var(--input-blue-background);
+.wrapper {
+  &-default {
+    background-color: var(--input-default-background);
 
-  input {
+    input {
+      background-color: var(--input-default-background);
+    }
+  }
+
+  &-blue {
     background-color: var(--input-blue-background);
+
+    input {
+      background-color: var(--input-blue-background);
+    }
   }
 }
