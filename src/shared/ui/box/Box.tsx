@@ -16,6 +16,7 @@ interface BoxProps extends HTMLAttributes<HTMLDivElement> {
   text?: string;
   fullWidth?: boolean;
   color?: "blue" | "white";
+  style?: CSSProperties;
 }
 
 const Box = forwardRef<HTMLDivElement, BoxProps>(
@@ -34,6 +35,7 @@ const Box = forwardRef<HTMLDivElement, BoxProps>(
       disabled = false,
       text,
       fullWidth,
+      style,
       ...props
     },
     ref,
@@ -59,6 +61,7 @@ const Box = forwardRef<HTMLDivElement, BoxProps>(
             : `${padding}px`,
         cursor: cursor,
         overflow: overflow,
+        ...style,
       }}
       {...props}
     >
