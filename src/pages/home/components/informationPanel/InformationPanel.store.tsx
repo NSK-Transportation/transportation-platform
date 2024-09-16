@@ -1,4 +1,4 @@
-import { Passenger, WayDetails } from "@/app/@types";
+import { Passenger, WayDetail } from "@/app/@types";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -7,8 +7,8 @@ import { useSaleTicket, SaleTicketStore } from "../mainPanel";
 // Интерфейс хранилища
 export interface Store {
   activeWay: {
-    there: WayDetails | null;
-    return: WayDetails | null;
+    there: WayDetail | null;
+    return: WayDetail | null;
   };
   passengers: Passenger[];
   options: SaleTicketStore["options"];
@@ -30,7 +30,7 @@ export const useInformationStore = create<Store>()(
   ),
 );
 
-useSaleTicket.subscribe((state) => {
+useSaleTicket.subscribe((state: SaleTicketStore) => {
   useInformationStore.setState({
     activeWay: {
       there: state.activeWay.there,

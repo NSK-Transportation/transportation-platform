@@ -28,7 +28,7 @@ interface WayMenuProps {
 }
 
 export const WayMenu = ({ direction }: WayMenuProps) => {
-  const { way, setWay, setWayDetails } = useSaleTicket();
+  const { way, setWay, setWayDetail, setActiveWay } = useSaleTicket();
 
   const { refetch, isFetching } = useQuery(
     [`way-${direction}`, way[direction]],
@@ -67,6 +67,8 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
   };
 
   const handleClick = async () => {
+    setWayDetail(null, direction)
+    setActiveWay(null, direction)
     const newMessage = { ...message };
 
     if (!way[direction].from) {
@@ -86,7 +88,7 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
     }
     const { data } = await refetch();
     if (data) {
-      setWayDetails(data, direction);
+      setWayDetail(data, direction);
     }
   };
 

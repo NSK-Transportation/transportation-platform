@@ -29,12 +29,22 @@ export interface Location {
   date: string;
 }
 
+// Типы статусов мест
+export type WayDetailStatus = "sale" | "dispatched" | "closed" | "canceled" | "delayed" | "noSeats";
 // Интерфейс детализации информации маршрута
-export interface WayDetails {
+export interface WayDetail {
   readonly id: number;
   wayNumber: string;
   whoArive: string;
-  price: number;
+  status: WayDetailStatus;
+  ticket: {
+    price: number;
+  };
+  baggage: {
+    price: number;
+    count: number;
+  };
+  discounts: Discount[];
   seats: Seat[];
   from: Location;
   to: Location;
@@ -107,7 +117,7 @@ export interface Ticket {
   rus: string;
   seatId: number | null;
   identification: Identification | null;
-  wayDetails: WayDetails | null;
+  wayDetail: WayDetail | null;
   discount?: Discount | null;
   baggage?: Baggage | null;
   payment: Payment | null;
@@ -129,6 +139,7 @@ export enum BaggageType {
 export interface Baggage {
   id: number;
   type: BaggageType;
+  price: number;
   rus: string;
 }
 

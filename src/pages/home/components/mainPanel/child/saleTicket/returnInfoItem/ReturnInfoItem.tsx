@@ -28,7 +28,7 @@ export const ReturnInfoItem = () => {
                     ...passenger,
                     ticket: {
                       ...passenger.ticket,
-                      return: !passenger.ticket.return ? { wayDetails: activeWay.return } : null,
+                      return: !passenger.ticket.return ? { wayDetail: activeWay.return } : null,
                     },
                   });
                 }}

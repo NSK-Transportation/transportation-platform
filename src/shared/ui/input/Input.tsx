@@ -58,7 +58,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           [styles[variant]]: variant,
           [styles.disabled]: disabled,
           [styles.border]: border,
-          [styles[wrapper]]: wrapper,
+          [styles[`wrapper-${wrapper}`]]: wrapper,
         })}
         onClick={handleDivClick}
       >

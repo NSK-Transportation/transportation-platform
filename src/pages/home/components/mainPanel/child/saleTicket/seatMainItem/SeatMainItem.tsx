@@ -60,12 +60,6 @@ export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
             <Typography color="secondary" variant="h4">
               Макс. количество: {maxSeatsAvailable}
             </Typography>
-            {passengers.map((passenger, index) => (
-              <Typography key={index} variant="h5">
-                {passenger.id} - {Boolean(passenger.ticket.return).valueOf().toString()} -{" "}
-                {passenger.ticket.there?.seatId} - {passenger.ticket.return?.seatId || "~"}
-              </Typography>
-            ))}
           </Stacks>
 
           <Stacks alignItems="flex-end" direction="column" gap={4}>
@@ -73,7 +67,9 @@ export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
             <Typography variant="h3">
               Пассажирских мест: {activeWay?.[direction]?.seats.length}
             </Typography>
-            <Typography variant="h3">Багажных мест: 0</Typography>
+            <Typography variant="h3">
+              Багажных мест: {activeWay?.[direction].baggage.count}
+            </Typography>
           </Stacks>
         </Stacks>
         <Stacks alignItems="center" direction="column" gap={8}>

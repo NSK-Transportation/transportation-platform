@@ -236,7 +236,8 @@
   --chip-warning-background: var(--color-warning);
 
   --chip-outline-color: var(--color-gray-10);
-  --chip-outline-border: var(--color-blue-30);
+  --chip-outline-blue-border: var(--color-blue-30);
+  --chip-outline-orange-border: var(--color-orange-40);
   --chip-outline-hover-border: var(--color-blue-70);
   --chip-outline-background: var(--color-blue-70);
   /* END Chip */
