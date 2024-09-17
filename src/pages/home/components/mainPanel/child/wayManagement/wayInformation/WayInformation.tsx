@@ -2,6 +2,7 @@ import { Button, Input, Stacks, Typography, Chip, Box } from "@/shared/ui";
 import { RxCross2 } from "react-icons/rx";
 import { WayDetails } from "@/app/@types";
 import { FC } from "react";
+import { WayInformationTable } from "./WayInfomationTable";
 
 interface WayInformationProps {
   item: WayDetails;
@@ -252,7 +253,6 @@ export const WayInformation: FC<WayInformationProps> = ({ item }) => {
         </Stacks>
       </Box>
 
-      {/* Block 3 - Status + Tickets information */}
       <Box
         style={{
           cursor: "pointer",
@@ -332,6 +332,7 @@ export const WayInformation: FC<WayInformationProps> = ({ item }) => {
             </Stacks>
           </Stacks>
         </Stacks>
+        <WayInformationTable item={item} />
       </Box>
     </Stacks>
   );
