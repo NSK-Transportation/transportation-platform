@@ -5,8 +5,14 @@
   border-radius: 64px;
   cursor: default;
 
+  &.hover {
+    &:hover {
+      outline: 1px solid var(--chip-outline-hover-border);
+    }
+  }
+
   &.selected {
-    &.outline {
+    &.outline-blue {
       color: var(--chip-outline-color);
       background-color: var(--chip-outline-background);
     }
@@ -47,13 +53,13 @@
     color: var(--chip-warning-color);
   }
 
-  &.outline {
-    cursor: pointer;
-    border: 1px solid var(--chip-outline-border);
+  &.outline-blue {
+    border: 1px solid var(--chip-outline-blue-border);
+  }
 
-    &:hover {
-      border-color: var(--chip-outline-hover-border);
-    }
+  &.outline-orange {
+    border: 1px solid var(--chip-outline-orange-border);
+    color: var(--chip-outline-orange-border);
   }
 
   // Sizes

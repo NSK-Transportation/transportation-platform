@@ -140,10 +140,20 @@
   }
 }
 
-.blue {
-  background-color: var(--input-blue-background);
+.wrapper {
+  &-default {
+    background-color: var(--input-default-background);
 
-  input {
+    input {
+      background-color: var(--input-default-background);
+    }
+  }
+
+  &-blue {
     background-color: var(--input-blue-background);
+
+    input {
+      background-color: var(--input-blue-background);
+    }
   }
 }

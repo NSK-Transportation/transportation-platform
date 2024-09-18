@@ -5,7 +5,7 @@ import { getSumValues } from "@/shared/utils";
 export const SeatInfoPrice = () => {
   const { activeWay } = useInformationStore();
 
-  const sum = getSumValues(activeWay.there?.price, activeWay.return?.price);
+  const sum = getSumValues(activeWay.there?.ticket.price, activeWay.return?.ticket.price);
 
   return (
     <Stacks direction="row" gap={4}>

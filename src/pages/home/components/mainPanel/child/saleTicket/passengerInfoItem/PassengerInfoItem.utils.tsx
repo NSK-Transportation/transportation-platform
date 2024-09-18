@@ -118,7 +118,7 @@ export const Field = ({
                 selected={passenger.ticket?.[direction]?.discount?.type === chip.type}
                 onClick={() => handleChange({ target: { value: chip.type } })}
                 size="extra-large"
-                variant="outline"
+                variant="outline-blue"
                 label={`${chip.rus} ${chip.value}%`}
               />
             ))}

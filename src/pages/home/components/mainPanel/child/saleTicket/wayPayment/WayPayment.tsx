@@ -30,7 +30,10 @@ export const WayPayment = () => {
     return <Typography variant="h3">Маршрут не найден</Typography>;
   }
 
-  const sum = getSumValues(activeWay.there?.price, activeWay.return?.price);
+  const ticketSum = getSumValues(activeWay.there?.ticket.price, activeWay.return?.ticket.price);
+  const baggageSum = getSumValues(activeWay.there?.baggage.price, activeWay.return?.baggage.price);
+
+  const totalSum = getSumValues(ticketSum, baggageSum);
 
   return (
     <Box>
@@ -41,7 +44,7 @@ export const WayPayment = () => {
           <Stacks gap={4}>
             <Typography variant="h3">К оплате:</Typography>
             <Typography variant="h3" weight="bold" color="primary-second">
-              {sum} рублей
+              {totalSum} рублей
             </Typography>
           </Stacks>
           <Divider orientation="vertical" />
@@ -55,20 +58,38 @@ export const WayPayment = () => {
                 text={
                   <>
                     <Typography variant="h5" color="secondary">
-                      Туда: {activeWay.there?.price} руб
+                      Туда: {activeWay.there?.ticket.price} руб
                     </Typography>
                     <Typography variant="h5" color="secondary">
-                      Обратно: {activeWay.return?.price} руб
+                      Обратно: {activeWay.return?.ticket.price} руб
                     </Typography>
                   </>
                 }
               >
                 <Typography variant="h5" color="info" style={{ textDecorationLine: "underline" }}>
-                  {sum} руб.
+                  {ticketSum} руб.
                 </Typography>
               </Tooltip>{" "}
             </Typography>
-            <Typography variant="h5">Багажный билет: 0 рублей</Typography>
+            <Typography variant="h5">
+              Багажный билет:{" "}
+              <Tooltip
+                text={
+                  <>
+                    <Typography variant="h5" color="secondary">
+                      Туда: {activeWay.there?.baggage.price} руб
+                    </Typography>
+                    <Typography variant="h5" color="secondary">
+                      Обратно: {activeWay.return?.baggage.price} руб
+                    </Typography>
+                  </>
+                }
+              >
+                <Typography variant="h5" color="info" style={{ textDecorationLine: "underline" }}>
+                  {baggageSum} руб.
+                </Typography>
+              </Tooltip>{" "}
+            </Typography>
             <Typography variant="h5">Дополнительные услуги: 0 рублей</Typography>
           </Stacks>
         </Stacks>

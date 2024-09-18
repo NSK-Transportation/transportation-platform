@@ -1,30 +1,30 @@
-import { Box, Stacks, Typography } from "@/shared/ui";
+import { Box, Chip, Stacks, Typography } from "@/shared/ui";
 import { FC } from "react";
-import { Location, WayDetails } from "@/app/@types";
+import { Location, WayDetail } from "@/app/@types";
 
 interface WayMainItemProps {
-  item: WayDetails;
+  wayDetail: WayDetail;
   isSelected: boolean;
   onClick: () => void;
 }
 
-export const WayMainItem: FC<WayMainItemProps> = ({ item, isSelected, onClick }) => {
+export const WayMainItem: FC<WayMainItemProps> = ({ wayDetail, isSelected, onClick }) => {
   const renderLocation = ({ city, street, house, station, time, date }: Location): JSX.Element => (
     <Stacks direction="column">
       <Stacks gap={4} alignItems="flex-end">
         <Typography variant="h1" weight={600} color="primary-second">
-          {time}
+          {time || "00:00"}
         </Typography>
         <Typography variant="h3" weight={600} color="primary">
-          {date}
+          {date || "0 месяц"}
         </Typography>
       </Stacks>
       <Stacks direction="column">
         <Typography variant="h3" color="secondary">
-          {city} - {station}
+          г. {city || "Неизвестно"} "{station || "Неизвестно"}"
         </Typography>
         <Typography variant="h3" color="secondary">
-          {street}, {house}
+          {street || "Неизвестно"}, {house || "0"}
         </Typography>
       </Stacks>
     </Stacks>
@@ -32,52 +32,64 @@ export const WayMainItem: FC<WayMainItemProps> = ({ item, isSelected, onClick })
 
   return (
     <Box
+      variant={isSelected ? "solid" : "withoutShadow"}
       fullWidth
-      style={{
-        cursor: "pointer",
-        border: isSelected ? "1px solid var(--color-blue-70)" : "1px solid transparent",
-      }}
+      cursor="pointer"
+      padding={[8, 16, 8, 16]}
+      hover
       onClick={onClick}
+      disabled={wayDetail.status === "closed"}
     >
       <Stacks fullwidth gap={4} direction="column">
-        <Stacks gap={8} alignItems="center">
-          <Typography variant="h3">Рейс №{item?.wayNumber}</Typography>
-          <Typography variant="h3">
-            {item?.from.city} - {item?.to.city}
-          </Typography>
+        <Stacks justifyContent="space-between">
+          <Stacks gap={8}>
+            <Typography variant="h3">Рейс №{wayDetail?.wayNumber}</Typography>
+            <Typography variant="h3">
+              {wayDetail?.from.city} - {wayDetail?.to.city}
+            </Typography>
+          </Stacks>
           <Typography color="secondary" variant="h4">
-            Перевозчик: {item?.whoArive}
+            Перевозчик: {wayDetail?.whoArive}
           </Typography>
         </Stacks>
 
         <Stacks fullwidth justifyContent="space-between">
-          {renderLocation(item?.from)}
-          {renderLocation(item?.to)}
+          {renderLocation(wayDetail?.from)}
+          {renderLocation(wayDetail?.to)}
 
           <Stacks direction="column" justifyContent="space-between">
             <Stacks direction="column">
               <Typography variant="h3" color="secondary">
-                Свободно мест: {item?.seats?.length}
+                Свободно мест: {wayDetail?.seats?.length}
               </Typography>
-              <Typography variant="h3" color="info">
+              <Typography variant="h3" color="primary-second">
                 Регулярный
               </Typography>
             </Stacks>
             <Typography variant="h3" color="secondary">
-              В брони: {item?.seats.filter((seat) => seat.status === "booking").length}
+              В брони: {wayDetail?.seats.filter((seat) => seat.status === "booking").length}
             </Typography>
           </Stacks>
 
-          <Stacks direction="column" justifyContent="space-between">
+          <Stacks direction="column" justifyContent="space-between" alignItems="flex-start">
             <Typography variant="h1" color="primary-second">
-              {item?.price} руб
+              {wayDetail?.ticket.price} руб
             </Typography>
+            <Chip
+              size="small"
+              label={
+                <Typography variant="h4" color="primary" weight={600}>
+                  {wayDetail.discounts.map((discount) => discount.rus.slice(0, 4)).join(" / ")}
+                </Typography>
+              }
+              variant="outline-orange"
+            />
             <Stacks gap={4}>
               <Typography variant="h3" color="secondary">
                 Багаж
               </Typography>
               <Typography variant="h3" color="info">
-                +270 руб
+                +{wayDetail?.baggage.price} руб
               </Typography>
             </Stacks>
           </Stacks>

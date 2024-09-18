@@ -1,10 +1,26 @@
 .box {
   position: relative;
-  border-radius: 16px;
-  box-shadow: 0px 4px 11.4px rgba(0, 0, 0, 0.1);
-  padding: 16px;
   display: flex;
   flex-direction: column;
+  transition: box-shadow var(--transition-duration) var(--transition-timing-function);
+
+  &.padding {
+    padding: 16px;
+  }
+
+  &.hover {
+    &:hover {
+      box-shadow: 0px 0px 4px 0px #00000026;
+    }
+  }
+
+  &.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    user-select: none;
+    background: var(--color-gray-20) !important;
+    opacity: 0.5;
+  }
 
   // direction
   &.up {
@@ -35,12 +51,16 @@
 
   &.dashed {
     box-shadow: none;
-    border: 2px dashed var(--color-blue-30);
+    outline: 2px dashed var(--color-blue-30);
   }
 
   &.solid {
+    box-shadow: 0px 0px 4px 0px #00000026;
+    outline: 1px solid var(--color-blue-50);
+  }
+
+  &.withoutShadow {
     box-shadow: none;
-    border: 2px solid var(--color-blue-30);
   }
 
   //color
