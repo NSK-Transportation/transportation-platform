@@ -11,6 +11,7 @@ export interface TypographyProps extends HTMLAttributes<HTMLDivElement> {
     | "primary-second"
     | "secondary"
     | "success"
+    | "table-info"
     | "error"
     | "warning"
     | "info";

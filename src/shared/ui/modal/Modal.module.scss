@@ -6,7 +6,6 @@
     top: 0;
     left: 0;
     width: 100%;
-    // height: auto;
     background-color: rgba(#0a0a0a, 0.5);
     display: flex;
     justify-content: right;
@@ -25,7 +24,7 @@
     gap: 16px;
     background-color: var(--content-background-color);
     padding: 16px;
-    min-width: 560px;
+    min-width: 1000px;
     min-height: 100%;
     border-radius: 8px 0 0 8px;
     width: auto;
@@ -42,7 +41,7 @@
   }
 
   &__actions {
-    display: flex;
+    // display: flex;
     width: 100%;
     gap: 16px;
   }

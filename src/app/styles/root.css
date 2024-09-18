@@ -1,7 +1,7 @@
 :root {
   /* Global */
   --main-background-color: #f6f6f6;
-  --main-text-color: var(--color-gray-80);
+  --main-text-color: var(--color-gray-100);
   --main-text-color-white: var(--color-gray-10);
 
   /* Colors */
@@ -54,6 +54,7 @@
   --font-primary: var(--color-orange-40);
   --font-primary-second: var(--color-blue-60);
   --font-secondary: var(--color-gray-50);
+  --font-table-info: var(--color-blue-70);
   --font-info: var(--color-info);
   --font-error: var(--color-error);
   --font-success: var(--color-success);
@@ -140,6 +141,7 @@
   /* Default */
   --input-default-color: var(--color-blue-30);
   --input-default-background: var(--color-gray-10);
+  --input-default-background-blue: var(--color-blue-20);
   --input-default-border-color: var(--color-gray-50);
 
   --input-default-hover-color: var(--color-blue-50);

@@ -1,7 +1,9 @@
-import { Button, Input, Stacks, Typography, Chip, Box } from "@/shared/ui";
+import { Button, Input, Stacks, Typography, Chip, Box, Divider, Container } from "@/shared/ui";
 import { RxCross2 } from "react-icons/rx";
 import { WayDetails } from "@/app/@types";
 import { FC } from "react";
+import { DriverItem } from "./DriverItem";
+import { TicketInformationItem } from "./TicketInformationItem";
 import { WayInformationTable } from "./WayInfomationTable";
 
 interface WayInformationProps {
@@ -29,129 +31,98 @@ export const WayInformation: FC<WayInformationProps> = ({ item }) => {
           border: "1px solid transparent",
         }}
       >
-        <Stacks gap={50} direction="row" justifyContent="start">
-          <Stacks gap={3} direction="column" alignItems="stretch">
-            <Typography
-              variant="h3"
-              weight={300}
-              color="default-black"
-              style={{ marginTop: "10px" }}
-            >
-              {"Рейс:"}
-            </Typography>
-            <Box fullWidth={true} color="blue" style={{ borderRadius: "5px" }}>
-              <Typography variant="h4" weight={600} color="default-white">
-                {item.from.station} {item.id} - {item.to.station} {item.id}
-              </Typography>
-            </Box>
-            <Typography
-              variant="h3"
-              weight={300}
-              color="default-black"
-              style={{ marginTop: "10px" }}
-            >
-              {"Маршрут:"}
-            </Typography>
-            <Box fullWidth={true} color="blue" style={{ borderRadius: "5px" }}>
-              <Typography variant="h4" weight={600} color="default-white">
-                {item.from.station} {item.id} - {item.to.station} {item.id}
-              </Typography>
-            </Box>
-            <Typography
-              variant="h3"
-              weight={300}
-              color="default-black"
-              style={{ marginTop: "10px" }}
-            >
-              {"Расписание:"}
-            </Typography>
-            <Box fullWidth={true} color="blue" style={{ borderRadius: "5px" }}>
-              <Typography variant="h4" weight={600} color="default-white">
-                {item.from.station} {item.id} - {item.to.station} {item.id}
-              </Typography>
-            </Box>
-          </Stacks>
-          <Stacks gap={3} direction="column" alignItems="stretch">
-            <Typography
-              variant="h3"
-              weight={300}
-              color="default-black"
-              style={{ marginTop: "10px" }}
-            >
-              {"Автобус:"}
-            </Typography>
-
-            <Stacks gap={10} direction="row" justifyContent="space-between">
-              <Box fullWidth={true} color="blue" style={{ borderRadius: "5px" }}>
-                <Typography variant="h4" weight={600} color="default-white">
-                  {"Автобус"} {item.bus.free} места (Баг: {item.bus.bagPlace}; Стоя:{" "}
-                  {item.bus.standPlace})
+        <Stacks gap={45} direction="row" alignItems="stretch" fullwidth>
+          <Stacks gap={5} direction="row" justifyContent="space-between">
+            <Divider orientation="vertical" color="blue" />
+              <Stacks gap={5} direction="column" alignItems="stretch">
+                <Typography variant="h3" weight={300} color="default-black">
+                  {"Рейс:"}
                 </Typography>
-              </Box>
-              <Button label="Изменить" variant="tertiary" size="small" />
-            </Stacks>
+                <Input
+                  value={
+                    item.from.station + " " + item.id + " - " + item.to.station + " " + item.id
+                  }
+                  variant="default"
+                  readOnly
+                />
+                <Typography variant="h3" weight={300} color="default-black">
+                  {"Маршрут:"}
+                </Typography>
+                <Input
+                  value={
+                    item.from.station + " " + item.id + " - " + item.to.station + " " + item.id
+                  }
+                  variant="default"
+                  readOnly
+                />
+                <Typography variant="h3" weight={300} color="default-black">
+                  {"Расписание:"}
+                </Typography>
+                <Input
+                  value={
+                    item.from.station + " " + item.id + " - " + item.to.station + " " + item.id
+                  }
+                  variant="default"
+                  readOnly
+                />
+              </Stacks>
 
-            <Stacks gap={3} direction="column" alignItems="start">
-              <Typography
-                variant="h3"
-                weight={300}
-                color="default-black"
-                style={{ marginTop: "10px" }}
-              >
+          </Stacks>
+          <Stacks gap={3} direction="row" alignItems="stretch">
+            <Divider orientation="vertical" color="blue" />
+            <Stacks gap={3} direction="column" alignItems="stretch">
+              <Typography variant="h3" weight={300} color="default-black">
+                {"Автобус:"}
+              </Typography>
+
+              <Stacks gap={10} direction="row" justifyContent="space-between" alignItems="center">
+                <Input
+                  value={
+                    "Автобус" +
+                    item.bus.free +
+                    " места (Баг: " +
+                    item.bus.bagPlace +
+                    "; Стоя: " +
+                    item.bus.standPlace +
+                    ")"
+                  }
+                  variant="default"
+                  readOnly
+                />
+                <Button label="Изменить" variant="tertiary" size="small" />
+              </Stacks>
+
+              <Typography variant="h3" weight={300} color="default-black">
                 {"Гос. номер:"}
               </Typography>
-              <Box fullWidth={false} color="blue" style={{ borderRadius: "5px" }}>
-                <Typography variant="h4" weight={600} color="default-white">
-                  {item.bus.busNumber}
-                </Typography>
-              </Box>
-            </Stacks>
+              <Input value={item.bus.busNumber} variant="default" readOnly />
 
-            <Typography
-              variant="h3"
-              weight={300}
-              color="default-black"
-              style={{ marginTop: "10px" }}
-            >
-              {"АТП:"}
-            </Typography>
-            <Stacks gap={10} direction="row" alignItems="center" justifyContent="space-between">
-              <Box fullWidth={true} color="blue" style={{ borderRadius: "5px" }}>
-                <Typography variant="h4" weight={600} color="default-white">
-                  {item.bus.atpType}
-                </Typography>
-              </Box>
-              <Button label="Изменить" variant="tertiary" size="small" />
-            </Stacks>
+              <Typography variant="h3" weight={300} color="default-black">
+                {"АТП:"}
+              </Typography>
+              <Stacks gap={10} direction="row" alignItems="start" justifyContent="space-between">
+                <Input value={item.bus.atpType} variant="default" readOnly />
+                <Button label="Изменить" variant="tertiary" size="small" />
+              </Stacks>
 
-            <Typography
-              variant="h3"
-              weight={300}
-              color="default-black"
-              style={{ marginTop: "10px" }}
-            >
-              {"Водители:"}
-            </Typography>
-            <Stacks gap={10} direction="row" justifyContent="space-between" alignItems="center">
-              <Box fullWidth={true} color="blue" style={{ borderRadius: "5px" }}>
-                <Typography variant="h4" weight={600} color="default-white">
-                  {item.bus.driver}
-                </Typography>
-              </Box>
+              <Typography variant="h3" weight={300} color="default-black">
+                {"Водители:"}
+              </Typography>
+              <>
+                {/* {item.bus.driver.map((item) => (
+                <DriverItem
+                  key={item.id}
+                  item={item.bus.driver}
+                />
+              ))} */}
+              </>
               <Button
-                justifyContent="center"
-                label={<RxCross2 />}
-                size="icon"
+                label="+ добавить водителя"
                 variant="tertiary"
-                sizeIcon={36}
+                size="small"
+                justifyContent="end"
               />
             </Stacks>
-            <Button
-              label="+ добавить водителя"
-              variant="tertiary"
-              size="small"
-              justifyContent="end"
-            />
           </Stacks>
         </Stacks>
       </Box>
@@ -272,11 +243,7 @@ export const WayInformation: FC<WayInformationProps> = ({ item }) => {
             </Typography>
 
             <Stacks gap={10} direction="row" justifyContent="space-between">
-              <Box fullWidth={true} color="blue" style={{ borderRadius: "5px" }}>
-                <Typography variant="h4" weight={600} color="default-white">
-                  {"Объявят перед посадкой"}
-                </Typography>
-              </Box>
+              <Input fullWidth value={"Объявят перед посадкой"} variant="info" />
               <Button label="Изменить" variant="tertiary" size="small" />
             </Stacks>
 
@@ -332,6 +299,19 @@ export const WayInformation: FC<WayInformationProps> = ({ item }) => {
             </Stacks>
           </Stacks>
         </Stacks>
+      </Box>
+
+      <Stacks gap={20} direction="row" justifyContent="end">
+        <Button label="Посадка" variant="primary" size="medium" />
+        <Button label="Действия" variant="secondary" size="medium" slot="end" />
+      </Stacks>
+
+      <Box
+        style={{
+          cursor: "pointer",
+          border: "1px solid transparent",
+        }}
+      >
         <WayInformationTable item={item} />
       </Box>
     </Stacks>

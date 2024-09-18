@@ -33,7 +33,7 @@ const Table = forwardRef<HTMLTableElement, TableProps<any>>(
       data,
       paginationActions = true,
       pageIndex = 0,
-      pageSize = 5,
+      pageSize = 100,
       loading = false,
       onRowClick,
       onCellClick,
