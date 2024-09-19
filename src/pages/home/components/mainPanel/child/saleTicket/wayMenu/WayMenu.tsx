@@ -11,13 +11,13 @@ import {
   Button,
   Calendar,
   Checkbox,
-  Input,
+  DropdownStation,
   InputGroup,
   Stacks,
   Typography,
 } from "@/shared/ui";
-import { ChangeEvent, useState } from "react";
-import { Direction, Way } from "@/app/@types";
+import { useState } from "react";
+import { City, Direction, Station, Way } from "@/app/@types";
 import { useQuery } from "react-query";
 import { formatDate } from "@/shared/utils";
 import { getWays } from "@/shared/api/queries";
@@ -28,7 +28,13 @@ interface WayMenuProps {
 }
 
 export const WayMenu = ({ direction }: WayMenuProps) => {
-  const { way, setWay, setWayDetail, setActiveWay } = useSaleTicket();
+  const {
+    way,
+    setWay,
+    setWayDetail,
+    setActiveWay,
+    options: { cities },
+  } = useSaleTicket();
 
   const { refetch, isFetching } = useQuery(
     [`way-${direction}`, way[direction]],
@@ -41,13 +47,15 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
 
   const [message, setMessage] = useState<Partial<Record<keyof Way, string>>>({});
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+  const handleStationChange = (city: City, station: Station, name: keyof Way) => {
     setWay({
       ...way,
       [direction]: {
         ...way[direction],
-        [name]: value,
+        [name]: {
+          city: city,
+          station: station,
+        },
       },
     });
     setMessage({ ...message, [name]: "" });
@@ -67,15 +75,15 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
   };
 
   const handleClick = async () => {
-    setWayDetail(null, direction)
-    setActiveWay(null, direction)
+    setWayDetail(null, direction);
+    setActiveWay(null, direction);
     const newMessage = { ...message };
 
     if (!way[direction].from) {
-      newMessage.from = "Пожалуйста, заполните поле";
+      newMessage.from = "Пожалуйста, выберите станцию";
     }
     if (!way[direction].to) {
-      newMessage.to = "Пожалуйста, заполните поле";
+      newMessage.to = "Пожалуйста, выберите станцию";
     }
     if (!way[direction].date) {
       newMessage.date = "Пожалуйста, выберите дату";
@@ -109,23 +117,25 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
               message={message.date}
               border={false}
             />
-            <Input
+            <DropdownStation
               name="from"
-              type="text"
-              value={way[direction]?.from}
-              onChange={handleInputChange}
+              value={`${way[direction]?.from.city?.rus}-${way[direction]?.from.station.rus}`}
+              selected={way[direction]?.to.station}
+              onClick={(city, station) => handleStationChange(city, station, "from")}
               placeholder="Станция отправления"
               message={message.from}
               border={false}
+              options={cities}
             />
-            <Input
+            <DropdownStation
               name="to"
-              type="text"
-              value={way[direction]?.to}
-              onChange={handleInputChange}
+              value={`${way[direction]?.to.city.rus}-${way[direction]?.to.station.rus}`}
+              selected={way[direction]?.to.station}
+              onClick={(city, station) => handleStationChange(city, station, "to")}
               placeholder="Станция прибытия"
               message={message.to}
               border={false}
+              options={cities}
             />
           </InputGroup>
 
