@@ -1,6 +1,7 @@
 import {
   Baggage,
   BaggageType,
+  City,
   Country,
   Direction,
   Discount,
@@ -52,6 +53,7 @@ export interface Store {
     payments: Payment[];
     genders: Gender[];
     countries: Country[];
+    cities: City[];
   };
 
   // Методы для изменения состояния
@@ -79,14 +81,26 @@ export const useSaleTicket = create<Store>()(
         remoteSale: false,
         returnHave: false,
         return: {
-          date: "21.12.2024",
-          from: "1",
-          to: "1",
+          date: "",
+          from: {
+            city: {},
+            station: {},
+          },
+          to: {
+            city: {},
+            station: {},
+          },
         },
         there: {
-          date: "21.12.2024",
-          from: "12",
-          to: "12",
+          date: "",
+          from: {
+            city: {},
+            station: {},
+          },
+          to: {
+            city: {},
+            station: {},
+          },
         },
       },
       passengers: [],
@@ -165,6 +179,20 @@ export const useSaleTicket = create<Store>()(
             code: "DE",
             dialCode: "+49",
             flag: "https://flagcdn.com/w320/de.png",
+          },
+        ],
+        cities: [
+          {
+            id: 1,
+            name: "Novosibirsk",
+            rus: "Новосибирск",
+            stations: [
+              {
+                id: 1,
+                name: "AB Main",
+                rus: "АВ Главный",
+              },
+            ],
           },
         ],
       },
