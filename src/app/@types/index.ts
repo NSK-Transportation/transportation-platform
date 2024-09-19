@@ -1,45 +1,56 @@
+// Enum ролей
+export enum Role {
+  ADMIN = "ADMIN",
+  CASHIER = "CASHIER",
+  DISPATCHER = "DISPATCHER",
+}
+
+// Интерфейс пользователя
+export interface User {
+  readonly id: string;
+  firstName: string;
+  lastName: string;
+  role: Role;
+}
+
 // Интерфейс авторизации
-export interface Authorization {
-  readonly userID: string;
+export interface Authorization extends Pick<User, "id"> {
   password: string;
 }
 
-export interface Country {
-  name: string;
-  rus: string;
+export type Options<T, K extends string> = {
+  [key in K]: T;
+} & {
+  readonly id: number;
+  rus?: string;
+};
+
+export interface Country extends Options<string, "name"> {
   code: string;
   dialCode: string;
   flag: string;
 }
 
-export type Options<T> = { // TODO: добавть extends Options<T> для всех опций
-  [key: string]: any;
-  readonly id: number;
-  type: T;
-  rus: string;
-};
+export interface City extends Options<string, "name"> {
+  stations: Station[];
+}
+
+export interface Station extends Options<string, "name"> {}
 
 // Типы статусов мест
 export type SeatStatus = "free" | "selected" | "booking" | "occupied";
 // Интерфейс мест
-export interface Seat {
-  readonly id: number;
-  status: SeatStatus;
-}
+export interface Seat extends Options<SeatStatus, "status"> {}
 
 // Интерфейс статусов
-export interface Status {
-  readonly id: number;
-  status: SeatStatus;
-  rus: string;
-}
+export interface Status extends Options<SeatStatus, "status"> {}
 
 // Интерфейс локации (откуда - куда)
 export interface Location {
-  city: string;
+  city: City;
   street: string;
   house: string;
-  station: string;
+  station: Station;
   time: string;
   date: string;
 }
@@ -72,19 +83,12 @@ export enum PaymentType {
   QRCODE = "qrcode",
 }
 // Интерфейс оплаты
-export interface Payment {
-  readonly id: number;
-  type: PaymentType;
-  rus: string;
-}
+export interface Payment extends Options<PaymentType, "type"> {}
 
 // Типы возврата
 export type RefundType = "delay";
 // Интерфейс возврата
-export interface Refund {
-  readonly id: number;
-  type: RefundType;
-  rus: string;
+export interface Refund extends Options<RefundType, "type"> {
   amount?: number;
 }
 
@@ -97,18 +101,12 @@ export enum DiscountType {
   FULL = "full",
 }
 // Интерфейс скидок
-export interface Discount {
-  readonly id: number;
-  type: DiscountType;
+export interface Discount extends Options<DiscountType, "type"> {
   value: number;
-  rus: string;
 }
 
 // Интерфейс кассира
-export interface Cashier {
-  readonly id: number;
-  name: string;
-}
+export interface Cashier extends User {}
 
 // Интерфейс кассы
 export interface CashRegister {
@@ -126,10 +124,7 @@ export enum TicketType {
 }
 
 // Интерфейс билета
-export interface Ticket {
-  readonly id: number;
-  type: TicketType;
-  rus: string;
+export interface Ticket extends Options<TicketType, "type"> {
   seatId: number | null;
   identification: Identification | null;
   wayDetail: WayDetail | null;
@@ -151,11 +146,8 @@ export enum BaggageType {
   HUGE = "huge",
 }
 // Интерфейс багажа
-export interface Baggage {
-  id: number;
-  type: BaggageType;
+export interface Baggage extends Options<BaggageType, "type"> {
   price: number;
-  rus: string;
 }
 
 // Enum льгот
@@ -165,11 +157,7 @@ export enum PrivilegeType {
   MILITARY = "military",
 }
 // Интерфейс льгот
-export interface Privilege {
-  readonly id: number;
-  type: PrivilegeType;
-  rus: string;
-}
+export interface Privilege extends Options<PrivilegeType, "type"> {}
 
 // Enum документов
 export enum DocumentType {
@@ -178,11 +166,7 @@ export enum DocumentType {
   DRIVER = "driver",
 }
 // Интерфейс документов
-export interface Document {
-  readonly id: number;
-  type: DocumentType;
-  rus: string;
-}
+export interface Document extends Options<DocumentType, "type"> {}
 
 export interface Identification {
   document?: Document & {
@@ -211,11 +195,7 @@ export enum GenderType {
   FEMALE = "female",
 }
 // Интерфейс гендеров
-export interface Gender {
-  readonly id: number;
-  type: GenderType;
-  rus: string;
-}
+export interface Gender extends Options<GenderType, "type"> {}
 
 // Интерфейс пассажира
 export interface Passenger {
@@ -242,8 +222,14 @@ export type Direction = "there" | "return";
 // Интерфейс маршрута
 export interface Way {
   date: string;
-  from: string;
-  to: string;
+  from: {
+    city: Partial<City>;
+    station: Partial<Station>;
+  };
+  to: {
+    city: Partial<City>;
+    station: Partial<Station>;
+  };
 }
 // Интерфейс информации маршрута
 export interface WayMenu {
