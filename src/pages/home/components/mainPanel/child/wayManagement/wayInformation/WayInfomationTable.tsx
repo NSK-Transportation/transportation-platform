@@ -85,7 +85,7 @@ export const WayInformationTable: React.FC<WayInformationProps> = (item) => {
   return (
     <div>
       <h2>Информация о местах</h2>
-      <Table columns={columns} data={data} />
+      <Table columns={columns} data={data}  pageSize ={100} />
     </div>
   );
 };

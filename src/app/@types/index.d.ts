@@ -39,17 +39,17 @@ export interface WayDetails {
   seats: Seat[];
   from: Location;
   to: Location;
-  bus:BusInfo;
+  bus:Bus;
 }
-export interface BusInfo {
+export interface Bus {
   id: number;
   occupied: number;
   free: number;
-  busNumber: string;
+  Number: string;
   driver: string;
   nameBus: string;
-  atpType: string;
-  typeBus: string;
+  atp: string;
+  Bus: string;
   standPlace: number;
   bagPlace: number;
 
