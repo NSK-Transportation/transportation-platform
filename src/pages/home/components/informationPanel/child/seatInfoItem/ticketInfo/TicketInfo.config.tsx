@@ -1,10 +1,8 @@
-import { Store } from "../../../InformationPanel.store";
-
 export interface Config {
   label: string;
   key: string;
   group?: string;
-  optionsKey?: keyof Store["options"];
+  optionsKey?: string;
 }
 
 export interface ConfigGroup {
@@ -17,8 +15,9 @@ export const config: ConfigGroup = {
     { label: "Имя:", key: "firstName" },
     { label: "Отчество:", key: "patronymic" },
     { label: "Дата рождения:", key: "birthday" },
-    { label: "Пол:", key: "gender" },
-    { label: "Телефон:", key: "phone" },
+    { label: "Пол:", key: "gender", optionsKey: "genders" },
+    { label: "Телефон:", key: "phone.code", group: "code-number" },
+    { label: "", key: "phone.number", group: "code-number" },
   ],
   fullTicket: [
     { label: "Багажное место:", key: "ticket.[direction].baggage.type", optionsKey: "baggages" },
@@ -29,7 +28,7 @@ export const config: ConfigGroup = {
   ],
   childTicket: [
     { label: "Багажное место:", key: "ticket.[direction].baggage.type", optionsKey: "baggages" },
-    { label: "Скидка:", key: "ticket.[direction].discount.type", optionsKey: "discounts_child" },
+    { label: "Скидка:", key: "ticket.[direction].discount.type", optionsKey: "discounts.child" },
     { label: "Свидетельство о рожд.:", key: "identification.child.number" },
   ],
   privilegeTicket: [

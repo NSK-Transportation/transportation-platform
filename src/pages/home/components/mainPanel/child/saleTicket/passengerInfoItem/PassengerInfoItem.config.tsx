@@ -1,11 +1,12 @@
 export interface Config {
   type: string;
   label: string;
-  key: string;
+  key?: string;
   placeholder?: string;
   inputType?: string;
   optionsKey?: string;
   group?: string;
+  slots?: boolean;
 }
 
 export interface ConfigGroup {
@@ -173,8 +174,10 @@ export const config: ConfigGroup = {
     {
       type: "input",
       label: "Телефон",
-      key: "phone",
-      placeholder: "+ 7 (---) --- -- --",
+      key: "phone.number",
+      placeholder: "(---) --- -- --",
+      optionsKey: "countries",
+      slots: true,
     },
     {
       type: "radioGroup",

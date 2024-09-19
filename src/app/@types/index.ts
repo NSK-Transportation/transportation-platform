@@ -4,6 +4,21 @@ export interface Authorization {
   password: string;
 }
 
+export interface Country {
+  name: string;
+  rus: string;
+  code: string;
+  dialCode: string;
+  flag: string;
+}
+
+export type Options<T> = { // TODO: добавть extends Options<T> для всех опций
+  [key: string]: any;
+  readonly id: number;
+  type: T;
+  rus: string;
+};
+
 // Типы статусов мест
 export type SeatStatus = "free" | "selected" | "booking" | "occupied";
 // Интерфейс мест
@@ -210,7 +225,10 @@ export interface Passenger {
   patronymic: string;
   gender: Gender | null;
   birthday: string;
-  phone: string;
+  phone: {
+    code: string;
+    number: string;
+  };
   identification: Identification | null;
   ticket: {
     there: Partial<Ticket> | null;

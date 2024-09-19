@@ -1,6 +1,7 @@
 import {
   Baggage,
   BaggageType,
+  Country,
   Direction,
   Discount,
   DiscountType,
@@ -50,6 +51,7 @@ export interface Store {
     privileges: Privilege[];
     payments: Payment[];
     genders: Gender[];
+    countries: Country[];
   };
 
   // Методы для изменения состояния
@@ -139,6 +141,32 @@ export const useSaleTicket = create<Store>()(
           { id: 1, type: GenderType.MALE, rus: "Мужчина" },
           { id: 2, type: GenderType.FEMALE, rus: "Женщина" },
         ],
+        countries: [
+          {
+            id: 1,
+            name: "Russia",
+            rus: "Россия",
+            code: "RU",
+            dialCode: "+7",
+            flag: "https://flagcdn.com/w320/ru.png",
+          },
+          {
+            id: 2,
+            name: "United States",
+            rus: "США",
+            code: "US",
+            dialCode: "+1",
+            flag: "https://flagcdn.com/w320/us.png",
+          },
+          {
+            id: 3,
+            name: "Germany",
+            rus: "Германия",
+            code: "DE",
+            dialCode: "+49",
+            flag: "https://flagcdn.com/w320/de.png",
+          },
+        ],
       },
 
       setWay: (way) =>
@@ -198,7 +226,10 @@ export const useSaleTicket = create<Store>()(
                 patronymic: "",
                 gender: null,
                 birthday: "",
-                phone: "",
+                phone: {
+                  code: "+7",
+                  number: "",
+                },
                 identification: null,
                 ticket: {
                   there: { wayDetail: activeWay, seatId: seatId },

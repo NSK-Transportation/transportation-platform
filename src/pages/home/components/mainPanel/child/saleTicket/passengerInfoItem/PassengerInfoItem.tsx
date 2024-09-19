@@ -23,6 +23,7 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
       privileges,
       documents,
       genders,
+      countries,
     },
   } = useSaleTicket();
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
     return <Typography variant="h3">Маршрут или пассажиры не найдены</Typography>;
   }
 
+  console.log(passengers)
   return (
     <>
       {passengers
@@ -105,7 +107,7 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
                               child,
                               baggages,
                               documents,
-                              privileges,
+                              privileges, 
                             }}
                             direction={direction}
                             activeWay={activeWay}
@@ -137,6 +139,7 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
                             setPassenger={setPassenger}
                             options={{
                               genders,
+                              countries
                             }}
                             direction={direction}
                             activeWay={activeWay}

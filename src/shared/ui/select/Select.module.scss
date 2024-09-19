@@ -30,7 +30,6 @@
   border: 1px solid var(--select-default-border-color);
   border-radius: 8px;
   background: var(--select-default-background);
-  color: var(--select-default-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -40,6 +39,11 @@
 
   &.open {
     border-radius: 8px 8px 0 0;
+    color: var(--select-default-color);
+  }
+
+  &__placeholder {
+    color: var(--select-default-color);
   }
 }
 

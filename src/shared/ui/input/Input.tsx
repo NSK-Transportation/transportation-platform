@@ -14,7 +14,8 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   variant?: "default" | "error" | "success" | "warning";
   border?: boolean;
   wrapper?: "default" | "blue";
-  slots?: ReactNode;
+  slotsLeft?: ReactNode;
+  slotsRight?: ReactNode;
   pointer?: boolean;
   fullWidth?: boolean;
   onWrapperClick?: () => void;
@@ -29,7 +30,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       border = true,
       wrapper = "default",
       disabled,
-      slots,
+      slotsLeft,
+      slotsRight,
       pointer,
       fullWidth,
       onWrapperClick,
@@ -62,15 +64,24 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         })}
         onClick={handleDivClick}
       >
-        <input ref={inputRef} disabled={disabled} {...props} />
-        {message && <div className={styles.input__message}>{message}</div>}
-        {slots && (
+        {slotsLeft && (
           <div
             className={clsx(styles.input__slots, {
               [styles.input__slots__pointer]: pointer,
             })}
           >
-            {slots}
+            {slotsLeft}
+          </div>
+        )}
+        <input ref={inputRef} disabled={disabled} {...props} />
+        {message && <div className={styles.input__message}>{message}</div>}
+        {slotsRight && (
+          <div
+            className={clsx(styles.input__slots, {
+              [styles.input__slots__pointer]: pointer,
+            })}
+          >
+            {slotsRight}
           </div>
         )}
       </div>

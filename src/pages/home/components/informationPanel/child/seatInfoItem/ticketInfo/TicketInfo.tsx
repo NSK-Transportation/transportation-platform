@@ -1,9 +1,9 @@
-import { Passenger, Direction, TicketType } from "@/app/@types";
+import { Passenger, Direction, TicketType, Options } from "@/app/@types";
 import { Stacks, Typography } from "@/shared/ui";
 import { type Config, config } from "./TicketInfo.config";
 import _ from "lodash";
 import { getResolveKeyPath } from "@/shared/utils";
-import { Store } from "../../../InformationPanel.store";
+import { SaleTicketStore } from "@/pages/home/components/mainPanel";
 
 type PassengerWithDirection = Passenger & { direction: Direction };
 
@@ -31,14 +31,50 @@ export const TicketInfo = ({
   ticketType: TicketType;
   passenger: Passenger;
   direction: Direction;
-  options: Store["options"];
+  options: Options<SaleTicketStore["options"]>;
 }) => {
   const renderFields = (config: Config[], passenger: Passenger) => {
-    return config.map(({ label, key, optionsKey }, index) => {
-      const value = _.get(passenger, getResolveKeyPath(key, { direction }));
-      const option = _.get(options, optionsKey); // TODO: Изменить на rus значение
-      return <PassengerInfo key={index} label={label} value={value} />;
-    });
+    const groupedFields = _.groupBy(config, "group");
+
+    return _.map(groupedFields, (fields, group) => (
+      <>
+        {group != "undefined" ? (
+          <Stacks key={group}>
+            {fields.map(({ label, key, optionsKey }, index) => {
+              const value = _.get(passenger, getResolveKeyPath(key || "", { direction }));
+              const rus = options?.[optionsKey || ""]?.find(
+                (option: any) => option.type === value,
+              )?.rus;
+
+              return (
+                <PassengerInfo
+                  key={index}
+                  label={label}
+                  value={options?.[optionsKey || ""] ? rus : value}
+                />
+              );
+            })}
+          </Stacks>
+        ) : (
+          <>
+            {fields.map(({ label, key, optionsKey }, index) => {
+              const value = _.get(passenger, getResolveKeyPath(key || "", { direction }));
+              const rus = options?.[optionsKey || ""]?.find(
+                (option: any) => option.type === value,
+              )?.rus;
+
+              return (
+                <PassengerInfo
+                  key={index}
+                  label={label}
+                  value={options?.[optionsKey || ""] ? rus : value}
+                />
+              );
+            })}
+          </>
+        )}
+      </>
+    ));
   };
 
   if (!ticketType || !passenger) return null;
@@ -65,9 +101,7 @@ export const TicketInfo = ({
   return (
     <>
       {renderFields(ticketConfig, { ...passenger, direction } as PassengerWithDirection)}
-      <Stacks direction="column" gap={4}>
-        {renderFields(config.passenger, passenger)}
-      </Stacks>
+      {renderFields(config.passenger, passenger)}
     </>
   );
 };
