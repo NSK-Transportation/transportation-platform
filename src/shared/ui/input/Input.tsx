@@ -12,7 +12,10 @@ import styles from "./Input.module.scss";
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   variant?: "default" | "error" | "success" | "warning";
-  slots?: ReactNode;
+  border?: boolean;
+  wrapper?: "default" | "blue";
+  slotsLeft?: ReactNode;
+  slotsRight?: ReactNode;
   pointer?: boolean;
   fullWidth?: boolean;
   onWrapperClick?: () => void;
@@ -24,8 +27,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     {
       className,
       variant = "default",
+      border = true,
+      wrapper = "default",
       disabled,
-      slots,
+      slotsLeft,
+      slotsRight,
       pointer,
       fullWidth,
       onWrapperClick,
@@ -53,18 +59,29 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           [styles.fullWidth]: fullWidth,
           [styles[variant]]: variant,
           [styles.disabled]: disabled,
+          [styles.border]: border,
+          [styles[`wrapper-${wrapper}`]]: wrapper,
         })}
         onClick={handleDivClick}
       >
-        <input ref={inputRef} disabled={disabled} {...props} />
-        {message && <div className={styles.input__message}>{message }</div>}
-        {slots && (
+        {slotsLeft && (
           <div
             className={clsx(styles.input__slots, {
               [styles.input__slots__pointer]: pointer,
             })}
           >
-            {slots}
+            {slotsLeft}
+          </div>
+        )}
+        <input ref={inputRef} disabled={disabled} {...props} />
+        {message && <div className={styles.input__message}>{message}</div>}
+        {slotsRight && (
+          <div
+            className={clsx(styles.input__slots, {
+              [styles.input__slots__pointer]: pointer,
+            })}
+          >
+            {slotsRight}
           </div>
         )}
       </div>

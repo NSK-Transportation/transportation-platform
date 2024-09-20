@@ -9,45 +9,90 @@
  *
  */
 
-import { Direction, Way, WayDetails } from "@/app/@types";
+import { Direction, DiscountType, SeatStatus, Way, WayDetail, WayDetailStatus } from "@/app/@types";
 import { axiosInstance } from "./axiosInstance";
+import { random, sampleSize } from "lodash";
 
 export const getWays = async (data: Way, direction: Direction) => {
-  const response = await axiosInstance.get<WayDetails[]>(`/users/?direction=${direction}`, { data });
+  const response = await axiosInstance.get<WayDetail[]>(`/users/?direction=${direction}`, {
+    data,
+  });
 
-  const formattedData: WayDetails[] = response.data.map((user: any) => ({
+  const generateSeats = (numSeats: number) => {
+    const statuses: SeatStatus[] = ["free", "occupied", "booking"];
+    return Array.from({ length: numSeats }, (_, index) => ({
+      id: index + 1,
+      status: statuses[random(0, statuses.length - 1)],
+      //добавить поля
+    }));
+  };
+
+  const generateRandomDiscounts = () => {
+    const availableDiscounts = [
+      {
+        id: 1,
+        type: DiscountType.STUDENT,
+        value: 50,
+        rus: "Студенческий",
+      },
+      {
+        id: 2,
+        type: DiscountType.MILITARY,
+        value: 50,
+        rus: "СВО",
+      },
+    ];
+
+    return sampleSize(availableDiscounts, random(1, 2));
+  };
+
+  const generateRandomStatus = () => {
+    const availableStatuses: WayDetailStatus[] = ["sale", "closed"];
+    return availableStatuses[random(0, availableStatuses.length - 1)];
+  };
+
+  const formattedData: WayDetail[] = response.data.map((user: any) => ({
     id: user.id,
     wayNumber: user.id,
     whoArive: user.name,
     price: 1276,
-    seatsSelected: [],
-    seats: [
-      { id: 1, status: "free", documentSeria: "1234", documentNumber: "123456", price: 1276, tariff: 1000, duty: 50, dateSale: "26 сентября", whoSold: "Кассир Иванова А.И." },
-      { id: 2, status: "free", documentSeria: "5224", documentNumber: "348594", price: 1276, tariff: 1000, duty: 50, dateSale: "25 сентября", whoSold: "Кассир Петров А.И." },
-      { id: 3, status: "booking", documentSeria: "А-2-4", documentNumber: "455-445-348594", price: 1500, tariff: 1200, duty: 150, dateSale: "24 августа", whoSold: "Кассир Петров А.И." },
-      { id: 4, status: "occupied", documentSeria: "БГ-76", documentNumber: "655-445-348594", price: 12500, tariff: 1100, duty: 110, dateSale: "23 августа", whoSold: "Кассир Петров А.И." },
-      { id: 5, status: "free", documentSeria: "А-2-4", documentNumber: "455-445-348594", price: 1500, tariff: 1200, duty: 150, dateSale: "22 августа", whoSold: "Кассир Петров А.И." },
-      { id: 6, status: "free", documentSeria: "АГ-76", documentNumber: "655-445-348594", price: 12500, tariff: 1100, duty: 110, dateSale: "21 августа", whoSold: "Кассир Петров А.И." },
-      { id: 7, status: "free", documentSeria: "9767", documentNumber: "748594", price: 1500, tariff: 1200, duty: 150, dateSale: "20 августа", whoSold: "Кассир Петров А.И." },
-      { id: 8, status: "free", documentSeria: "3989", documentNumber: "148594", price: 1500, tariff: 1200, duty: 150, dateSale: "19 августа", whoSold: "Кассир Петров А.И." },
-      { id: 9, status: "free", documentSeria: "", documentNumber: "", price: 0, tariff: 0, duty: 0, dateSale: "", whoSold: "" },
-      { id: 10, status: "free", documentSeria: "", documentNumber: "", price: 0, tariff: 0, duty: 0, dateSale: "", whoSold: "" },
-      { id: 11, status: "free", documentSeria: "", documentNumber: "", price: 0, tariff: 0, duty: 0, dateSale: "", whoSold: "" },
-    ],
+//     seats: [
+//       { id: 1, status: "free", documentSeria: "1234", documentNumber: "123456", price: 1276, tariff: 1000, duty: 50, dateSale: "26 сентября", whoSold: "Кассир Иванова А.И." },
+//       { id: 2, status: "free", documentSeria: "5224", documentNumber: "348594", price: 1276, tariff: 1000, duty: 50, dateSale: "25 сентября", whoSold: "Кассир Петров А.И." },
+//       { id: 3, status: "booking", documentSeria: "А-2-4", documentNumber: "455-445-348594", price: 1500, tariff: 1200, duty: 150, dateSale: "24 августа", whoSold: "Кассир Петров А.И." },
+//       { id: 4, status: "occupied", documentSeria: "БГ-76", documentNumber: "655-445-348594", price: 12500, tariff: 1100, duty: 110, dateSale: "23 августа", whoSold: "Кассир Петров А.И." },
+//       { id: 5, status: "free", documentSeria: "А-2-4", documentNumber: "455-445-348594", price: 1500, tariff: 1200, duty: 150, dateSale: "22 августа", whoSold: "Кассир Петров А.И." },
+//       { id: 6, status: "free", documentSeria: "АГ-76", documentNumber: "655-445-348594", price: 12500, tariff: 1100, duty: 110, dateSale: "21 августа", whoSold: "Кассир Петров А.И." },
+//       { id: 7, status: "free", documentSeria: "9767", documentNumber: "748594", price: 1500, tariff: 1200, duty: 150, dateSale: "20 августа", whoSold: "Кассир Петров А.И." },
+//       { id: 8, status: "free", documentSeria: "3989", documentNumber: "148594", price: 1500, tariff: 1200, duty: 150, dateSale: "19 августа", whoSold: "Кассир Петров А.И." },
+//       { id: 9, status: "free", documentSeria: "", documentNumber: "", price: 0, tariff: 0, duty: 0, dateSale: "", whoSold: "" },
+//       { id: 10, status: "free", documentSeria: "", documentNumber: "", price: 0, tariff: 0, duty: 0, dateSale: "", whoSold: "" },
+//       { id: 11, status: "free", documentSeria: "", documentNumber: "", price: 0, tariff: 0, duty: 0, dateSale: "", whoSold: "" },
+//     ],
+    status: generateRandomStatus(),
+    ticket: {
+      price: random(1000, 10000, false),
+    },
+    baggage: {
+      price: random(240, 1000, false),
+      count: random(20, 40, false),
+    },
+    discounts: generateRandomDiscounts(),
+    seats: generateSeats(random(20, 40)),
     from: {
       city: "Москва",
       street: "ул.Ленина",
       house: "67",
       station: "ЖД Вокзал",
-      time: "13:20",
+      time: `${random(0, 23, false)}:${random(0, 59, false)}`,
       date: "26 июня",
     },
     to: {
       city: "Кемерово",
       street: "пр.Кузнецкий",
       house: "81",
-      station: "",
-      time: "17:50",
+      station: "ЖД Вокзал",
+      time: `${random(0, 23, false)}:${random(0, 59, false)}`,
       date: "26 июня",
     },
     bus: {

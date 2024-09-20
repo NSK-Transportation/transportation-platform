@@ -1,45 +1,79 @@
+// Enum ролей
+export enum Role {
+  ADMIN = "ADMIN",
+  CASHIER = "CASHIER",
+  DISPATCHER = "DISPATCHER",
+}
+
+// Интерфейс пользователя
+export interface User {
+  readonly id: string;
+  firstName: string;
+  lastName: string;
+  role: Role;
+}
+
 // Интерфейс авторизации
-export interface Authorization {
-  userID: string;
+export interface Authorization extends Pick<User, "id"> {
   password: string;
 }
+
+export type Options<T, K extends string> = {
+  [key in K]: T;
+} & {
+  readonly id: number;
+  rus?: string;
+};
+
+export interface Country extends Options<string, "name"> {
+  code: string;
+  dialCode: string;
+  flag: string;
+}
+
+export interface City extends Options<string, "name"> {
+  stations: Station[];
+}
+
+export interface Station extends Options<string, "name"> {}
 
 // Типы статусов мест
 export type SeatStatus = "free" | "selected" | "booking" | "occupied";
 // Интерфейс мест
-export interface Seat {
-  id: number;
-  status: SeatStatus;
-}
+export interface Seat extends Options<SeatStatus, "status"> {}
 
 // Интерфейс статусов
-export interface Status {
-  id: number;
-  status: SeatStatus;
-  rus: string;
-}
+export interface Status extends Options<SeatStatus, "status"> {}
 
 // Интерфейс локации (откуда - куда)
 export interface Location {
-  city: string;
+  city: City;
   street: string;
   house: string;
-  station: string;
+  station: Station;
   time: string;
   date: string;
 }
-
+// Типы статусов мест
+export type WayDetailStatus = "sale" | "dispatched" | "closed" | "canceled" | "delayed" | "noSeats";
 // Интерфейс детализации информации маршрута
-export interface WayDetails {
-  id: number;
+export interface WayDetail {
+  readonly id: number;
   wayNumber: string;
   whoArive: string;
-  price: number;
-  seatsSelected: number[];
+  status: WayDetailStatus;
+  ticket: {
+    price: number;
+  };
+  baggage: {
+    price: number;
+    count: number;
+  };
+  discounts: Discount[];
   seats: Seat[];
   from: Location;
   to: Location;
-  bus:Bus;
+    bus:Bus;
 }
 export interface Bus {
   id: number;
@@ -52,62 +86,63 @@ export interface Bus {
   Bus: string;
   standPlace: number;
   bagPlace: number;
-
-
-
 }
-// Типы оплаты
-export type PaymentType = "cash" | "card" | "qr";
+
+
+// Enum оплаты
+export enum PaymentType {
+  CASH = "cash",
+  CARD = "card",
+  QRCODE = "qrcode",
+}
 // Интерфейс оплаты
-export interface Payment {
-  id: number;
-  type: PaymentType;
-  rus: string;
-}
+export interface Payment extends Options<PaymentType, "type"> {}
 
 // Типы возврата
 export type RefundType = "delay";
 // Интерфейс возврата
-export interface Refund {
-  id: number;
-  type: RefundReasonType;
-  rus: string;
+
+export interface Refund extends Options<RefundType, "type"> {
   amount?: number;
 }
 
-// Типы скидок
-export type DiscountType = "none" | "student" | "military" | "half" | "full";
+// Enum скидок
+export enum DiscountType {
+  NONE = "none",
+  STUDENT = "student",
+  MILITARY = "military",
+  HALF = "half",
+  FULL = "full",
+}
 // Интерфейс скидок
-export interface Discount {
-  id: number;
-  type: DiscountType;
+export interface Discount extends Options<DiscountType, "type"> {
   value: number;
-  rus: string;
 }
 
 // Интерфейс кассира
-export interface Cashier {
-  id: number;
-  name: string;
-}
+export interface Cashier extends User {}
 
 // Интерфейс кассы
 export interface CashRegister {
-  id: number;
+  readonly id: number;
   location: string;
   number: string;
 }
 
-// Типы билетов
-export type TicketType = "full" | "child" | "privilege" | "discount";
+
+// Enum билетов
+export enum TicketType {
+  FULL = "full",
+  CHILD = "child",
+  PRIVILEGE = "privilege",
+  DISCOUNT = "discount",
+}
+
 // Интерфейс билета
-export interface Ticket {
-  id: number;
-  type: Required<TicketType>;
-  rus: string;
-  seatId: number;
+export interface Ticket extends Options<TicketType, "type"> {
+  seatId: number | null;
   identification: Identification | null;
-  wayDetails: WayDetails | null;
+  wayDetail: WayDetail | null;
   discount?: Discount | null;
   baggage?: Baggage | null;
   payment: Payment | null;
@@ -118,67 +153,81 @@ export interface Ticket {
   refund?: Partial<Refund> | null;
 }
 
-// Типы багажа
-export type BaggageType = "none" | "small" | "big" | "huge";
+// Enum багажа
+export enum BaggageType {
+  NONE = "none",
+  SMALL = "small",
+  BIG = "big",
+  HUGE = "huge",
+}
 // Интерфейс багажа
-export interface Baggage {
-  id: number;
-  type: BaggageType;
-  rus: string;
+export interface Baggage extends Options<BaggageType, "type"> {
+  price: number;
 }
 
-// Типы льгот
-export type PrivilegeType = "none" | "student" | "military" | "half" | "full";
+// Enum льгот
+export enum PrivilegeType {
+  NONE = "none",
+  STUDENT = "student",
+  MILITARY = "military",
+}
 // Интерфейс льгот
-export interface Privilege {
-  id: number;
-  type: PrivilegeType;
-  rus: string;
-}
+export interface Privilege extends Options<PrivilegeType, "type"> {}
 
-// Типы документов
-export type DocumentType = "passport" | "driver" | "student" | "military";
-// Интерфейс документов
-export interface Document {
-  id: number;
-  type: DocumentType;
-  rus: string;
+// Enum документов
+export enum DocumentType {
+  NONE = "none",
+  PASSPORT = "passport",
+  DRIVER = "driver",
 }
+// Интерфейс документов
+export interface Document extends Options<DocumentType, "type"> {}
 
 export interface Identification {
-  // TODO: Переделать
-  series?: string;
-  number?: string;
-  document?: Document;
-  privilege?: Privilege;
-  studentTicketNumber?: string;
-  militaryCertificateNumber?: string;
-  birthCertificateSeries?: string;
-  birthCertificateNumber?: string;
+  document?: Document & {
+    series: string;
+    number: string;
+  };
+  privilege?: Privilege & {
+    series: string;
+    number: string;
+  };
+  student?: {
+    number: string;
+  };
+  military?: {
+    number: string;
+  };
+  child?: {
+    number: string;
+  };
 }
 
-// Типи гендеров
-export type GenderType = "male" | "female";
-// Интерфейс гендеров
-export interface Gender {
-  id: number;
-  type: GenderType;
-  rus: string;
+// Enum гендеров
+export enum GenderType {
+  NONE = "none",
+  MALE = "male",
+  FEMALE = "female",
 }
+// Интерфейс гендеров
+export interface Gender extends Options<GenderType, "type"> {}
 
 // Интерфейс пассажира
 export interface Passenger {
-  readonly id: number;
+  readonly id: number | string;
   firstName: string;
   lastName: string;
   patronymic: string;
-  gender: Partial<Gender> | null;
+  gender: Gender | null;
   birthday: string;
-  phone: string;
+  phone: {
+    code: string;
+    number: string;
+  };
   identification: Identification | null;
   ticket: {
-    there: Partial<Ticket>;
-    return: Partial<Ticket>;
+    there: Partial<Ticket> | null;
+    return: Partial<Ticket> | null;
   };
 }
 
@@ -188,8 +237,14 @@ export type Direction = "there" | "return";
 // Интерфейс маршрута
 export interface Way {
   date: string;
-  from: string;
-  to: string;
+  from: {
+    city: Partial<City>;
+    station: Partial<Station>;
+  };
+  to: {
+    city: Partial<City>;
+    station: Partial<Station>;
+  };
 }
 // Интерфейс информации маршрута
 export interface WayMenu {
@@ -198,4 +253,3 @@ export interface WayMenu {
   return: Way;
   there: Way;
 }
-

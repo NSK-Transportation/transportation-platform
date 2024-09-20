@@ -1,14 +1,18 @@
 import { Box } from "@/shared/ui";
 import { SeatInfoItem } from "./child/seatInfoItem/SeatInfoItem";
 import styles from "./InformationPanel.module.scss";
-import { useSaleTicket } from "../mainPanel";
+import { useInformationStore } from "./InformationPanel.store";
 
 export const InformationPanel = () => {
-  const { activeWay } = useSaleTicket();
+  const { activeWay } = useInformationStore();
 
-  if (!activeWay.there) {
+  if (!activeWay.there ?? !activeWay.return) {
     return <Box direction="center" className={styles.informationPanel} text="Данных нет" />;
-  } else {
-    return <SeatInfoItem />;
   }
+
+  return (
+    <div className={styles.informationPanel}>
+      <SeatInfoItem />
+    </div>
+  );
 };

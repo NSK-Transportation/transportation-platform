@@ -22,7 +22,7 @@ export const SaleTicket = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const step = Number(searchParams.get("step")) || 0;
 
-  const { activeWay, way, wayDetails, passengers } = useSaleTicket();
+  const { activeWay, way, wayDetail, passengers } = useSaleTicket();
 
   const steps: Step[] = useMemo(
     () => [
@@ -42,25 +42,25 @@ export const SaleTicket = () => {
     steps,
   });
 
-  const validateStep = useCallback(() => {
-    if (activeStep === 0 && !activeWay) return "Выберите маршрут";
-    if (activeStep === 1 && activeWay?.there?.seatsSelected.length === 0) return "Выберите места";
-    if (activeStep === 2 && passengers.some((p) => !p.ticket)) return "Заполните данные пассажира";
-    if (activeStep === 3 && way.returnHave && !wayDetails?.return?.length)
-      return "Выберите обратный рейс";
-    if (activeStep === 4 && way.returnHave && activeWay?.return?.seatsSelected.length === 0)
-      return "Выберите места на обратный рейс";
-    if (activeStep === 5 && way.returnHave && passengers.some((p) => !p.ticket.return))
-      return "Заполните данные пассажира для обратного рейса";
-    return null;
-  }, [activeStep, activeWay, passengers, way, wayDetails]);
+  // const validateStep = useCallback(() => {
+  //   if (activeStep === 0 && !activeWay) return "Выберите маршрут";
+  //   if (activeStep === 1 && passengers.some((p) => !p.ticket.there?.seatId)) return "Выберите места";
+  //   if (activeStep === 2 && passengers.some((p) => !p.ticket)) return "Заполните данные пассажира";
+  //   if (activeStep === 3 && way.returnHave && !wayDetail?.return?.length)
+  //     return "Выберите обратный рейс";
+  //   if (activeStep === 4 && way.returnHave && activeWay?.return?.seatsSelected.length === 0)
+  //     return "Выберите места на обратный рейс";
+  //   if (activeStep === 5 && way.returnHave && passengers.some((p) => !p.ticket.return))
+  //     return "Заполните данные пассажира для обратного рейса";
+  //   return null;
+  // }, [activeStep, activeWay, passengers, way, wayDetail]);
 
   const handleNextStep = () => {
-    const validationMessage = validateStep();
-    if (validationMessage) {
-      alert(validationMessage);
-      return;
-    }
+    // const validationMessage = validateStep();
+    // if (validationMessage) {
+    //   alert(validationMessage);
+    //   return;
+    // }
     setSearchParams({ step: String(activeStep + 1) });
     nextStep();
   };
@@ -102,7 +102,7 @@ export const SaleTicket = () => {
       default:
         return null;
     }
-  }, [activeStep, way, wayDetails, passengers]);
+  }, [activeStep, way, wayDetail, passengers]);
 
   return (
     <Stacks gap={16} direction="column" fullheight>
@@ -110,7 +110,7 @@ export const SaleTicket = () => {
 
       {getStepContent}
 
-      {!(wayDetails?.there?.length === 0 ?? wayDetails?.return?.length === 0) && (
+      {activeWay.there && (
         <Stacks gap={16} justifyContent="space-between">
           <Button
             variant="secondary"

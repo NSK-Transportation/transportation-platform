@@ -2,12 +2,11 @@
   position: relative;
   display: flex;
   align-items: center;
-  border: 1px solid var(--input-default-border-color);
-  background-color: var(--input-default-background);
   border-radius: 8px;
   font-size: 14px;
   padding: 10px 16px;
-  overflow: hidden;
+  // overflow: hidden;
+  background-color: var(--input-default-background);
   transition: all var(--transition-duration) var(--transition-timing-function);
   cursor: text;
 
@@ -16,10 +15,15 @@
     border: 0;
     outline: 0;
     width: 100%;
+    color: var(--main-text-color);
 
     &::placeholder {
       opacity: 0.5;
     }
+  }
+
+  &.border {
+    border: 1px solid var(--input-default-border-color);
   }
 
   &__message {
@@ -46,7 +50,6 @@
   }
 
   &:focus-within {
-    color: var(--input-default-color);
     box-shadow: 0 0 0 3px var(--input-default-color);
 
     input::placeholder {
@@ -74,7 +77,6 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
 
     &__pointer {
       cursor: pointer;
@@ -135,6 +137,24 @@
 
     input {
       color: var(--input-disabled-color);
+    }
+  }
+}
+
+.wrapper {
+  &-default {
+    background-color: var(--input-default-background);
+
+    input {
+      background-color: var(--input-default-background);
+    }
+  }
+
+  &-blue {
+    background-color: var(--input-blue-background);
+
+    input {
+      background-color: var(--input-blue-background);
     }
   }
 }

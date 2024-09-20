@@ -6,7 +6,7 @@ export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
   className?: string;
   children: ReactNode;
   direction?: "up" | "down" | "left" | "right";
-  text: string;
+  text: string | ReactNode;
 }
 
 const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(

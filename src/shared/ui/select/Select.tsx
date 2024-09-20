@@ -17,7 +17,7 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, options, fullWidth, value, placeholder, ...props }, ref) => {
+  ({ className, options, fullWidth, value, placeholder, ...props }, _ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState<Option | null>(null);
     const selectRef = useRef<HTMLDivElement>(null);
@@ -59,15 +59,13 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       };
     }, []);
 
-    const selectedLabel = selectedOption?.label || placeholder;
-
     return (
       <div
         className={clsx(styles.selectWrapper, className, { [styles.fullWidth]: fullWidth })}
         ref={selectRef}
       >
         <div className={clsx(styles.select, { [styles.open]: isOpen })} onClick={handleSelectClick}>
-          {selectedLabel}
+          {selectedOption ? selectedOption.label : <div className={styles.select__placeholder}>{placeholder}</div>}
           <span className={clsx(styles.arrow, { [styles.open]: isOpen })}>
             <IoIosArrowDown />
           </span>

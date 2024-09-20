@@ -140,8 +140,11 @@
   /* START Input */
   /* Default */
   --input-default-color: var(--color-blue-30);
+
   --input-default-background: var(--color-gray-10);
   --input-default-background-blue: var(--color-blue-20);
+  --input-blue-background: var(--color-blue-10);
+
   --input-default-border-color: var(--color-gray-50);
 
   --input-default-hover-color: var(--color-blue-50);
@@ -235,7 +238,8 @@
   --chip-warning-background: var(--color-warning);
 
   --chip-outline-color: var(--color-gray-10);
-  --chip-outline-border: var(--color-blue-30);
+  --chip-outline-blue-border: var(--color-blue-30);
+  --chip-outline-orange-border: var(--color-orange-40);
   --chip-outline-hover-border: var(--color-blue-70);
   --chip-outline-background: var(--color-blue-70);
   /* END Chip */
