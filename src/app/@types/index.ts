@@ -54,7 +54,6 @@ export interface Location {
   time: string;
   date: string;
 }
-
 // Типы статусов мест
 export type WayDetailStatus = "sale" | "dispatched" | "closed" | "canceled" | "delayed" | "noSeats";
 // Интерфейс детализации информации маршрута
@@ -74,7 +73,21 @@ export interface WayDetail {
   seats: Seat[];
   from: Location;
   to: Location;
+    bus:Bus;
 }
+export interface Bus {
+  id: number;
+  occupied: number;
+  free: number;
+  Number: string;
+  driver: string;
+  nameBus: string;
+  atp: string;
+  Bus: string;
+  standPlace: number;
+  bagPlace: number;
+}
+
 
 // Enum оплаты
 export enum PaymentType {
@@ -88,6 +101,7 @@ export interface Payment extends Options<PaymentType, "type"> {}
 // Типы возврата
 export type RefundType = "delay";
 // Интерфейс возврата
+
 export interface Refund extends Options<RefundType, "type"> {
   amount?: number;
 }
@@ -114,6 +128,7 @@ export interface CashRegister {
   location: string;
   number: string;
 }
+
 
 // Enum билетов
 export enum TicketType {
