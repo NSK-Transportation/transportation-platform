@@ -1,12 +1,13 @@
 export interface Config {
   type: string;
-  label: string;
+  label?: string;
   key?: string;
   placeholder?: string;
   inputType?: string;
   optionsKey?: string;
   group?: string;
   slots?: boolean;
+  checkbox?: string | boolean;
 }
 
 export interface ConfigGroup {
@@ -26,9 +27,8 @@ export const config: ConfigGroup = {
       placeholder: "Выберите билет",
     },
     {
-      type: "select",
-      label: "Багажный билет",
-      key: "ticket.[direction].baggage.type",
+      type: "typography",
+      key: "ticket.[direction].baggage.count",
       optionsKey: "baggages",
       placeholder: "Выберите багаж",
     },
@@ -178,6 +178,7 @@ export const config: ConfigGroup = {
       placeholder: "(---) --- -- --",
       optionsKey: "countries",
       slots: true,
+      checkbox: "Отказ предоставления телефона",
     },
     {
       type: "radioGroup",

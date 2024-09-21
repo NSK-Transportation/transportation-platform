@@ -18,8 +18,7 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
     setPassenger,
     options: {
       tickets,
-      discount: { main, child },
-      baggages,
+      discounts: { main, child },
       privileges,
       documents,
       genders,
@@ -73,7 +72,7 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
                   />
                 </Stacks>
                 <Grid gap={16}>
-                  <Grid columns="repeat(2, 1fr)" gap={16}>
+                  <Grid columns="repeat(2, 1fr)" gap={16} alignItems="center  ">
                     <FormFields
                       configGroup={config.step1}
                       passenger={passenger}
@@ -82,7 +81,6 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
                         tickets,
                         main,
                         child,
-                        baggages,
                         privileges,
                         genders,
                       }}
@@ -95,7 +93,7 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
                     <>
                       <Divider />
 
-                      <Grid columns="repeat(2, 1fr)" gap={16} alignItems="flex-start">
+                      <Grid columns="repeat(2, 1fr)" gap={16} alignItems="flex-end">
                         {passenger.ticket?.[direction]?.type && (
                           <FormFields
                             configGroup={config.step2[passenger.ticket[direction].type]}
@@ -105,7 +103,6 @@ export const PassengerInfoItem = ({ direction }: PassengerInfoItemProps) => {
                               tickets,
                               main,
                               child,
-                              baggages,
                               documents,
                               privileges, 
                             }}

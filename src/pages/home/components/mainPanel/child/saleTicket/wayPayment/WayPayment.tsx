@@ -3,6 +3,9 @@ import { useSaleTicket } from "../SaleTicket.store";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { getSumValues } from "@/shared/utils";
+import { Payment, PaymentType } from "@/app/@types";
+import { useMutation } from "react-query";
+import { postPayment } from "@/shared/api/mutations";
 
 export const WayPayment = () => {
   const {
@@ -15,13 +18,7 @@ export const WayPayment = () => {
 
   useEffect(() => {
     if (!activeWay.there?.id) {
-      navigate(
-        {
-          pathname: "/home/sale-ticket",
-          search: "?step=0",
-        },
-        { replace: true },
-      );
+      navigate("/home/sale-ticket?step=0", { replace: true });
       navigate(0);
     }
   }, [activeWay, navigate]);
@@ -32,8 +29,62 @@ export const WayPayment = () => {
 
   const ticketSum = getSumValues(activeWay.there?.ticket.price, activeWay.return?.ticket.price);
   const baggageSum = getSumValues(activeWay.there?.baggage.price, activeWay.return?.baggage.price);
-
   const totalSum = getSumValues(ticketSum, baggageSum);
+
+  const renderPriceDetail = (
+    label: string,
+    sum: number,
+    therePrice: number,
+    returnPrice?: number,
+  ) => (
+    <Typography variant="h5">
+      {label}:{" "}
+      <Tooltip
+        text={
+          <>
+            <Typography variant="h5" color="secondary">
+              Туда: {therePrice} руб
+            </Typography>
+            {returnPrice && (
+              <Typography variant="h5" color="secondary">
+                Обратно: {returnPrice} руб
+              </Typography>
+            )}
+          </>
+        }
+      >
+        <Typography variant="h5" color="info" line="underline">
+          {sum} руб.
+        </Typography>
+      </Tooltip>
+    </Typography>
+  );
+
+  const handlePayment = (payment: Payment) => {
+    const { mutateAsync } = useMutation(() => postPayment(payment, totalSum));
+    // passengers.forEach((passenger) => {
+    //   setPassenger(passenger.id, "there", activeWay.there, {
+    //     ticket: {
+    //       there: {
+    //         payment: {
+    //           id: payment.id,
+    //           type: payment.type,
+    //         },
+    //       },
+    //     },
+    //   });
+    // });
+
+    if (payment.type === PaymentType.CASH) {
+      console.log("Оплата наличными подтверждена. Спасибо!");
+      // navigate("/home/sale-ticket/success");
+    } else {
+      console.log("Перенаправление");
+    }
+  };
+
+  const passengerHasPayment = (payment: Payment) =>
+    passengers.some((passenger) => passenger?.ticket?.there?.payment?.type === payment.type);
 
   return (
     <Box>
@@ -52,64 +103,32 @@ export const WayPayment = () => {
             <Typography variant="h5" color="secondary">
               Из чего состоит сумма:
             </Typography>
-            <Typography variant="h5">
-              Пассажирский билет:{" "}
-              <Tooltip
-                text={
-                  <>
-                    <Typography variant="h5" color="secondary">
-                      Туда: {activeWay.there?.ticket.price} руб
-                    </Typography>
-                    <Typography variant="h5" color="secondary">
-                      Обратно: {activeWay.return?.ticket.price} руб
-                    </Typography>
-                  </>
-                }
-              >
-                <Typography variant="h5" color="info" style={{ textDecorationLine: "underline" }}>
-                  {ticketSum} руб.
-                </Typography>
-              </Tooltip>{" "}
-            </Typography>
-            <Typography variant="h5">
-              Багажный билет:{" "}
-              <Tooltip
-                text={
-                  <>
-                    <Typography variant="h5" color="secondary">
-                      Туда: {activeWay.there?.baggage.price} руб
-                    </Typography>
-                    <Typography variant="h5" color="secondary">
-                      Обратно: {activeWay.return?.baggage.price} руб
-                    </Typography>
-                  </>
-                }
-              >
-                <Typography variant="h5" color="info" style={{ textDecorationLine: "underline" }}>
-                  {baggageSum} руб.
-                </Typography>
-              </Tooltip>{" "}
-            </Typography>
+            {renderPriceDetail(
+              "Пассажирский билет",
+              ticketSum,
+              activeWay.there?.ticket.price,
+              activeWay.return?.ticket.price,
+            )}
+            {renderPriceDetail(
+              "Багажный билет",
+              baggageSum,
+              activeWay.there?.baggage.price,
+              activeWay.return?.baggage.price,
+            )}
             <Typography variant="h5">Дополнительные услуги: 0 рублей</Typography>
           </Stacks>
         </Stacks>
 
-        <Grid gap={16} columns={"1fr 1fr 1fr"}>
-          {payments.map((payment, index) => {
-            return (
-              <Button
-                key={payment.id}
-                variant={
-                  passengers[index]?.ticket?.there?.payment?.id === payment?.id
-                    ? "selected"
-                    : "payment"
-                }
-                label={payment.rus}
-                size="large"
-                onClick={() => {}}
-              />
-            );
-          })}
+        <Grid gap={16} columns="1fr 1fr 1fr">
+          {payments.map((payment) => (
+            <Button
+              key={payment.id}
+              variant={Boolean(passengerHasPayment(payment)) ? "selected" : "payment"}
+              label={payment.rus}
+              size="large"
+              onClick={() => handlePayment(payment)}
+            />
+          ))}
         </Grid>
       </Stacks>
     </Box>
