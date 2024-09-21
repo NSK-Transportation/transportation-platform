@@ -36,10 +36,9 @@ export const CustomCalendar: FC<CalendarProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const { refs, floatingStyles, context } = useFloating({
-    placement: "bottom",
     open: isOpen,
     onOpenChange: setIsOpen,
-    middleware: [offset(20), flip(), shift()],
+    middleware: [offset(10), flip(), shift()],
     whileElementsMounted: autoUpdate,
   });
 
@@ -56,6 +55,7 @@ export const CustomCalendar: FC<CalendarProps> = ({
         message={message}
         border={border}
         placeholder={placeholder}
+        style={{ cursor: "pointer" }}
         value={value}
         readOnly
         {...getReferenceProps()}

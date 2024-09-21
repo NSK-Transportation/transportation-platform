@@ -63,6 +63,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           [styles[`wrapper-${wrapper}`]]: wrapper,
         })}
         onClick={handleDivClick}
+        ref={inputRef}
+        {...props}
       >
         {slotsLeft && (
           <div
@@ -73,7 +75,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {slotsLeft}
           </div>
         )}
-        <input ref={inputRef} disabled={disabled} {...props} />
+        <input disabled={disabled} {...props} />
         {message && <div className={styles.input__message}>{message}</div>}
         {slotsRight && (
           <div
