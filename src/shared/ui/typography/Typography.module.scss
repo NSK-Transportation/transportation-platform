@@ -59,6 +59,9 @@
   &.success {
     color: var(--font-success);
   }
+  &.table-info {
+    color: var(--font-table-info);
+  }
 
   &.error {
     color: var(--font-error);
