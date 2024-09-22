@@ -23,6 +23,8 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string | ReactNode;
   fullWidth?: boolean;
   loading?: boolean;
+  slotsLeft?: ReactNode;
+  slotsRight?: ReactNode;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -36,6 +38,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       label,
       fullWidth,
       loading,
+      slotsLeft,
+      slotsRight,
       ...props
     },
     ref,
@@ -64,7 +68,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
+        {slotsLeft && slotsLeft}
         {label}
+        {slotsRight && slotsRight}
       </button>
     );
   },
