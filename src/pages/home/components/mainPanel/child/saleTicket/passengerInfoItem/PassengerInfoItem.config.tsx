@@ -1,12 +1,13 @@
 export interface Config {
   type: string;
-  label: string;
+  label?: string;
   key?: string;
   placeholder?: string;
   inputType?: string;
   optionsKey?: string;
   group?: string;
   slots?: boolean;
+  checkbox?: string | boolean;
 }
 
 export interface ConfigGroup {
@@ -26,11 +27,8 @@ export const config: ConfigGroup = {
       placeholder: "Выберите билет",
     },
     {
-      type: "select",
-      label: "Багажный билет",
-      key: "ticket.[direction].baggage.type",
-      optionsKey: "baggages",
-      placeholder: "Выберите багаж",
+      type: "typography",
+      key: "ticket.[direction].baggage.count",
     },
   ],
 
@@ -46,6 +44,7 @@ export const config: ConfigGroup = {
       {
         type: "input",
         label: "Серия",
+        inputType: "number",
         key: "identification.document.series",
         placeholder: "-- --",
         group: "series-number",
@@ -53,6 +52,7 @@ export const config: ConfigGroup = {
       {
         type: "input",
         label: "Номер",
+        inputType: "number",
         key: "identification.document.number",
         placeholder: "--- ---",
         group: "series-number",
@@ -77,6 +77,7 @@ export const config: ConfigGroup = {
       {
         type: "input",
         label: "Серия",
+        inputType: "number",
         key: "identification.privilege.series",
         placeholder: "-- --",
         group: "privilege-series-number",
@@ -84,6 +85,7 @@ export const config: ConfigGroup = {
       {
         type: "input",
         label: "Номер",
+        inputType: "number",
         key: "identification.privilege.number",
         placeholder: "--- ---",
         group: "privilege-series-number",
@@ -98,6 +100,7 @@ export const config: ConfigGroup = {
       {
         type: "input",
         label: "Серия",
+        inputType: "number",
         key: "identification.document.series",
         placeholder: "-- --",
         group: "document-series-number",
@@ -105,6 +108,7 @@ export const config: ConfigGroup = {
       {
         type: "input",
         label: "Номер",
+        inputType: "number",
         key: "identification.document.number",
         placeholder: "--- ---",
         group: "document-series-number",
@@ -119,6 +123,7 @@ export const config: ConfigGroup = {
       },
       {
         type: "input",
+        inputType: "number",
         label: "Свидетельтво о рождении",
         key: "identification.child.number",
         placeholder: "Введите номер",
@@ -130,6 +135,7 @@ export const config: ConfigGroup = {
     student: [
       {
         type: "input",
+        inputType: "number",
         label: "Номер студенческого",
         key: "identification.student.number",
         placeholder: "Введите номер",
@@ -138,6 +144,7 @@ export const config: ConfigGroup = {
     military: [
       {
         type: "input",
+        inputType: "number",
         label: "Номер справки",
         key: "identification.military.number",
         placeholder: "Введите номер",
@@ -173,11 +180,13 @@ export const config: ConfigGroup = {
     },
     {
       type: "input",
+      inputType: "phone",
       label: "Телефон",
       key: "phone.number",
       placeholder: "(---) --- -- --",
       optionsKey: "countries",
       slots: true,
+      checkbox: "Отказ предоставления телефона",
     },
     {
       type: "radioGroup",

@@ -96,7 +96,7 @@ export const SeatMainItem = ({ direction }: SeatMainItemProps) => {
 
           <Stacks justifyContent="center" gap={16}>
             {statuses.map((status) => (
-              <Label key={status.id} direction="right" text={status.rus}>
+              <Label key={status.id} direction="right" text={status.rus || ""}>
                 <Button
                   style={{ cursor: "default" }}
                   size="small"

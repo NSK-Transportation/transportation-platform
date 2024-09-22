@@ -1,5 +1,5 @@
-import { forwardRef, useState } from "react";
-import { useFloating, shift, offset, flip, autoUpdate } from "@floating-ui/react";
+import { forwardRef, Fragment, useState } from "react";
+import { useFloating, shift, offset, flip, autoUpdate, useClick } from "@floating-ui/react";
 import clsx from "clsx";
 import styles from "./DropdownStation.module.scss";
 import { Input, InputProps } from "../input/Input";
@@ -9,12 +9,12 @@ import { Stacks } from "../stacks/Stacks";
 import { Grid } from "../grid/Grid";
 import { Divider } from "../divider/Divider";
 import { createPortal } from "react-dom";
-import { City } from "@/app/@types";
+import { City, Way } from "@/app/@types";
 
 export interface DropdownProps extends Omit<InputProps, "onClick"> {
   options: City[];
   onClick: (city: any, station: any) => void;
-  selected: any;
+  selected: Way["from"] | Way["to"];
 }
 
 export const DropdownStation = forwardRef<HTMLInputElement, DropdownProps>(
@@ -24,19 +24,21 @@ export const DropdownStation = forwardRef<HTMLInputElement, DropdownProps>(
     const { refs, floatingStyles, context } = useFloating({
       open: isOpen,
       onOpenChange: setIsOpen,
-      middleware: [offset(20), flip(), shift()],
+      middleware: [offset(10), flip(), shift()],
       whileElementsMounted: autoUpdate,
     });
 
+    const click = useClick(context);
     const dismiss = useDismiss(context);
 
-    const { getReferenceProps, getFloatingProps } = useInteractions([dismiss]);
+    const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss]);
 
     return (
       <>
         <Input
           onWrapperClick={() => setIsOpen(!isOpen)}
           ref={refs.setReference}
+          style={{ cursor: "pointer" }}
           readOnly
           {...props}
           {...getReferenceProps()}
@@ -60,22 +62,28 @@ export const DropdownStation = forwardRef<HTMLInputElement, DropdownProps>(
               </Grid>
               <ul className={styles.options}>
                 {options.map((city) => (
-                  <Grid key={city.id} columns="repeat(2, 1fr)">
-                    <li className={styles.optionName}>{city.rus}</li>
+                  <Grid key={city.id} columns="repeat(2, 1fr)" alignItems="flex-start">
+                    <li
+                      className={clsx(styles.optionItem, {
+                        [styles.selected]: city.name === selected.city,
+                      })}
+                      onClick={() => onClick(city, null)}
+                    >
+                      {city.rus}
+                    </li>
                     <Stacks direction="column">
                       {city.stations.map((station) => (
-                        <>
+                        <Fragment key={station.id}>
                           <li
-                            key={station.id}
                             className={clsx(styles.optionItem, {
-                              [styles.selected]: station.name === selected?.name,
+                              [styles.selected]: station.name === selected.station,
                             })}
                             onClick={() => onClick(city, station)}
                           >
                             {station.rus}
                           </li>
                           <Divider />
-                        </>
+                        </Fragment>
                       ))}
                     </Stacks>
                   </Grid>

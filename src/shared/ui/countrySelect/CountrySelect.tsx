@@ -19,6 +19,7 @@ import {
   flip,
 } from "@floating-ui/react";
 import { Country } from "@/app/@types";
+import { createPortal } from "react-dom";
 
 export interface CountrySelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: Country[];
@@ -33,7 +34,7 @@ export const CountrySelect = forwardRef<HTMLSelectElement, CountrySelectProps>(
     const { refs, floatingStyles, context } = useFloating({
       open: isDropdownOpen,
       onOpenChange: setIsDropdownOpen,
-      middleware: [offset(), flip()],
+      middleware: [offset(10), flip()],
       whileElementsMounted: autoUpdate,
     });
 
@@ -87,32 +88,34 @@ export const CountrySelect = forwardRef<HTMLSelectElement, CountrySelectProps>(
           </span>
           <span>{selectedOption?.dialCode}</span>
         </div>
-        {isDropdownOpen && (
-          <ul
-            className={styles.countryList}
-            style={floatingStyles}
-            ref={refs.setFloating}
-            {...getFloatingProps()}
-            role="listbox"
-            aria-activedescendant={selectedOption?.code}
-          >
-            {options?.map((option) => (
-              <li
-                key={option.code}
-                onClick={() => handleOptionClick(option)}
-                className={clsx(styles.countryList__countryItem, {
-                  [styles.countryList__selected]: option.code === selectedOption?.code,
-                })}
-                role="option"
-                aria-selected={option.code === selectedOption?.code}
-              >
-                <img src={option.flag} alt={option.name} className={styles.flag} loading="lazy" />
-                <span className={styles.dialCode}>{option.dialCode}</span>
-                <span className={styles.countryName}>{option.rus}</span>
-              </li>
-            ))}
-          </ul>
-        )}
+        {isDropdownOpen &&
+          createPortal(
+            <ul
+              className={styles.countryList}
+              style={floatingStyles}
+              ref={refs.setFloating}
+              {...getFloatingProps()}
+              role="listbox"
+              aria-activedescendant={selectedOption?.code}
+            >
+              {options?.map((option) => (
+                <li
+                  key={option.code}
+                  onClick={() => handleOptionClick(option)}
+                  className={clsx(styles.countryList__countryItem, {
+                    [styles.countryList__selected]: option.code === selectedOption?.code,
+                  })}
+                  role="option"
+                  aria-selected={option.code === selectedOption?.code}
+                >
+                  <img src={option.flag} alt={option.name} className={styles.flag} loading="lazy" />
+                  <span className={styles.dialCode}>{option.dialCode}</span>
+                  <span className={styles.countryName}>{option.rus}</span>
+                </li>
+              ))}
+            </ul>,
+            document.body,
+          )}
       </div>
     );
   },
