@@ -107,7 +107,7 @@ export const Field = ({
                   },
                 })
               }
-              label={"Отказ предоставления телефона"}
+              label={checkbox.toString()}
             />
           )}
         </Label>
