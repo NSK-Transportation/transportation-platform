@@ -19,9 +19,9 @@ export interface Authorization extends Pick<User, "id"> {
 }
 
 export type Options<T, K extends string> = {
-  [key in K]: T;
+  [key in K]?: T;
 } & {
-  readonly id: number;
+  readonly id?: number;
   rus?: string;
 };
 
@@ -65,15 +65,12 @@ export interface WayDetail {
   ticket: {
     price: number;
   };
-  baggage: {
-    price: number;
-    count: number;
-  };
+  baggage: Baggage;
   discounts: Discount[];
   seats: Seat[];
   from: Location;
   to: Location;
-    bus:Bus;
+  bus: Bus;
 }
 export interface Bus {
   id: number;
@@ -88,7 +85,6 @@ export interface Bus {
   bagPlace: number;
 }
 
-
 // Enum оплаты
 export enum PaymentType {
   CASH = "cash",
@@ -98,11 +94,8 @@ export enum PaymentType {
 // Интерфейс оплаты
 export interface Payment extends Options<PaymentType, "type"> {}
 
-// Типы возврата
-export type RefundType = "delay";
 // Интерфейс возврата
-
-export interface Refund extends Options<RefundType, "type"> {
+export interface Refund {
   amount?: number;
 }
 
@@ -128,7 +121,6 @@ export interface CashRegister {
   location: string;
   number: string;
 }
-
 
 // Enum билетов
 export enum TicketType {
@@ -163,6 +155,7 @@ export enum BaggageType {
 // Интерфейс багажа
 export interface Baggage extends Options<BaggageType, "type"> {
   price: number;
+  count: number;
 }
 
 // Enum льгот
@@ -172,7 +165,10 @@ export enum PrivilegeType {
   MILITARY = "military",
 }
 // Интерфейс льгот
-export interface Privilege extends Options<PrivilegeType, "type"> {}
+export interface Privilege extends Options<PrivilegeType, "type"> {
+  series: string;
+  number: string;
+}
 
 // Enum документов
 export enum DocumentType {
@@ -181,17 +177,14 @@ export enum DocumentType {
   DRIVER = "driver",
 }
 // Интерфейс документов
-export interface Document extends Options<DocumentType, "type"> {}
+export interface Document extends Options<DocumentType, "type"> {
+  series: string;
+  number: string;
+}
 
 export interface Identification {
-  document?: Document & {
-    series: string;
-    number: string;
-  };
-  privilege?: Privilege & {
-    series: string;
-    number: string;
-  };
+  document?: Partial<Document>;
+  privilege?: Privilege;
   student?: {
     number: string;
   };
