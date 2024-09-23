@@ -1,56 +1,34 @@
-import { Box, Label, Select, Stacks, Typography } from "@/shared/ui";
-import { RefundType } from "@/app/@types";
-import { useRefundTicket } from "../RefundTicket.store";
+import { DownloadIcon } from "@/shared/assets";
+import { Alert, Box, Divider, Stacks, Typography } from "@/shared/ui";
 
 export const InfoAboutRefund = () => {
-  const { passenger, reasons, setPassenger } = useRefundTicket();
-
   return (
     <Box fullWidth style={{ alignSelf: "flex-start" }}>
       <Stacks fullwidth direction="column" gap={16}>
-        <Typography weight="bold" variant="h3">
-          Информация о возврате
-        </Typography>
-        <Label variant="h3" text="Причина возврата">
-          <Select
-            placeholder="Выберите причину"
-            options={reasons.map((reason) => ({
-              label: reason.rus,
-              value: reason.type,
-            }))}
-            value={passenger.ticket.refund?.type}
-            onChange={(event) => {
-              setPassenger({
-                ticket: {
-                  refund: {
-                    type: event.target.value as RefundType,
-                  },
-                },
-              });
-            }}
-          />
-        </Label>
-        {passenger.lastName && (
-          passenger.ticket.refund?.type === "delay" && (
-            <>
-              <Typography color="info" variant="h4">
-                Билет возвращается: {"Null"}
+        <Typography variant="h3">Информация о возврате</Typography>
+        <Stacks gap={16}>
+          <Divider orientation="vertical" color="blue" />
+          <Typography variant="h3" color="primary" cursor="pointer">
+            <Stacks gap={8}>
+              Печать бланка на возврат билета
+              <DownloadIcon size={18} />
+            </Stacks>
+          </Typography>
+        </Stacks>
+        <Alert
+          label={
+            <Stacks direction="column">
+              <Typography variant="h4">Билет возвращается:</Typography>
+              <Typography variant="h4" color="primary-second">
+                в течении 3ч после отправления рейса
               </Typography>
-              <Typography variant="h3" weight="bold">
-                Удержано: {"Null"}
-              </Typography>
-              <Typography variant="h3" weight="bold">
-                Процент удержания: {"Null"}
-              </Typography>
-              <Typography variant="h3" weight="bold">
-                Возврат: {"Null"}
-              </Typography>
-              <Typography variant="h3" weight="bold">
-                Тип возврата: {"Null"}
-              </Typography>
-            </>
-          ),
-        )}
+            </Stacks>
+          }
+        />
+        <Typography variant="h3">Удержано: {"Null"}</Typography>
+        <Typography variant="h3">Процент удержания: {"Null"}</Typography>
+        <Typography variant="h3">Возврат: {"Null"}</Typography>
+        <Typography variant="h3">Тип возврата: {"Null"}</Typography>
       </Stacks>
     </Box>
   );

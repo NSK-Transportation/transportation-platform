@@ -39,10 +39,10 @@ export const RefundTicket = () => {
             <InfoAboutRefund />
             <Stacks fullwidth justifyContent="flex-end">
               <Button
-                disabled={!(passenger.ticket.refund?.type && passenger.lastName)}
+                disabled={!(passenger.ticket && passenger.lastName)}
                 loading={isLoading}
                 label="Возврат"
-                onClick={() => mutate({ type: passenger.ticket.refund?.type })}
+                onClick={() => mutate({ type: passenger.ticket })}
               />
             </Stacks>
           </Stacks>
@@ -52,7 +52,7 @@ export const RefundTicket = () => {
           <InfoAboutTicket />
         </Grid>
       </Grid>
-      <Popup icon={<CashReturnIcon />} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      {/* <Popup icon={<CashReturnIcon />} isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <Stacks gap={16} direction="column" alignItems="center ">
           <Typography variant="h3">
             Возврат средств на сумму {passenger?.ticket.refund?.amount || 0} руб. совершен
@@ -64,7 +64,7 @@ export const RefundTicket = () => {
             Средства вернутся в течение 3-х рабочих дней
           </Typography>
         </Stacks>
-      </Popup>
+      </Popup> */}
     </>
   );
 };
