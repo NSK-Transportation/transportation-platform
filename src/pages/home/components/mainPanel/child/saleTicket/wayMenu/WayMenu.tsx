@@ -53,8 +53,8 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
       [direction]: {
         ...way[direction],
         [name]: {
-          city: city,
-          station: station,
+          city: city.name,
+          station: station?.name,
         },
       },
     });
@@ -74,15 +74,21 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
     }
   };
 
+  const handleTodayClick = () => {
+    const today = new Date();
+    handleDateChange(today);
+    setMessage({ ...message, date: "" });
+  };
+
   const handleClick = async () => {
     setWayDetail(null, direction);
     setActiveWay(null, direction);
     const newMessage = { ...message };
 
-    if (!way[direction].from) {
+    if (!way[direction].from.city) {
       newMessage.from = "Пожалуйста, выберите станцию";
     }
-    if (!way[direction].to) {
+    if (!way[direction].to.city) {
       newMessage.to = "Пожалуйста, выберите станцию";
     }
     if (!way[direction].date) {
@@ -99,6 +105,16 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
       setWayDetail(data, direction);
     }
   };
+
+  const cityFrom = cities.find((city) => city.name === way[direction]?.from?.city);
+  const stationFrom = cityFrom?.stations.find(
+    (station) => station.name === way[direction]?.from?.station,
+  );
+
+  const cityTo = cities.find((city) => city.name === way[direction]?.to?.city);
+  const stationTo = cityTo?.stations.find(
+    (station) => station.name === way[direction]?.to?.station,
+  );
 
   return (
     <>
@@ -119,8 +135,14 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
             />
             <DropdownStation
               name="from"
-              value={`${way[direction]?.from.city?.rus}-${way[direction]?.from.station.rus}`}
-              selected={way[direction]?.to.station}
+              value={
+                way[direction]?.from.city
+                  ? stationFrom?.rus
+                    ? `${cityFrom?.rus}: ${stationFrom?.rus}`
+                    : `${cityFrom?.rus}`
+                  : ""
+              }
+              selected={way[direction]?.from}
               onClick={(city, station) => handleStationChange(city, station, "from")}
               placeholder="Станция отправления"
               message={message.from}
@@ -129,8 +151,14 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
             />
             <DropdownStation
               name="to"
-              value={`${way[direction]?.to.city.rus}-${way[direction]?.to.station.rus}`}
-              selected={way[direction]?.to.station}
+              value={
+                way[direction]?.to.city
+                  ? stationTo?.rus
+                    ? `${cityTo?.rus}: ${stationTo?.rus}`
+                    : `${cityTo?.rus}`
+                  : ""
+              }
+              selected={way[direction]?.to}
               onClick={(city, station) => handleStationChange(city, station, "to")}
               placeholder="Станция прибытия"
               message={message.to}
@@ -139,7 +167,15 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
             />
           </InputGroup>
 
-          <Stacks justifyContent="flex-end">
+          <Stacks justifyContent="space-between">
+            <Typography
+              cursor="pointer"
+              onClick={handleTodayClick}
+              variant="h3"
+              color="default-white"
+            >
+              Сегодня
+            </Typography>
             <Typography
               cursor="pointer"
               onClick={() => setWay({ ...way, returnHave: !way.returnHave })}

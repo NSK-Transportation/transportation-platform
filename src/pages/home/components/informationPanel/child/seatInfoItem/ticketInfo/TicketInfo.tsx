@@ -4,6 +4,7 @@ import { type Config, config } from "./TicketInfo.config";
 import _ from "lodash";
 import { getResolveKeyPath } from "@/shared/utils";
 import { SaleTicketStore } from "@/pages/home/components/mainPanel";
+import { Fragment } from "react/jsx-runtime";
 
 type PassengerWithDirection = Passenger & { direction: Direction };
 
@@ -31,18 +32,23 @@ export const TicketInfo = ({
   ticketType: TicketType;
   passenger: Passenger;
   direction: Direction;
-  options: Options<SaleTicketStore["options"]>;
+  options: Partial<
+    Options<
+      SaleTicketStore["options"][keyof SaleTicketStore["options"]],
+      keyof SaleTicketStore["options"]
+    >
+  >;
 }) => {
   const renderFields = (config: Config[], passenger: Passenger) => {
     const groupedFields = _.groupBy(config, "group");
 
     return _.map(groupedFields, (fields, group) => (
-      <>
+      <Fragment key={group}>
         {group != "undefined" ? (
-          <Stacks key={group}>
+          <Stacks>
             {fields.map(({ label, key, optionsKey }, index) => {
               const value = _.get(passenger, getResolveKeyPath(key || "", { direction }));
-              const rus = options?.[optionsKey || ""]?.find(
+              const rus = (options as any)?.[optionsKey as keyof typeof options]?.find(
                 (option: any) => option.type === value,
               )?.rus;
 
@@ -50,7 +56,7 @@ export const TicketInfo = ({
                 <PassengerInfo
                   key={index}
                   label={label}
-                  value={options?.[optionsKey || ""] ? rus : value}
+                  value={(options as any)?.[optionsKey || ""] ? rus : value}
                 />
               );
             })}
@@ -59,7 +65,7 @@ export const TicketInfo = ({
           <>
             {fields.map(({ label, key, optionsKey }, index) => {
               const value = _.get(passenger, getResolveKeyPath(key || "", { direction }));
-              const rus = options?.[optionsKey || ""]?.find(
+              const rus = (options as any)?.[optionsKey || ""]?.find(
                 (option: any) => option.type === value,
               )?.rus;
 
@@ -67,13 +73,13 @@ export const TicketInfo = ({
                 <PassengerInfo
                   key={index}
                   label={label}
-                  value={options?.[optionsKey || ""] ? rus : value}
+                  value={(options as any)?.[optionsKey || ""] ? rus : value}
                 />
               );
             })}
           </>
         )}
-      </>
+      </Fragment>
     ));
   };
 

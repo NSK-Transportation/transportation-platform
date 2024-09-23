@@ -1,7 +1,7 @@
 :root {
   /* Global */
   --main-background-color: #f6f6f6;
-  --main-text-color: var(--color-gray-100);
+  --main-text-color: var(--color-gray-80);
   --main-text-color-white: var(--color-gray-10);
 
   /* Colors */
@@ -111,7 +111,7 @@
   --button-secondary-click-border: var(--color-orange-70);
 
   /* Tertiary */
-  --button-tertiary-color: var(--color-gray-100);
+  --button-tertiary-color: var(--color-gray-80);
 
   --button-tertiary-hover-color: var(--color-blue-50);
   --button-tertiary-hover-background: var(--color-blue-20);

@@ -47,10 +47,10 @@ export interface Status extends Options<SeatStatus, "status"> {}
 
 // Интерфейс локации (откуда - куда)
 export interface Location {
-  city: City;
+  city: City["name"];
   street: string;
   house: string;
-  station: Station;
+  station: Station["name"];
   time: string;
   date: string;
 }
@@ -89,10 +89,12 @@ export interface Bus {
 export enum PaymentType {
   CASH = "cash",
   CARD = "card",
-  QRCODE = "qrcode",
+  SBP = "sbp",
 }
 // Интерфейс оплаты
-export interface Payment extends Options<PaymentType, "type"> {}
+export interface Payment extends Options<PaymentType, "type"> {
+  amount?: number;
+}
 
 // Интерфейс возврата
 export interface Refund {
@@ -115,13 +117,6 @@ export interface Discount extends Options<DiscountType, "type"> {
 // Интерфейс кассира
 export interface Cashier extends User {}
 
-// Интерфейс кассы
-export interface CashRegister {
-  readonly id: number;
-  location: string;
-  number: string;
-}
-
 // Enum билетов
 export enum TicketType {
   FULL = "full",
@@ -139,21 +134,14 @@ export interface Ticket extends Options<TicketType, "type"> {
   baggage?: Baggage | null;
   payment: Payment | null;
   cashier: Cashier | null;
-  cashRegister: CashRegister | null;
   saleDate: string;
   saleTime: string;
   refund?: Partial<Refund> | null;
 }
 
-// Enum багажа
-export enum BaggageType {
-  NONE = "none",
-  SMALL = "small",
-  BIG = "big",
-  HUGE = "huge",
-}
 // Интерфейс багажа
-export interface Baggage extends Options<BaggageType, "type"> {
+export interface Baggage {
+  count: number;
   price: number;
   count: number;
 }
@@ -216,6 +204,7 @@ export interface Passenger {
   phone: {
     code: string;
     number: string;
+    refusalToProvide: boolean;
   };
   identification: Identification | null;
   ticket: {
@@ -231,12 +220,12 @@ export type Direction = "there" | "return";
 export interface Way {
   date: string;
   from: {
-    city: Partial<City>;
-    station: Partial<Station>;
+    city: City["name"];
+    station: Station["name"];
   };
   to: {
-    city: Partial<City>;
-    station: Partial<Station>;
+    city: City["name"];
+    station: Station["name"];
   };
 }
 // Интерфейс информации маршрута

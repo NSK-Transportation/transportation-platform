@@ -1,4 +1,14 @@
-import { Chip, CountrySelect, Input, Label, RadioGroup, Select, Stacks } from "@/shared/ui";
+import {
+  Checkbox,
+  Chip,
+  CountrySelect,
+  Input,
+  Label,
+  RadioGroup,
+  Select,
+  Stacks,
+  Typography,
+} from "@/shared/ui";
 import { Config } from "./PassengerInfoItem.config";
 import { Direction, Passenger } from "@/app/@types";
 import { Store } from "../SaleTicket.store";
@@ -22,7 +32,7 @@ export const Field = ({
   direction,
   activeWay,
 }: FieldProps) => {
-  const { type, label, key, slots, placeholder, inputType, optionsKey } = config;
+  const { type, label, key, slots, checkbox, placeholder, inputType, optionsKey } = config;
 
   const keyPaths = getResolveKeyPath(key || "", { direction });
   const value = _.get(passenger, keyPaths);
@@ -39,12 +49,22 @@ export const Field = ({
     if (key === "phone.number") {
       newValue = getFormatPhoneNumber(newValue);
     }
-    
+
     setPassenger(
       passenger.id,
       direction,
       activeWay[direction],
       updatePassengerField(passenger, keyPaths, newValue),
+    );
+  };
+
+  const baggageCount = passenger.ticket[direction]?.baggage?.count;
+  const handleBaggageClick = () => {
+    setPassenger(
+      passenger.id,
+      direction,
+      activeWay[direction],
+      updatePassengerField(passenger, keyPaths, baggageCount ? 0 : 1),
     );
   };
 
@@ -73,7 +93,38 @@ export const Field = ({
             placeholder={placeholder}
             onChange={handleChange}
             type={inputType || "text"}
+            disabled={key === "phone.number" && passenger.phone.refusalToProvide}
           />
+          {checkbox && (
+            <Checkbox
+              checked={passenger.phone.refusalToProvide}
+              onChange={(event) =>
+                setPassenger(passenger.id, direction, activeWay[direction], {
+                  ...passenger,
+                  phone: {
+                    ...passenger.phone,
+                    refusalToProvide: event.target.checked,
+                  },
+                })
+              }
+              label={checkbox.toString()}
+            />
+          )}
+        </Label>
+      );
+
+    case "typography":
+      return (
+        <Label variant="h3" text={label || ""} style={{ alignItems: "center" }}>
+          <Typography
+            cursor="pointer"
+            variant="h3"
+            onClick={handleBaggageClick}
+            color={baggageCount ? "primary-second" : "primary"}
+            line={baggageCount && "underline"}
+          >
+            {baggageCount ? `${baggageCount + " Добавить багаж"}` : "+ Добавить багаж"}
+          </Typography>
         </Label>
       );
 

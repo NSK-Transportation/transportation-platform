@@ -1,6 +1,4 @@
 import {
-  Baggage,
-  BaggageType,
   City,
   Country,
   Direction,
@@ -43,11 +41,10 @@ export interface Store {
   options: {
     statuses: Status[];
     tickets: Partial<Ticket>[];
-    discount: {
+    discounts: {
       main: Discount[];
       child: Discount[];
     };
-    baggages: Baggage[];
     documents: Document[];
     privileges: Privilege[];
     payments: Payment[];
@@ -83,23 +80,23 @@ export const useSaleTicket = create<Store>()(
         return: {
           date: "",
           from: {
-            city: {},
-            station: {},
+            city: "",
+            station: "",
           },
           to: {
-            city: {},
-            station: {},
+            city: "",
+            station: "",
           },
         },
         there: {
           date: "",
           from: {
-            city: {},
-            station: {},
+            city: "",
+            station: "",
           },
           to: {
-            city: {},
-            station: {},
+            city: "",
+            station: "",
           },
         },
       },
@@ -125,19 +122,13 @@ export const useSaleTicket = create<Store>()(
           { id: 3, type: TicketType.PRIVILEGE, rus: "Льготный билет" },
           { id: 4, type: TicketType.DISCOUNT, rus: "Скидочный билет" },
         ],
-        discount: {
+        discounts: {
           main: [],
           child: [
             { id: 1, type: DiscountType.HALF, value: 50, rus: "скидка" },
             { id: 2, type: DiscountType.FULL, value: 100, rus: "скидка" },
           ],
         },
-        baggages: [
-          { id: 1, type: BaggageType.NONE, price: 0, rus: "Нет багажа" },
-          { id: 2, type: BaggageType.SMALL, price: 270, rus: "Маленький (5 кг)" },
-          { id: 3, type: BaggageType.BIG, price: 540, rus: "Большой (10 кг)" },
-          { id: 4, type: BaggageType.HUGE, price: 810, rus: "Огромный (20 кг)" },
-        ],
         documents: [
           { id: 1, type: DocumentType.PASSPORT, rus: "Паспорт" },
           { id: 2, type: DocumentType.DRIVER, rus: "Водительские" },
@@ -149,7 +140,7 @@ export const useSaleTicket = create<Store>()(
         payments: [
           { id: 1, type: PaymentType.CASH, rus: "Наличные" },
           { id: 2, type: PaymentType.CARD, rus: "Карта" },
-          { id: 3, type: PaymentType.QRCODE, rus: "QR Код" },
+          { id: 3, type: PaymentType.SBP, rus: "QR Код" },
         ],
         genders: [
           { id: 1, type: GenderType.MALE, rus: "Мужчина" },
@@ -192,6 +183,23 @@ export const useSaleTicket = create<Store>()(
                 name: "AB Main",
                 rus: "АВ Главный",
               },
+              {
+                id: 2,
+                name: "Railway",
+                rus: "Железнодорожный",
+              },
+            ],
+          },
+          {
+            id: 2,
+            name: "Krasnoyarsk",
+            rus: "Красноярск",
+            stations: [
+              {
+                id: 1,
+                name: "AB Krasnoyarsk",
+                rus: "АВ Красноярск",
+              },
             ],
           },
         ],
@@ -210,7 +218,7 @@ export const useSaleTicket = create<Store>()(
       setActiveWay: (activeWay, direction) =>
         set((state) => {
           state.activeWay[direction] = activeWay;
-          state.options.discount.main = activeWay?.discounts || [];
+          state.options.discounts.main = activeWay?.discounts || [];
         }),
 
       toggleSeat: (direction, activeWay, seatId, maxSeats) =>
@@ -257,6 +265,7 @@ export const useSaleTicket = create<Store>()(
                 phone: {
                   code: "+7",
                   number: "",
+                  refusalToProvide: false,
                 },
                 identification: null,
                 ticket: {
