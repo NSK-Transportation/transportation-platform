@@ -17,7 +17,7 @@ const useAuthStore = create<Store>()(
       immer((set) => ({
         isAuth: false,
         data: {
-          userID: "",
+          id: "",
           password: "",
         },
 
@@ -37,7 +37,7 @@ const useAuthStore = create<Store>()(
         storage: createJSONStorage(() => sessionStorage),
         partialize: (state) => ({
           data: {
-            userID: state.data.userID,
+            id: state.data.id,
           },
         }),
       },
