@@ -1,30 +1,21 @@
 import { Box, Button, Input, Label, Stacks } from "@/shared/ui";
 import { useQuery } from "react-query";
 import { useRefundTicket } from "../RefundTicket.store";
+import { getPassenger } from "@/shared/api/queries";
+import { ChangeEvent } from "react";
 
 export const EnterDataPassenger = () => {
   const { passenger, setPassenger } = useRefundTicket();
 
-  // FIXME: Убрать фейк запрос - заменить на реальный
-  const fetchPassenger = async (series: string, _number: string) => {
-    const response = await fetch(`https://jsonplaceholder.typicode.com/photos/?id=${series}`);
-    return response.json();
-  };
+  const series = passenger.identification?.document?.series || "";
+  const number = passenger.identification?.document?.number || "";
 
   const { refetch, isFetching } = useQuery(
-    ["passenger", passenger.identification?.series, passenger.identification?.number],
-    () =>
-      fetchPassenger(
-        passenger.identification?.series ?? "",
-        passenger.identification?.number ?? "",
-      ),
+    [`passenger`, series, number],
+    () => getPassenger({ series, number }),
     {
       onSuccess(data) {
-        setPassenger({
-          ...passenger,
-          lastName: data[0].title,
-          patronymic: data[0].title,
-        });
+        setPassenger(data);
       },
       enabled: false,
       refetchOnWindowFocus: false,
@@ -32,7 +23,7 @@ export const EnterDataPassenger = () => {
   );
 
   const handleClick = async () => {
-    if (!(passenger.identification?.series && passenger.identification?.number)) {
+    if (!(series && number)) {
       alert("Пожалуйста, введите серию и номер");
       return;
     }
@@ -45,13 +36,16 @@ export const EnterDataPassenger = () => {
     }
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setPassenger({
       ...passenger,
       identification: {
         ...passenger.identification,
-        [name]: value,
+        document: {
+          ...passenger.identification?.document,
+          [name]: value || "",
+        },
       },
     });
   };
@@ -61,20 +55,20 @@ export const EnterDataPassenger = () => {
       <Stacks gap={16} alignItems="flex-end">
         <Label variant="h3" text="Серия">
           <Input
-            max={8}
             maxLength={8}
             name="series"
-            value={passenger.identification?.series || ""}
+            type="number"
+            value={passenger.identification?.document?.series || ""}
             onChange={handleInputChange}
             placeholder="Введите серию"
           />
         </Label>
         <Label variant="h3" text="Номер">
           <Input
-            max={8}
             maxLength={8}
             name="number"
-            value={passenger.identification?.number || ""}
+            type="number"
+            value={passenger.identification?.document?.number || ""}
             onChange={handleInputChange}
             placeholder="Введите номер"
           />
@@ -83,6 +77,7 @@ export const EnterDataPassenger = () => {
           style={{ height: "44.6px" }}
           label="Найти"
           loading={isFetching}
+          disabled={!(series && number)}
           onClick={handleClick}
         />
       </Stacks>

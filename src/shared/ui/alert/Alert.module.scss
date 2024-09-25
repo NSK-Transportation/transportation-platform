@@ -1,0 +1,15 @@
+.alert {
+  display: flex;
+  gap: 8px;
+  background-color: var(--color-blue-10);
+  padding: 4px 12px;
+  border-radius: 4px;
+
+  &__icon {
+    font-size: 18px;
+
+    svg {
+      color: var(--main-text-color);
+    }
+  }
+}

@@ -4,28 +4,24 @@ import { immer } from "zustand/middleware/immer";
 
 // Интерфейс хранилища
 export interface Store {
-  passenger: Required<Passenger>;
-  reasons: Refund[];
+  passenger: Partial<Passenger>;
   setPassenger: (data: Partial<Passenger>) => void;
 }
 
 export const useRefundTicket = create<Store>()(
   immer((set) => ({
     passenger: {
-      id: 0,
-      firstName: "",
-      lastName: "",
-      patronymic: "",
-      gender: null,
-      birthday: "",
-      phone: "",
-      identification: null,
+      identification: {
+        document: {
+          series: "",
+          number: "",
+        },
+      },
       ticket: {
         there: {},
         return: {},
       },
     },
-    reasons: [{ id: 1, type: "delay", rus: "Опоздание" }],
 
     setPassenger: (data) =>
       set((state) => {

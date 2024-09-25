@@ -6,10 +6,20 @@
  *
  * Экспортируемые функции:
  * - `getWays`: Получение списка всех доступных рейсов.
+ * - `getPassenger`: Получение данных пассажира
  *
  */
 
-import { Direction, DiscountType, SeatStatus, Way, WayDetail, WayDetailStatus } from "@/app/@types";
+import {
+  Direction,
+  DiscountType,
+  Document,
+  Passenger,
+  SeatStatus,
+  Way,
+  WayDetail,
+  WayDetailStatus,
+} from "@/app/@types";
 import { axiosInstance } from "./axiosInstance";
 import { random, sampleSize } from "lodash";
 
@@ -56,19 +66,129 @@ export const getWays = async (data: Way, direction: Direction) => {
     wayNumber: user.id,
     whoArive: user.name,
     price: 1276,
-//     seats: [
-//       { id: 1, status: "free", documentSeria: "1234", documentNumber: "123456", price: 1276, tariff: 1000, duty: 50, dateSale: "26 сентября", whoSold: "Кассир Иванова А.И." },
-//       { id: 2, status: "free", documentSeria: "5224", documentNumber: "348594", price: 1276, tariff: 1000, duty: 50, dateSale: "25 сентября", whoSold: "Кассир Петров А.И." },
-//       { id: 3, status: "booking", documentSeria: "А-2-4", documentNumber: "455-445-348594", price: 1500, tariff: 1200, duty: 150, dateSale: "24 августа", whoSold: "Кассир Петров А.И." },
-//       { id: 4, status: "occupied", documentSeria: "БГ-76", documentNumber: "655-445-348594", price: 12500, tariff: 1100, duty: 110, dateSale: "23 августа", whoSold: "Кассир Петров А.И." },
-//       { id: 5, status: "free", documentSeria: "А-2-4", documentNumber: "455-445-348594", price: 1500, tariff: 1200, duty: 150, dateSale: "22 августа", whoSold: "Кассир Петров А.И." },
-//       { id: 6, status: "free", documentSeria: "АГ-76", documentNumber: "655-445-348594", price: 12500, tariff: 1100, duty: 110, dateSale: "21 августа", whoSold: "Кассир Петров А.И." },
-//       { id: 7, status: "free", documentSeria: "9767", documentNumber: "748594", price: 1500, tariff: 1200, duty: 150, dateSale: "20 августа", whoSold: "Кассир Петров А.И." },
-//       { id: 8, status: "free", documentSeria: "3989", documentNumber: "148594", price: 1500, tariff: 1200, duty: 150, dateSale: "19 августа", whoSold: "Кассир Петров А.И." },
-//       { id: 9, status: "free", documentSeria: "", documentNumber: "", price: 0, tariff: 0, duty: 0, dateSale: "", whoSold: "" },
-//       { id: 10, status: "free", documentSeria: "", documentNumber: "", price: 0, tariff: 0, duty: 0, dateSale: "", whoSold: "" },
-//       { id: 11, status: "free", documentSeria: "", documentNumber: "", price: 0, tariff: 0, duty: 0, dateSale: "", whoSold: "" },
-//     ],
+    seats: [
+      {
+        id: 1,
+        status: "free",
+        documentSeria: "1234",
+        documentNumber: "123456",
+        price: 1276,
+        tariff: 1000,
+        duty: 50,
+        dateSale: "26 сентября",
+        whoSold: "Кассир Иванова А.И.",
+      },
+      {
+        id: 2,
+        status: "free",
+        documentSeria: "5224",
+        documentNumber: "348594",
+        price: 1276,
+        tariff: 1000,
+        duty: 50,
+        dateSale: "25 сентября",
+        whoSold: "Кассир Петров А.И.",
+      },
+      {
+        id: 3,
+        status: "booking",
+        documentSeria: "А-2-4",
+        documentNumber: "455-445-348594",
+        price: 1500,
+        tariff: 1200,
+        duty: 150,
+        dateSale: "24 августа",
+        whoSold: "Кассир Петров А.И.",
+      },
+      {
+        id: 4,
+        status: "occupied",
+        documentSeria: "БГ-76",
+        documentNumber: "655-445-348594",
+        price: 12500,
+        tariff: 1100,
+        duty: 110,
+        dateSale: "23 августа",
+        whoSold: "Кассир Петров А.И.",
+      },
+      {
+        id: 5,
+        status: "free",
+        documentSeria: "А-2-4",
+        documentNumber: "455-445-348594",
+        price: 1500,
+        tariff: 1200,
+        duty: 150,
+        dateSale: "22 августа",
+        whoSold: "Кассир Петров А.И.",
+      },
+      {
+        id: 6,
+        status: "free",
+        documentSeria: "АГ-76",
+        documentNumber: "655-445-348594",
+        price: 12500,
+        tariff: 1100,
+        duty: 110,
+        dateSale: "21 августа",
+        whoSold: "Кассир Петров А.И.",
+      },
+      {
+        id: 7,
+        status: "free",
+        documentSeria: "9767",
+        documentNumber: "748594",
+        price: 1500,
+        tariff: 1200,
+        duty: 150,
+        dateSale: "20 августа",
+        whoSold: "Кассир Петров А.И.",
+      },
+      {
+        id: 8,
+        status: "free",
+        documentSeria: "3989",
+        documentNumber: "148594",
+        price: 1500,
+        tariff: 1200,
+        duty: 150,
+        dateSale: "19 августа",
+        whoSold: "Кассир Петров А.И.",
+      },
+      {
+        id: 9,
+        status: "free",
+        documentSeria: "",
+        documentNumber: "",
+        price: 0,
+        tariff: 0,
+        duty: 0,
+        dateSale: "",
+        whoSold: "",
+      },
+      {
+        id: 10,
+        status: "free",
+        documentSeria: "",
+        documentNumber: "",
+        price: 0,
+        tariff: 0,
+        duty: 0,
+        dateSale: "",
+        whoSold: "",
+      },
+      {
+        id: 11,
+        status: "free",
+        documentSeria: "",
+        documentNumber: "",
+        price: 0,
+        tariff: 0,
+        duty: 0,
+        dateSale: "",
+        whoSold: "",
+      },
+    ],
     status: generateRandomStatus(),
     ticket: {
       price: random(1000, 10000, false),
@@ -78,7 +198,7 @@ export const getWays = async (data: Way, direction: Direction) => {
       count: random(20, 40, false),
     },
     discounts: generateRandomDiscounts(),
-    seats: generateSeats(random(20, 40)),
+    // seats: generateSeats(random(20, 40)),
     from: {
       city: "Москва",
       street: "ул.Ленина",
@@ -106,7 +226,7 @@ export const getWays = async (data: Way, direction: Direction) => {
       typeBus: "Люкс",
       standPlace: 106,
       bagPlace: 15,
-    }
+    },
   }));
 
   return formattedData;
@@ -165,4 +285,12 @@ export const getWaysManagement = async (data: Way) => {
   }));
 
   return formattedData;
+};
+
+export const getPassenger = async (data: Document) => {
+  const response = await axiosInstance.get<Passenger>(`/users/?id=1`, {
+    data,
+  });
+
+  return response.data;
 };
