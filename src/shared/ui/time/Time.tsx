@@ -12,8 +12,8 @@ const Time = forwardRef<HTMLDivElement, TimeProps>(({ className, ...props }, ref
 
   return (
     <div ref={ref} className={clsx(styles.time, className)} {...props}>
-      {hours}:{minutes}
-      <div className={styles.time__seconds}>:{seconds}</div>
+      {String(hours).padStart(2, "0")}:{String(minutes).padStart(2, "0")}
+      <div className={styles.time__seconds}>:{String(seconds).padStart(2, "0")}</div>
     </div>
   );
 });
