@@ -21,7 +21,10 @@ export const WayMainItem: FC<WayMainItemProps> = ({ wayDetail, isSelected, onCli
       </Stacks>
       <Stacks direction="column">
         <Typography variant="h3" color="secondary">
-          г. {city || "Неизвестно"} "{station || "Неизвестно"}"
+          г. {city?.rus || "Неизвестно"}
+        </Typography>
+        <Typography variant="h3" color="secondary">
+          "{station?.rus || "Неизвестно"}"
         </Typography>
         <Typography variant="h3" color="secondary">
           {street || "Неизвестно"}, {house || "0"}
@@ -45,7 +48,7 @@ export const WayMainItem: FC<WayMainItemProps> = ({ wayDetail, isSelected, onCli
           <Stacks gap={8}>
             <Typography variant="h3">Рейс №{wayDetail?.wayNumber}</Typography>
             <Typography variant="h3">
-              {wayDetail?.from.city} - {wayDetail?.to.city}
+              {wayDetail?.from.city.rus} - {wayDetail?.to.city.rus}
             </Typography>
           </Stacks>
           <Typography color="secondary" variant="h4">
@@ -79,7 +82,7 @@ export const WayMainItem: FC<WayMainItemProps> = ({ wayDetail, isSelected, onCli
               size="small"
               label={
                 <Typography variant="h4" color="primary" weight={600}>
-                  {wayDetail.discounts.map((discount) => discount.rus.slice(0, 4)).join(" / ")}
+                  {wayDetail.discounts.map((discount) => discount?.rus?.slice(0, 4)).join(" / ")}
                 </Typography>
               }
               variant="outline-orange"

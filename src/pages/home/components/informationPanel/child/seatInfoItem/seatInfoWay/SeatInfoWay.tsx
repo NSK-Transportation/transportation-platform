@@ -20,7 +20,7 @@ export const SeatInfoWay = ({ direction, visible, setVisible }: SeatInfoWayProps
         <Stacks gap={4} direction="row">
           <Typography variant="h3">Рейс №{activeWay?.[direction]?.wayNumber}</Typography>
           <Typography variant="h3">
-            {activeWay?.[direction]?.from.city} - {activeWay?.[direction]?.to.city}
+            {activeWay?.[direction]?.from.city.rus} - {activeWay?.[direction]?.to.city.rus}
           </Typography>
         </Stacks>
         <Tooltip text={activeWay?.[direction]?.whoArive ?? ""} direction="down">
@@ -41,7 +41,7 @@ export const SeatInfoWay = ({ direction, visible, setVisible }: SeatInfoWayProps
           </Stacks>
           <Stacks direction="column">
             <Typography variant="h3" color="secondary">
-              {activeWay?.[direction]?.from.city} - {activeWay?.[direction]?.from.station}
+              {activeWay?.[direction]?.from.city.rus} - {activeWay?.[direction]?.from.station.rus}
             </Typography>
             <Typography variant="h3" color="secondary">
               {activeWay?.[direction]?.from.street}, {activeWay?.[direction]?.from.house}
@@ -59,7 +59,7 @@ export const SeatInfoWay = ({ direction, visible, setVisible }: SeatInfoWayProps
           </Stacks>
           <Stacks direction="column">
             <Typography variant="h3" color="secondary">
-              {activeWay?.[direction]?.to.city} - {activeWay?.[direction]?.to.station}
+              {activeWay?.[direction]?.to.city.rus} - {activeWay?.[direction]?.to.station.rus}
             </Typography>
             <Typography variant="h3" color="secondary">
               {activeWay?.[direction]?.to.street}, {activeWay?.[direction]?.to.house}

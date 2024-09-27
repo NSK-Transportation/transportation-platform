@@ -1,20 +1,25 @@
 import { Box, Button, Divider, Grid, Stacks, Tooltip, Typography } from "@/shared/ui";
 import { useSaleTicket } from "../SaleTicket.store";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getSumValues } from "@/shared/utils";
 import { Payment, PaymentType } from "@/app/@types";
 import { useMutation } from "react-query";
 import { postPayment } from "@/shared/api/mutations";
+import { createRoot } from "react-dom/client";
+import { PassengerInfoScreen } from "./PassengerInfoScreen";
 
 export const WayPayment = () => {
   const {
     passengers,
     options: { payments },
-    setPassenger,
     activeWay,
   } = useSaleTicket();
   const navigate = useNavigate();
+
+  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
+  const [ticketSum, setTicketSum] = useState<number>(0);
+  const [baggageSum, setBaggageSum] = useState<number>(0);
 
   useEffect(() => {
     if (!activeWay.there?.id) {
@@ -27,8 +32,22 @@ export const WayPayment = () => {
     return <Typography variant="h3">Маршрут не найден</Typography>;
   }
 
-  const ticketSum = getSumValues(activeWay.there?.ticket.price, activeWay.return?.ticket.price);
-  const baggageSum = getSumValues(activeWay.there?.baggage.price, activeWay.return?.baggage.price);
+  useEffect(() => {
+    setTicketSum(getSumValues(activeWay.there?.ticket.price, activeWay.return?.ticket.price));
+
+    const baggagePrices = passengers.map((passenger) => {
+      const thereBaggageSum = passenger.ticket.there?.baggage?.count
+        ? activeWay.there?.baggage.price
+        : 0;
+      const returnBaggageSum = passenger.ticket.return?.baggage?.count
+        ? activeWay.return?.baggage.price
+        : 0;
+      return getSumValues(thereBaggageSum, returnBaggageSum);
+    });
+    const totalBaggageSum = baggagePrices.reduce((acc, price) => acc + (price || 0), 0);
+    setBaggageSum(totalBaggageSum);
+  }, [passengers, activeWay]);
+
   const totalSum = getSumValues(ticketSum, baggageSum);
 
   const renderPriceDetail = (
@@ -38,53 +57,65 @@ export const WayPayment = () => {
     returnPrice?: number,
   ) => (
     <Typography variant="h5">
-      {label}:{" "}
-      <Tooltip
-        text={
-          <>
-            <Typography variant="h5" color="secondary">
-              Туда: {therePrice} руб
+      {sum && (
+        <>
+          {label}:{" "}
+          <Tooltip
+            text={
+              <>
+                <Typography variant="h5" color="secondary">
+                  Туда: {therePrice} руб
+                </Typography>
+                {returnPrice && (
+                  <Typography variant="h5" color="secondary">
+                    Обратно: {returnPrice} руб
+                  </Typography>
+                )}
+              </>
+            }
+          >
+            <Typography variant="h5" color="info" line="underline">
+              {sum} руб.
             </Typography>
-            {returnPrice && (
-              <Typography variant="h5" color="secondary">
-                Обратно: {returnPrice} руб
-              </Typography>
-            )}
-          </>
-        }
-      >
-        <Typography variant="h5" color="info" line="underline">
-          {sum} руб.
-        </Typography>
-      </Tooltip>
+          </Tooltip>
+        </>
+      )}
     </Typography>
   );
 
-  const handlePayment = (payment: Payment) => {
-    const { mutateAsync } = useMutation(() => postPayment(payment, totalSum));
-    // passengers.forEach((passenger) => {
-    //   setPassenger(passenger.id, "there", activeWay.there, {
-    //     ticket: {
-    //       there: {
-    //         payment: {
-    //           id: payment.id,
-    //           type: payment.type,
-    //         },
-    //       },
-    //     },
-    //   });
-    // });
+  const { mutateAsync, isLoading } = useMutation((payment: Payment) =>
+    postPayment(payment, totalSum),
+  );
+
+  const handlePayment = async (payment: Payment) => {
+    setSelectedPayment(payment);
 
     if (payment.type === PaymentType.CASH) {
       console.log("Оплата наличными подтверждена. Спасибо!");
-      // navigate("/home/sale-ticket/success");
     } else {
-      console.log("Перенаправление");
+      // TODO: Изменить логику для демонстрации оплаты и данных для пассажиров. 
+      // Либо сделать всплывающее окно, либо реализовать дополнительный роут, где будут обновляются данные по ID конкретного оформления билета
+      const newWindow = window.open("", "_blank", "width=800,height=600");
+      if (newWindow) {
+        newWindow.document.title = "Информация о пассажирах";
+        newWindow.document.body.innerHTML = '<div id="passenger-info"></div>';
+
+        const root = newWindow.document.getElementById("passenger-info");
+        if (root) {
+          const PassengerInfo = () => (
+            <PassengerInfoScreen
+              passengers={passengers}
+              totalSum={totalSum}
+              activeWay={activeWay}
+            />
+          );
+          const reactRoot = createRoot(root);
+          reactRoot.render(<PassengerInfo />);
+        }
+      }
+      console.log("Перенаправление для СБП и Карты");
     }
   };
-
-  const passengerHasPayment = (payment: Payment) =>
-    passengers.some((passenger) => passenger?.ticket?.there?.payment?.type === payment.type);
 
   return (
     <Box>
@@ -103,19 +134,33 @@ export const WayPayment = () => {
             <Typography variant="h5" color="secondary">
               Из чего состоит сумма:
             </Typography>
-            {renderPriceDetail(
-              "Пассажирский билет",
-              ticketSum,
-              activeWay.there?.ticket.price,
-              activeWay.return?.ticket.price,
-            )}
-            {renderPriceDetail(
-              "Багажный билет",
-              baggageSum,
-              activeWay.there?.baggage.price,
-              activeWay.return?.baggage.price,
-            )}
-            <Typography variant="h5">Дополнительные услуги: 0 рублей</Typography>
+            {passengers.map((passenger) => {
+              const thereBaggagePrice = passenger.ticket.there?.baggage?.count
+                ? activeWay.there?.baggage.price
+                : 0;
+              const returnBaggagePrice = passenger.ticket.return?.baggage?.count
+                ? activeWay.return?.baggage.price
+                : undefined;
+
+              return (
+                <>
+                  {renderPriceDetail(
+                    "Пассажирский билет",
+                    ticketSum,
+                    activeWay.there?.ticket.price ?? 0,
+                    activeWay.return?.ticket.price,
+                  )}
+                  {thereBaggagePrice || returnBaggagePrice
+                    ? renderPriceDetail(
+                        "Багажный билет",
+                        baggageSum ?? 0,
+                        thereBaggagePrice ?? 0,
+                        returnBaggagePrice,
+                      )
+                    : null}
+                </>
+              );
+            })}
           </Stacks>
         </Stacks>
 
@@ -123,9 +168,10 @@ export const WayPayment = () => {
           {payments.map((payment) => (
             <Button
               key={payment.id}
-              variant={Boolean(passengerHasPayment(payment)) ? "selected" : "payment"}
+              variant={payment.type === selectedPayment?.type ? "selected" : "payment"}
               label={payment.rus}
               size="large"
+              loading={isLoading}
               onClick={() => handlePayment(payment)}
             />
           ))}

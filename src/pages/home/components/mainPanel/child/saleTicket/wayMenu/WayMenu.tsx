@@ -36,9 +36,9 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
     options: { cities },
   } = useSaleTicket();
 
-  const { refetch, isFetching } = useQuery(
+  const { data, refetch, isFetching } = useQuery(
     [`way-${direction}`, way[direction]],
-    () => getWays(way[direction], direction),
+    () => getWays(way[direction]),
     {
       enabled: false,
       refetchOnWindowFocus: false,
@@ -81,8 +81,6 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
   };
 
   const handleClick = async () => {
-    setWayDetail(null, direction);
-    setActiveWay(null, direction);
     const newMessage = { ...message };
 
     if (!way[direction].from.city) {
@@ -97,12 +95,13 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
 
     setMessage(newMessage);
 
-    if (!way[direction].from || !way[direction].to || !way[direction].date) {
-      return;
-    }
-    const { data } = await refetch();
-    if (data) {
-      setWayDetail(data, direction);
+    if (way[direction]?.from?.city && way[direction]?.to?.city && way[direction]?.date) {
+      setWayDetail(null, direction);
+      setActiveWay(null, direction);
+      const { data } = await refetch();
+      if (data) {
+        setWayDetail(data, direction);
+      }
     }
   };
 
@@ -115,6 +114,13 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
   const stationTo = cityTo?.stations.find(
     (station) => station.name === way[direction]?.to?.station,
   );
+
+  const changeButtonText = () => {
+    if (data?.length === 0) {
+      return "Маршруты не найдены";
+    }
+    return "Искать";
+  };
 
   return (
     <>
@@ -188,7 +194,7 @@ export const WayMenu = ({ direction }: WayMenuProps) => {
         </Stacks>
 
         <Stacks fullwidth justifyContent="center">
-          <Button onClick={handleClick} loading={isFetching} label="Искать" />
+          <Button onClick={handleClick} loading={isFetching} label={changeButtonText()} />
         </Stacks>
       </Box>
       {direction === "there" && (
