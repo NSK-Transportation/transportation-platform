@@ -1,8 +1,8 @@
 // Enum ролей
 export enum Role {
-  ADMIN = "ADMIN",
-  CASHIER = "CASHIER",
-  DISPATCHER = "DISPATCHER",
+  ADMIN,
+  CASHIER,
+  DISPATCHER,
 }
 
 // Интерфейс пользователя
@@ -47,10 +47,10 @@ export interface Status extends Options<SeatStatus, "status"> {}
 
 // Интерфейс локации (откуда - куда)
 export interface Location {
-  city: City["name"];
+  city: City;
   street: string;
   house: string;
-  station: Station["name"];
+  station: Station;
   time: string;
   date: string;
 }

@@ -39,7 +39,7 @@ export const config: ConfigGroup = {
         label: "Тип документа",
         key: "identification.document.type",
         optionsKey: "documents",
-        placeholder: "Выберите скидку",
+        placeholder: "Выберите документ",
       },
       {
         type: "input",
