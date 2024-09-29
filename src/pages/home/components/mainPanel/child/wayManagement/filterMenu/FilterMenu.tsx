@@ -2,7 +2,7 @@ import { Button, Calendar, Input, InputGroup, Stacks } from "@/shared/ui";
 import { useWayManagement } from "../WayManagement.store";
 import { CancelIcon } from "@/shared/assets";
 import { useQuery } from "react-query";
-import { getWays, getWaysManagement } from "@/shared/api/queries";
+import { getWays } from "@/shared/api/queries";
 
 
 const formatDate = (date: Date): string => {
@@ -19,7 +19,7 @@ export const FilterMenu = () => {
   const toValue = way?.to || "";
   const { refetch, isFetching } = useQuery(
     ["ways", way],
-    () => getWaysManagement(way),
+    () => getWays(way),
     {
       enabled: false,
       refetchOnWindowFocus: false,

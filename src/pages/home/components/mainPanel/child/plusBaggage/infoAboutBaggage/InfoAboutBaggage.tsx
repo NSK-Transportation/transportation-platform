@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Box, Stacks, Typography, Button } from "@/shared/ui";
-import { BaggageAdd, BaggageDelete } from "@/shared/assets";
+import React, { useState } from "react";
+import { Box, Stacks, Typography, Button, Divider } from "@/shared/ui";
+import { BaggageAddIcon, BaggageDeleteIcon } from "@/shared/assets";
 
 export const InfoAboutBaggage = () => {
   // Начальное количество мест для багажа
@@ -35,36 +35,37 @@ export const InfoAboutBaggage = () => {
           Добавить багаж
         </Typography>
 
-        <Stacks direction="column">
-          <Typography weight="normal" variant="h3">
-            Доступно мест для багажа: <Typography color='primary-second'>{availableBaggageSlots}</Typography>
-          </Typography>
+        <Stacks gap={16}>
+          <Divider orientation="vertical" color="blue" />
+          <Stacks direction="column">
+            <Typography weight="normal" variant="h3">
+              Доступно мест для багажа:{" "}
+              <Typography color="primary-second">{availableBaggageSlots}</Typography>
+            </Typography>
 
-          <Typography weight="normal" variant="h3">
-            Тариф: <Typography color='primary-second'>{fare} руб</Typography>
-          </Typography>
+            <Typography weight="normal" variant="h3">
+              Тариф: <Typography color="primary-second">{fare} руб</Typography>
+            </Typography>
 
-          <Stacks>
-            {/* Отображаем иконки багажа, если они были добавлены */}
-            {baggageCount.map((_, index) => (
-              <div
-                key={index}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onClick={() => removeBaggage(index)}
-                style={{ cursor: 'pointer' }}
-              >
-                {hoveredIndex === index ? (
-                  <BaggageDelete size={40} />
-                ) : (
-                  <BaggageAdd size={40} />
-                )}
-              </div>
-            ))}
-            {/* Кнопка "+" для добавления багажа отображается только если есть свободные места */}
-            {baggageCount.length < 2 && availableBaggageSlots > 0 && (
-              <Button variant="free" size="icon" label="+" onClick={addBaggage} />
-            )}
+            <Stacks>
+              {baggageCount.map((_, index) => (
+                <div
+                  key={index}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  onClick={() => removeBaggage(index)}
+                >
+                  {hoveredIndex === index ? (
+                    <BaggageDeleteIcon cursor="pointer" size={36} />
+                  ) : (
+                    <BaggageAddIcon cursor="pointer" size={36} />
+                  )}
+                </div>
+              ))}
+              {baggageCount.length < 2 && availableBaggageSlots > 0 && (
+                <Button variant="tertiary" size="icon" label="+" onClick={addBaggage} />
+              )}
+            </Stacks>
           </Stacks>
         </Stacks>
       </Stacks>
