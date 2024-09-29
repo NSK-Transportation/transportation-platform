@@ -143,7 +143,6 @@ export interface Ticket extends Options<TicketType, "type"> {
 export interface Baggage {
   count: number;
   price: number;
-  count: number;
 }
 
 // Enum льгот

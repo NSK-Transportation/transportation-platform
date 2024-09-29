@@ -10,17 +10,7 @@
  *
  */
 
-
-import {
-  Direction,
-  DiscountType,
-  Document,
-  Passenger,
-  SeatStatus,
-  Way,
-  WayDetail,
-  WayDetailStatus,
-} from "@/app/@types";
+import { Document, Passenger, Way, WayDetail } from "@/app/@types";
 import { axiosInstance } from "./axiosInstance";
 
 export const getWays = async (way: Way) => {
@@ -37,10 +27,13 @@ export const getWays = async (way: Way) => {
   return response.data;
 };
 
-export const getPassenger = async (data: Document) => {
-  const response = await axiosInstance.get<Passenger>(`/users/?id=1`, {
-    data,
+export const getPassenger = async (document: Document) => {
+  const response = await axiosInstance.get<Passenger[]>(`/passengers`, {
+    params: {
+      "identification.document.series": document.series,
+      "identification.document.number": document.number,
+    },
   });
 
-  return response.data;
+  return response.data[0];
 };

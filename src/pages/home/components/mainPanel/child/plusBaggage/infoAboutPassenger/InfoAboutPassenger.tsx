@@ -1,50 +1,12 @@
 import { Box, Stacks, Typography } from "@/shared/ui";
 import { usePlusBaggage } from "../PlusBaggage.store";
+import { getConfig } from "./InfoAboutPassenger.config";
+import { Passenger } from "@/app/@types";
 
 export const InfoAboutPassenger = () => {
   const { passenger } = usePlusBaggage();
 
-  const fields: { label: string; value: string | undefined; color?: string }[] = [
-    {
-      label: "Тип документа",
-      value: passenger.identification?.document?.rus || "Null",
-    },
-    {
-      label: "Серия",
-      value: passenger.identification?.series || "Null",
-    },
-    {
-      label: "Номер",
-      value: passenger.identification?.number || "Null",
-    },
-    {
-      label: "Фамилия",
-      value: passenger.lastName || "Null",
-    },
-    {
-      label: "Имя",
-      value: passenger.firstName || "Null",
-    },
-    {
-      label: "Отчество",
-      value: passenger.patronymic || "Null",
-    },
-    {
-      label: "Дата рождения",
-      value: passenger.birthday || "Null",
-      color: "secondary",
-    },
-    {
-      label: "Пол",
-      value: passenger.gender || "Null",
-      color: "secondary",
-    },
-    {
-      label: "Телефон",
-      value: passenger.phone || "Null",
-      color: "primary",
-    },
-  ];
+  const config = getConfig(passenger as Passenger);
 
   return (
     <Box fullWidth style={{ alignSelf: "flex-start" }}>
@@ -52,11 +14,11 @@ export const InfoAboutPassenger = () => {
         <Typography variant="h3" color="secondary">
           Информация о пассажире
         </Typography>
-        {passenger.lastName && (
+        {passenger.id && (
           <Box variant="dashed">
             <Stacks fullwidth gap={4} direction="column">
-              {fields.map((field, index) => (
-                <Stacks key={index} justifyContent="space-between">
+              {config.fields.map((field, index) => (
+                <Stacks key={index} gap={8}>
                   <Typography variant="h3" weight="bold">
                     {field.label}:
                   </Typography>
