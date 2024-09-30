@@ -1,0 +1,38 @@
+.headerPanel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__time {
+    width: 149px;
+  }
+
+  &__avatar {
+    border-radius: 16px;
+  }
+
+  &__userInfo {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+
+    &__text {
+      margin-left: 10px;
+    }
+  }
+  &__idUser{
+    color: var(--color-blue-40);
+  }
+  h3{
+    color: var(--color-blue-40);
+  }
+  &__button{
+    background-color: var(--color-gray-10);
+    color: var(--color-gray-40);
+    border: none;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    &:hover{
+      color: var(--color-gray-40);
+    }
+  }
+}

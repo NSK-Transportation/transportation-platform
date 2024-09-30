@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Home, NotFound } from "@/pages";
+import { Home, NotFound , Dispetcher} from "@/pages";
 import { PlusBaggage, RefundTicket, SaleTicket } from "@/pages/home/components/mainPanel";
 import { Auth } from "@/pages/auth/Auth";
 import { WayManagement } from "@/pages/home/components/mainPanel/child/wayManagement/WayManagement";
@@ -26,6 +26,10 @@ export const Router = () => {
 
       <Route path="*" element={<NotFound />} />
       <Route path="/" element={<Auth />} />
+      <Route path="/dispetcher" element={<Dispetcher />}>
+
+      </Route>
     </Routes>
+
   );
 };

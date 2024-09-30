@@ -1,0 +1,17 @@
+.asidePanel {
+  height: 100%;
+  overflow: auto;
+
+  &__roleName {
+    margin-left: 24px;
+  }
+
+  &__link {
+    border-radius: 12px;
+
+    .active > button {
+      color: var(--button-tertiary-click-color);
+      background-color: var(--button-tertiary-click-background);
+    }
+  }
+}
