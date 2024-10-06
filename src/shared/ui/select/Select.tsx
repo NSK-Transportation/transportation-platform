@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect, forwardRef, SelectHTMLAttributes } from "react";
 import clsx from "clsx";
-import styles from "./Select.module.scss";
+import { useState, useRef, useEffect, forwardRef, SelectHTMLAttributes } from "react";
 import { IoIosArrowDown } from "react-icons/io";
+import styles from "./Select.module.scss";
 
 export interface Option {
-  value: string | number;
-  label: string;
+  value: string | number | undefined;
+  label: string | undefined;
 }
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -65,7 +65,11 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         ref={selectRef}
       >
         <div className={clsx(styles.select, { [styles.open]: isOpen })} onClick={handleSelectClick}>
-          {selectedOption ? selectedOption.label : <div className={styles.select__placeholder}>{placeholder}</div>}
+          {selectedOption ? (
+            selectedOption.label
+          ) : (
+            <div className={styles.select__placeholder}>{placeholder}</div>
+          )}
           <span className={clsx(styles.arrow, { [styles.open]: isOpen })}>
             <IoIosArrowDown />
           </span>

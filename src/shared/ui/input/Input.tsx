@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import {
   forwardRef,
   InputHTMLAttributes,
@@ -6,7 +7,6 @@ import {
   useImperativeHandle,
   useRef,
 } from "react";
-import clsx from "clsx";
 import styles from "./Input.module.scss";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {

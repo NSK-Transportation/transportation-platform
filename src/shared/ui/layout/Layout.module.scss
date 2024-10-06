@@ -3,25 +3,25 @@
   grid-template-columns: 250px 1.7fr 1fr;
   grid-template-rows: auto 1fr;
   padding: 16px;
+  gap: 16px;
   width: 100vw;
   height: 100vh;
   max-width: 1440px;
 
   &.default {
     grid-template-areas:
-      "aside nav header"
+      "aside header header"
       "aside main info";
   }
 
   &.withoutInfo {
     grid-template-areas:
-      "aside nav header"
+      "aside header header"
       "aside main main";
   }
 
   &__headerPanel {
     grid-area: header;
-    padding-bottom: 16px;
   }
 
   &__navPanel {
@@ -34,7 +34,7 @@
 
   &__mainPanel {
     grid-area: main;
-    overflow: auto;
+    overflow: visible;
   }
 
   &__informationPanel {

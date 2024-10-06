@@ -1,9 +1,9 @@
+import { useClick, useDismiss, useFloating, useInteractions } from "@floating-ui/react";
+import { offset, flip, shift, autoUpdate } from "@floating-ui/react";
 import { FC, useState } from "react";
 import Calendar from "react-calendar";
 import "./CustomCalendar.scss";
 import { createPortal } from "react-dom";
-import { useClick, useDismiss, useFloating, useInteractions } from "@floating-ui/react";
-import { offset, flip, shift, autoUpdate } from "@floating-ui/react";
 import { Input } from "../input/Input";
 
 interface CalendarProps {
@@ -15,24 +15,29 @@ interface CalendarProps {
   locale?: string;
   name?: string;
   placeholder?: string;
-  value: string | number;
+  inputValue: string;
+  calendarValue: Date | null;
   message?: string;
   border?: false;
 }
 
-export const CustomCalendar: FC<CalendarProps> = ({
-  onChange,
-  minDate,
-  maxDate,
-  showNavigation = true,
-  showNeighboringMonth = false,
-  locale = "ru-RU",
-  name,
-  placeholder,
-  value,
-  message,
-  border = true,
-}) => {
+export const CustomCalendar: FC<CalendarProps> = (
+  {
+    onChange,
+    minDate,
+    maxDate,
+    showNavigation = true,
+    showNeighboringMonth = false,
+    locale = "ru-RU",
+    name,
+    placeholder,
+    inputValue,
+    calendarValue,
+    message,
+    border = true,
+  },
+  ...props
+) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { refs, floatingStyles, context } = useFloating({
@@ -56,7 +61,7 @@ export const CustomCalendar: FC<CalendarProps> = ({
         border={border}
         placeholder={placeholder}
         style={{ cursor: "pointer" }}
-        value={value}
+        value={inputValue}
         readOnly
         {...getReferenceProps()}
         onWrapperClick={() => setIsOpen(true)}
@@ -77,6 +82,8 @@ export const CustomCalendar: FC<CalendarProps> = ({
               showNavigation={showNavigation}
               showNeighboringMonth={showNeighboringMonth}
               locale={locale}
+              value={calendarValue}
+              {...props}
             />
           </div>,
           document.body,
