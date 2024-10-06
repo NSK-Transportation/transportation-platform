@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   env: { browser: true, es2020: true },
   extends: [
+    "plugin:@conarti/feature-sliced/recommended",
     "eslint:recommended",
     "plugin:import/typescript",
     "plugin:@typescript-eslint/recommended",
@@ -14,7 +15,7 @@ module.exports = {
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
-  plugins: ["react-refresh", "jsx-a11y"],
+  plugins: ["react-refresh", "jsx-a11y", "prettier", "import"],
   settings: {
     "import/resolver": {
       typescript: true,
@@ -39,13 +40,6 @@ module.exports = {
       },
     ],
   },
-  "prettier/prettier": [
-    "error",
-    {
-      singleQuote: false,
-      parser: "flow",
-    },
-  ],
   globals: {
     React: "readonly",
     ReactDOM: "readonly",
