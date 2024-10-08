@@ -21,7 +21,6 @@ export const SelectWayDropdown: FC<Props> = ({ name, placeholder = "Placeholder"
   } = useWayStore();
 
   const handleWayChange = (city: City, station: Station | null, name: keyof Way) => {
-    console.log(city, station, name);
     setWay({
       ...way,
       [name]: { city: city.name, station: station?.name },
@@ -46,6 +45,7 @@ export const SelectWayDropdown: FC<Props> = ({ name, placeholder = "Placeholder"
       placeholder={placeholder}
       message={message}
       options={cities}
+      
     />
   );
 };

@@ -1,5 +1,4 @@
-import { FC, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { FC } from "react";
 import { usePassengerStore } from "@/entities/passenger";
 import { Seat, useSeatStore } from "@/entities/seat";
 import { useWayDetailStore } from "@/entities/wayDetails";
@@ -14,24 +13,15 @@ export const SelectorSeat: FC<Props> = ({ direction }) => {
   const { toggleSeat } = useSeatStore();
   const { activeWay } = useWayDetailStore();
   const { passengers } = usePassengerStore();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!activeWay) {
-      navigate("/home/sale-ticket?step=0", { replace: true });
-    }
-  });
-
-  if (!activeWay) {
-    return <Typography variant="h3">Маршрут не найден</Typography>;
-  }
-
-  const countWithReturnTrip = passengers.filter((p) => p.ticket.return).length;
+  const countWithReturnTrip = passengers.filter((passenger) => passenger.ticket.return).length;
   const maxSeatsAvailable =
     countWithReturnTrip && direction === "return" ? countWithReturnTrip : 10;
 
   const handleSeatClick = (seat: Seat) => {
-    toggleSeat(direction, seat.id, maxSeatsAvailable);
+    if (activeWay?.[direction]) {
+      toggleSeat(direction, activeWay[direction], seat.id, maxSeatsAvailable);
+    }
   };
 
   const seatsSelected = activeWay[direction]?.seats.filter(

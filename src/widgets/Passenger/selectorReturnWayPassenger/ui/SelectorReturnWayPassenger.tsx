@@ -1,6 +1,5 @@
 import { usePassengerStore } from "@/entities/passenger";
 import { useTicketStore } from "@/entities/ticket";
-import { useWayDetailStore } from "@/entities/wayDetails";
 import { Box, Checkbox, Stacks, Typography } from "@/shared/ui";
 import { getCapitalizeFirstLetter } from "@/shared/utils";
 
@@ -9,7 +8,6 @@ export const SelectorReturnWayPassenger = () => {
   const {
     options: { tickets },
   } = useTicketStore();
-  const { activeWay } = useWayDetailStore();
 
   return (
     <Box>
@@ -28,7 +26,7 @@ export const SelectorReturnWayPassenger = () => {
                   updatePassenger(passenger.id, {
                     ticket: {
                       ...passenger.ticket,
-                      return: !passenger.ticket.return ? { wayDetail: activeWay.return } : null,
+                      return: !passenger.ticket.return ? {} : null,
                     },
                   });
                 }}

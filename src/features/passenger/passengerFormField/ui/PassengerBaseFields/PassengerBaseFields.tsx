@@ -1,8 +1,11 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { FC } from "react";
+import { useForm } from "react-hook-form";
 import { useCountryStore } from "@/entities/country";
-import { Passenger } from "@/entities/passenger";
+import { Passenger, usePassengerStore } from "@/entities/passenger";
 import { Direction } from "@/shared/types";
 import { Input, Label, RadioGroup, CountrySelect } from "@/shared/ui";
+import { passengerSchema } from "../../lib/validation/schema.tsx";
 
 interface Props {
   passenger: Passenger;
@@ -10,70 +13,78 @@ interface Props {
   onChange: (update: Partial<Passenger>) => void;
 }
 
-export const PassengerBaseFields: FC<Props> = ({ passenger, direction, onChange }) => {
+export const PassengerBaseFields: FC<Props> = ({ passenger, onChange }) => {
   const {
     options: { countries },
   } = useCountryStore();
+
+  const {
+    register,
+    trigger,
+    formState: { errors },
+  } = useForm<Partial<Passenger>>({
+    defaultValues: passenger,
+    resolver: yupResolver(passengerSchema),
+    mode: "all",
+  });
+
+  const handleFieldChange = (field: keyof Passenger, value: string) => {
+    onChange({ [field]: value });
+    trigger(field, { shouldFocus: true });
+  };
 
   return (
     <>
       <Label variant="h3" text="Фамилия">
         <Input
-          value={passenger.lastName}
-          onChange={(event) => onChange({ lastName: event.target.value })}
+          {...register("lastName")}
           placeholder="Например, Плеханова"
+          message={errors.lastName?.message}
+          onChange={(event) => handleFieldChange("lastName", event.target.value)}
         />
       </Label>
       <Label variant="h3" text="Имя">
         <Input
-          value={passenger.firstName}
-          onChange={(event) => onChange({ firstName: event.target.value })}
+          {...register("firstName")}
           placeholder="Например, Татьяна"
+          message={errors.firstName?.message}
+          onChange={(event) => handleFieldChange("firstName", event.target.value)}
         />
       </Label>
       <Label variant="h3" text="Отчество">
         <Input
-          value={passenger.patronymic}
+          {...register("patronymic")}
           placeholder="Например, Фёдоровна"
-          onChange={(event) => onChange({ patronymic: event.target.value })}
+          message={errors.patronymic?.message}
+          onChange={(event) => handleFieldChange("patronymic", event.target.value)}
         />
       </Label>
       <Label variant="h3" text="Дата рождения">
         <Input
           type="date"
-          value={passenger.birthday}
-          onChange={(event) => onChange({ birthday: event.target.value })}
+          {...register("birthday")}
+          message={errors.birthday?.message}
+          onChange={(event) => handleFieldChange("birthday", event.target.value)}
         />
       </Label>
       <Label variant="h3" text="Телефон">
         <Input
-          value={passenger.phone.number}
+          {...register("phone.number")}
           placeholder="+ 7 (---) --- -- --"
-          onChange={(event) =>
-            onChange({
-              phone: {
-                ...passenger.phone,
-                number: event.target.value,
-              },
-            })
-          }
+          onChange={(event) => handleFieldChange("phone", event.target.value)}
+          message={errors.phone?.number?.message || errors.phone?.code?.message}
           slotsLeft={
             <CountrySelect
+              {...register("phone.code")}
               options={countries}
-              onChange={(event) =>
-                onChange({
-                  phone: {
-                    ...passenger.phone,
-                    code: event.target.value,
-                  },
-                })
-              }
+              onChange={(event) => handleFieldChange("phone", event.target.value)}
             />
           }
         />
       </Label>
       <Label variant="h3" text="Пол">
         <RadioGroup
+          {...register("gender", { required: "Пол обязателен" })}
           direction="row"
           name="gender"
           radios={[
@@ -81,12 +92,7 @@ export const PassengerBaseFields: FC<Props> = ({ passenger, direction, onChange 
             { value: "women", title: "Женский" },
           ]}
           selected={passenger.gender || ""}
-          onChange={(value) =>
-            onChange({
-              ...passenger,
-              gender: value as "male" | "female",
-            })
-          }
+          onChange={(value) => handleFieldChange("gender", value)}
         />
       </Label>
     </>

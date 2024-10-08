@@ -1,7 +1,7 @@
 /* eslint-disable @conarti/feature-sliced/layers-slices */
 import { Passenger, usePassengerStore } from "@/entities/passenger";
 import { Box, Stacks, Typography } from "@/shared/ui";
-import { getConfig } from "../config/InfoTicket.config";
+import { getConfig } from "../config/TicketInformation.config";
 
 export const TicketInformation = () => {
   const { passenger } = usePassengerStore();

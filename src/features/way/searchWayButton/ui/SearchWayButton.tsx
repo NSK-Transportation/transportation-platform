@@ -17,12 +17,13 @@ export const SearchWayButton: FC<Props> = ({ direction }) => {
     enabled: false,
     refetchOnWindowFocus: false,
     onSuccess(data) {
-      setWayDetails(data);
+      setWayDetails(data, direction);
     },
   });
 
   const handleClick = () => {
     if (!(way.date && way.from.city && way.to.city)) {
+      alert("Заполните поля");
       return;
     }
     refetch();

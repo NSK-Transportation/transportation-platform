@@ -1,3 +1,4 @@
+import { Refund } from "@/widgets/Refund";
 import { PassengerSearchForm } from "@/features/passenger";
 import { PassengerInformation } from "@/entities/passenger";
 import { TicketInformation } from "@/entities/ticket";
@@ -11,7 +12,7 @@ export const RefundTicket = () => {
       </Grid>
       <Grid rows="span 3">
         <Stacks gap={16} direction="column">
-          Добавить взаимодействие с возвратом
+          <Refund />
         </Stacks>
       </Grid>
       <Grid columns="2fr 3fr" gap={16}>

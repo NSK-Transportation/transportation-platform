@@ -1,6 +1,5 @@
 import moment from "moment";
 import { FC } from "react";
-import { object, string } from "yup";
 import { useWayStore, Way } from "@/entities/way";
 import { Calendar } from "@/shared/ui";
 
@@ -13,13 +12,7 @@ interface Props {
 export const SelectDate: FC<Props> = ({ name, message, placeholder }) => {
   const { way, setWay } = useWayStore();
 
-  const dateSchema = object({
-    date: string().required("Выберите дату"),
-  });
-
   const handleDateChange = async (date: Date) => {
-    await dateSchema.validate({ date });
-
     setWay({
       ...way,
       [name]: date,

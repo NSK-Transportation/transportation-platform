@@ -4,6 +4,7 @@ import {
   InputHTMLAttributes,
   ReactNode,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useRef,
 } from "react";
@@ -52,6 +53,18 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         onWrapperClick();
       }
     }, [onWrapperClick]);
+
+    useEffect(() => {
+      if (message) {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      } else {
+        if (inputRef.current) {
+          inputRef.current.blur();
+        }
+      }
+    }, [message]);
 
     return (
       <div

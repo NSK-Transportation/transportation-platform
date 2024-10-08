@@ -20,11 +20,13 @@ export const SelectorWayForSaleTicket: FC<Props> = ({ direction }) => {
           <SelectWayDropdown name="from" placeholder="Место отправления" />
           <SelectWayDropdown name="to" placeholder="Место прибытия" />
         </InputGroup>
-        <Stacks justifyContent="flex-end">
-          <SetReturnWay />
-        </Stacks>
+        {direction === "there" && (
+          <Stacks justifyContent="flex-end">
+            <SetReturnWay />
+          </Stacks>
+        )}
         <Stacks justifyContent="center">
-          <SearchWayButton />
+          <SearchWayButton direction={direction} />
         </Stacks>
       </Stacks>
     </Box>
