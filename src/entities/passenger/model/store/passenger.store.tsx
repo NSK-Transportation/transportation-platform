@@ -1,4 +1,3 @@
-/* eslint-disable @conarti/feature-sliced/layers-slices */
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -22,48 +21,14 @@ export interface Store {
   setPassenger: (passenger: Passenger) => void;
   setPassengers: (newPassenger: Passenger) => void;
   updatePassenger: (id: Passenger["id"], data: Partial<Passenger>) => void;
+  clearPassenger: (id: Passenger["id"]) => void;
 }
 
 export const usePassengerStore = create<Store>()(
   devtools(
     immer((set) => ({
       passenger: {},
-      passengers: [
-        {
-          id: 1,
-          firstName: "Иван",
-          lastName: "Иванов",
-          patronymic: "Иванович",
-          gender: "male",
-          birthday: "",
-          phone: {
-            code: "+7",
-            number: "123456789",
-            refusalToProvide: false,
-          },
-          identification: {
-            document: {
-              series: "1234",
-              number: "123456",
-            },
-            privilege: {
-              series: "1234",
-              number: "123456",
-            },
-            student: {},
-            military: {},
-            child: {},
-          },
-          ticket: {
-            there: {
-              seatId: 1,
-            },
-            return: {
-              seatId: 2,
-            },
-          },
-        },
-      ],
+      passengers: [],
       options: {
         documents: [
           { id: 1, type: DocumentType.PASSPORT, rus: "Паспорт" },
@@ -87,13 +52,14 @@ export const usePassengerStore = create<Store>()(
       },
       updatePassenger: (id, data) => {
         set((state) => ({
-          passengers: state.passengers.map(
-            (passenger) =>
-              passenger.id === id && {
-                ...passenger,
-                ...data,
-              },
+          passengers: state.passengers.map((passenger) =>
+            passenger.id === id ? { ...passenger, ...data } : passenger,
           ),
+        }));
+      },
+      clearPassenger: (id) => {
+        set((state) => ({
+          passengers: state.passengers.filter((passenger) => passenger.id !== id),
         }));
       },
     })),

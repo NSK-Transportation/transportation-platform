@@ -16,7 +16,6 @@ interface Store {
   links: { [key: string]: Link[] };
   linksNames: { [key: string]: string };
   activeLink: string | null;
-  appVersion: string;
 
   selectLink: (text: string) => void;
   setActiveLinkByRoute: () => void;
@@ -64,7 +63,6 @@ export const useSidebarStore = create<Store>()(
           },
 
           activeLink: null,
-          appVersion: "0.1.0",
 
           selectLink: (text) => {
             const links = get().links;

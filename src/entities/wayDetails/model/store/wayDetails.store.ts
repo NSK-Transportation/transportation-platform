@@ -21,8 +21,8 @@ export interface Store {
     statuses: WayDetailStatus[];
   };
 
-  setWayDetails: (WayDetail: WayDetail[], direction: Direction) => void;
   setSelectedWayDetails: (id: WayDetail["id"]) => void;
+  setWayDetails: (WayDetail: WayDetail[], direction: Direction) => void;
   setActiveWay: (way: WayDetail, direction: Direction) => void;
   updateActiveWay: (id: WayDetail["id"], direction: Direction, data: Partial<WayDetail>) => void;
 }
@@ -139,7 +139,113 @@ export const useWayDetailStore = create<Store>()(
             },
           },
         ],
-        return: null,
+        return: [
+          {
+            id: 1,
+            wayNumber: "1",
+            whoArive: "Константинопольский",
+            status: "sale",
+            ticket: {
+              price: 2000,
+            },
+            baggage: {
+              price: 200,
+              count: 10,
+              available: 10,
+            },
+            discounts: [],
+            seats: [
+              {
+                id: 1,
+                status: "free",
+                price: 0,
+                tariff: 0,
+                duty: 0,
+                saleDate: "",
+                saleTime: "",
+                whoSold: "",
+              },
+              {
+                id: 2,
+                status: "free",
+                price: 0,
+                tariff: 0,
+                duty: 0,
+                saleDate: "",
+                saleTime: "",
+                whoSold: "",
+              },
+              {
+                id: 3,
+                status: "free",
+                price: 0,
+                tariff: 0,
+                duty: 0,
+                saleDate: "",
+                saleTime: "",
+                whoSold: "",
+              },
+              {
+                id: 4,
+                status: "free",
+                price: 0,
+                tariff: 0,
+                duty: 0,
+                saleDate: "",
+                saleTime: "",
+                whoSold: "",
+              },
+              {
+                id: 5,
+                status: "free",
+                price: 0,
+                tariff: 0,
+                duty: 0,
+                saleDate: "",
+                saleTime: "",
+                whoSold: "",
+              },
+            ],
+            from: {
+              date: "10.10.2024",
+              city: {
+                name: "Novosibirsk",
+                rus: "Новосибирск",
+                stations: [],
+              },
+              house: "2",
+              station: {
+                name: "Railway",
+                rus: "Железнодорожная",
+              },
+              street: "ул. Петрова",
+              time: "10:00",
+            },
+            to: {
+              date: "12.10.2024",
+              city: {
+                name: "Krasnoyrsk",
+                rus: "Новосибирск",
+                stations: [],
+              },
+              house: "2",
+              station: {
+                name: "Railway",
+                rus: "Железнодорожная",
+              },
+              street: "ул. Петрова",
+              time: "10:00",
+            },
+            vehicle: {
+              id: 1,
+              name: "Автобус",
+              atp: "",
+              driver: "",
+              licensePlate: "",
+              type: "bus",
+            },
+          },
+        ],
       },
       activeWay: {
         there: null,
@@ -197,7 +303,13 @@ export const useWayDetailStore = create<Store>()(
           if (state.wayDetails && state.wayDetails[direction]) {
             state.wayDetails[direction] = state.wayDetails[direction].map((way) => {
               if (way.id === id) {
-                return { ...way, ...data };
+                const updatedWay = { ...way, ...data };
+
+                if (state.activeWay[direction]?.id === id) {
+                  state.activeWay[direction] = updatedWay;
+                }
+
+                return updatedWay;
               }
               return way;
             });

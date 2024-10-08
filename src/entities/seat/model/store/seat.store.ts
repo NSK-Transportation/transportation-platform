@@ -10,25 +10,22 @@ import { Seat } from "../types/seat.types";
 
 // Интерфейс хранилища
 export interface Store {
-  activeWay: {
-    there: WayDetail | null;
-    return: WayDetail | null;
-  };
-  toggleSeat: (direction: Direction, seatId: Seat["id"], maxSeats: number) => void;
+  toggleSeat: (
+    direction: Direction,
+    activeWay: WayDetail,
+    seatId: Seat["id"],
+    maxSeats: number,
+  ) => void;
 }
 
 export const useSeatStore = create<Store>()(
   devtools(
     immer((set) => ({
-      activeWay: {
-        there: useWayDetailStore.getState().activeWay.there,
-        return: useWayDetailStore.getState().activeWay.return,
-      },
-
-      toggleSeat: (direction, seatId, maxSeats) =>
-        set((state) => {
-          const { wayDetail } = useWayDetailStore.getState();
-          const passengers = usePassengerStore.getState().passengers;
+      toggleSeat: (direction, activeWay, seatId, maxSeats) =>
+        set(() => {
+          const { wayDetails, updateActiveWay } = useWayDetailStore.getState();
+          const { passengers, setPassengers, clearPassenger, updatePassenger } =
+            usePassengerStore.getState();
 
           const passengersWithReturnTickets = passengers
             .map((passenger, index) => (passenger.ticket.return ? index : -1))
@@ -39,8 +36,8 @@ export const useSeatStore = create<Store>()(
             return;
           }
 
-          const currentWay = wayDetail[direction]?.find(
-            (wayDetail) => wayDetail.id === state.activeWay[direction]?.id,
+          const currentWay = wayDetails[direction]?.find(
+            (wayDetail) => wayDetail.id === activeWay?.id,
           );
           if (!currentWay) return;
 
@@ -66,7 +63,7 @@ export const useSeatStore = create<Store>()(
                 lastName: "",
                 patronymic: "",
                 gender: null,
-                birthday: "",
+                birthday: null,
                 phone: {
                   code: "+7",
                   number: "",
@@ -74,13 +71,14 @@ export const useSeatStore = create<Store>()(
                 },
                 identification: null,
                 ticket: {
-                  there: { wayDetail: state.activeWay[direction], seatId: seatId },
+                  there: { wayDetail: activeWay, seatId: seatId },
                   return: null,
                 },
               };
-              passengers.push(newPassenger);
+
+              setPassengers(newPassenger);
             } else {
-              passenger.ticket.there = { wayDetail: state.activeWay[direction], seatId: seatId };
+              passenger.ticket.there = { wayDetail: activeWay, seatId: seatId };
             }
 
             seatToToggle.status = "selected";
@@ -92,10 +90,12 @@ export const useSeatStore = create<Store>()(
             );
 
             if (passengerWithoutReturnSeat) {
-              passengerWithoutReturnSeat.ticket.return = {
-                wayDetail: state.activeWay[direction],
-                seatId: seatId,
-              };
+              updatePassenger(passengerWithoutReturnSeat.id, {
+                ticket: {
+                  ...passengerWithoutReturnSeat.ticket,
+                  return: { wayDetail: activeWay, seatId: seatId },
+                },
+              });
 
               seatToToggle.status = "selected";
             } else {
@@ -104,23 +104,29 @@ export const useSeatStore = create<Store>()(
           }
 
           if (direction === "there" && isSeatSelected) {
-            passengers.filter((passenger) => passenger.ticket?.there?.seatId !== seatId);
+            passengers.forEach((passenger) => {
+              if (passenger.ticket.there?.seatId === seatId) {
+                clearPassenger(passenger.id);
+              }
+            });
 
             seatToToggle.status = "free";
           } else if (direction === "return" && isSeatSelected) {
             passengers.forEach((passenger) => {
               if (passenger.ticket.return?.seatId === seatId) {
-                passenger.ticket.return = {
-                  ...passenger.ticket.return,
-                  seatId: null,
-                };
+                updatePassenger(passenger.id, {
+                  ticket: {
+                    ...passenger.ticket,
+                    return: { wayDetail: activeWay, seatId: null },
+                  },
+                });
               }
             });
 
             seatToToggle.status = "free";
           }
 
-          state.activeWay[direction] = seatsCopy;
+          updateActiveWay(activeWay.id, direction, { seats: seatsCopy });
         }),
     })),
     {
@@ -128,12 +134,3 @@ export const useSeatStore = create<Store>()(
     },
   ),
 );
-
-useWayDetailStore.subscribe((state) => {
-  useSeatStore.setState({
-    activeWay: {
-      there: state.activeWay.there,
-      return: state.activeWay.return,
-    },
-  });
-});
