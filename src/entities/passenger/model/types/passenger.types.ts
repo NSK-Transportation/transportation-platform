@@ -51,7 +51,7 @@ export interface Passenger {
   lastName: string;
   patronymic: string;
   gender: Gender | null;
-  birthday: string;
+  birthday: Date | null;
   phone: Phone;
   identification: Partial<Identification> | null;
   ticket: {
