@@ -1,12 +1,13 @@
+import { NavLink } from "react-router-dom";
+import { useSidebarStore } from "@/entities/sidebar";
 import { logoNoText } from "@/shared/assets";
+import { useAppStore } from "@/shared/store";
+import { Box, Button, Divider, Image, Stacks, Typography } from "@/shared/ui";
 import styles from "./Sidebar.module.scss";
 
-import { NavLink } from "react-router-dom";
-import { useSidebarStore } from "../model";
-import { Box, Button, Divider, Image, Stacks, Typography } from "@/shared/ui";
-
 export const Sidebar = () => {
-  const { links, linksNames, activeLink, selectLink, appVersion } = useSidebarStore();
+  const { links, linksNames, activeLink, selectLink } = useSidebarStore();
+  const { version } = useAppStore();
 
   return (
     <Box className={styles.asidePanel} padding={[28, 8, 28, 8]}>
@@ -46,7 +47,7 @@ export const Sidebar = () => {
           ))}
         </Stacks>
         <Typography variant="h5" color="secondary">
-          Version {appVersion}
+          Версия {version}
         </Typography>
       </Stacks>
     </Box>

@@ -15,3 +15,4 @@ export { FiCheckCircle as SuccessIcon } from "react-icons/fi";
 export { FiAlertCircle as ErrorIcon } from "react-icons/fi";
 export { BiSolidGrid as AdminIcon } from "react-icons/bi";
 export { PiSlideshow as ReferenceIcon } from "react-icons/pi";
+export { IoExitOutline as ExitIcon } from "react-icons/io5";
