@@ -1,8 +1,11 @@
 import { LoginForm } from "@/features/auth";
 import { logoWithText } from "@/shared/assets";
+import { useAppStore } from "@/shared/store";
 import { Stacks, Time, Image, Typography, Box } from "@/shared/ui";
 
 export const Login = () => {
+  const { version } = useAppStore();
+
   return (
     <Stacks
       style={{ height: "100vh" }}
@@ -18,7 +21,7 @@ export const Login = () => {
         </Stacks>
       </Box>
       <Typography variant="h5" color="secondary">
-        Version -
+        Версия {version}
       </Typography>
     </Stacks>
   );

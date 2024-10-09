@@ -1,19 +1,25 @@
+import { useKeyboard } from "@siberiacancode/reactuse";
 import { useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { Authorization, useAuthStore } from "@/entities/auth";
 import { loginMutation } from "@/entities/auth";
+import { useUserStore } from "@/entities/user";
 import { EyeCloseIcon, EyeOpenIcon } from "@/shared/assets";
 import { Button, Input, Label, Stacks, Typography } from "@/shared/ui";
 
 export const LoginForm = () => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(false);
   const { setAuth } = useAuthStore();
+  const { setUser } = useUserStore();
+  const navigate = useNavigate();
 
   const { mutateAsync, isLoading } = useMutation((data: Authorization) => loginMutation(data), {
     onSuccess: (data) => {
-      setAuth({ isAuth: true });
-      console.log("Успешный вход в систему", data);
+      setAuth(true);
+      setUser({ ...data });
+      navigate("/home", { replace: true });
     },
     onError: (error) => {
       console.error("Ошибка при входе в систему", error);
@@ -24,7 +30,7 @@ export const LoginForm = () => {
     handleSubmit,
     register,
     formState: { errors },
-  } = useFormContext<Authorization>();
+  } = useForm<Authorization>();
 
   const handleShowPassword = () => {
     setIsPasswordHidden((prev) => !prev);
@@ -33,6 +39,7 @@ export const LoginForm = () => {
   const onLogin = async (data: Authorization) => {
     await mutateAsync(data);
   };
+  useKeyboard({ onKeyDown: (event) => event.key === "Enter" && handleSubmit(onLogin)() });
 
   return (
     <Stacks direction="column" gap={16}>
@@ -50,9 +57,9 @@ export const LoginForm = () => {
           message={errors.password?.message}
           slotsRight={
             isPasswordHidden ? (
-              <EyeOpenIcon cursor={"pointer"} onClick={handleShowPassword} />
+              <EyeOpenIcon size={20} cursor={"pointer"} onClick={handleShowPassword} />
             ) : (
-              <EyeCloseIcon cursor={"pointer"} onClick={handleShowPassword} />
+              <EyeCloseIcon size={20} cursor={"pointer"} onClick={handleShowPassword} />
             )
           }
         />

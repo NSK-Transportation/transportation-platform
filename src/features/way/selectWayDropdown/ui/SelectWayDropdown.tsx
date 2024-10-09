@@ -5,8 +5,6 @@ import { useWayStore, Way } from "@/entities/way";
 import { DropdownStation } from "@/shared/ui";
 import { getValue } from "@/shared/utils";
 
-// TODO: Исправить ошибки
-
 interface Props {
   name: keyof Way;
   placeholder: string;
@@ -33,7 +31,7 @@ export const SelectWayDropdown: FC<Props> = ({ name, placeholder = "Placeholder"
     return null;
   }
 
-  const city = cities.find((city) => city.name === wayName?.city);
+  const city = cities.find((city) => city.name === (wayName?.city ?? ""));
   const station = city?.stations.find((station) => station.name === wayName.station);
 
   return (
@@ -45,7 +43,6 @@ export const SelectWayDropdown: FC<Props> = ({ name, placeholder = "Placeholder"
       placeholder={placeholder}
       message={message}
       options={cities}
-      
     />
   );
 };

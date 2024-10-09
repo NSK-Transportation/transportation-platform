@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useQuery } from "react-query";
 import { Document, Identification, usePassengerStore } from "@/entities/passenger";
 import { getPassenger } from "@/entities/passenger";
@@ -16,7 +16,7 @@ export const PassengerSearchForm = () => {
     handleSubmit,
     register,
     formState: { errors },
-  } = useFormContext<Identification>();
+  } = useForm<Identification>();
 
   const { refetch, isFetching } = useQuery(
     [`passenger`, document],
