@@ -1,4 +1,3 @@
-import { useAuthStore } from "@/pages/auth/Auth.store";
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -7,7 +6,7 @@ interface PrivateRoute {
 }
 
 export const PrivateRoute = ({ children }: PrivateRoute) => {
-  const { isAuth } = useAuthStore();
+  const isAuth = false;
 
   if (!isAuth) {
     return <Navigate to="/auth" replace />;

@@ -1,30 +1,59 @@
-# React + TypeScript + Vite
+# Автобусные перевозки
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Описание проекта
 
-Currently, two official plugins are available:
+Данный проект - веб-платформа для информационного сопровождения основных функций Компании в сфере пассажирских перевозок
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Стек технологий
 
-## Expanding the ESLint configuration
+- **React** — для создания пользовательского интерфейса.
+- **TypeScript** — для типизации и улучшения качества кода.
+- **Vite** — как инструмент сборки и разработки.
+- **SCSS** — для стилизации приложения.
+- **Zustand** — для управления состоянием приложения.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+<!--
+## Бизнес-логика
 
-- Configure the top-level `parserOptions` property like this:
+### Основные сущности системы:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- **Пользователи**: система различает несколько ролей пользователей (Администратор, Кассир, Диспетчер), каждая из которых имеет свои права доступа и задачи.
+- **Маршруты**: автобусы следуют по определенным маршрутам с заранее установленными остановками, датами и временем отправления.
+- **Билеты**: пользователи могут бронировать, покупать и возвращать билеты. Система поддерживает несколько типов билетов, включая полные, детские, льготные.
+- **Скидки и привилегии**: предусмотрены различные виды скидок для студентов, военных и других категорий пользователей.
+- **Станции**: каждый маршрут включает список станций, где происходят остановки для посадки и высадки пассажиров.
+- **Оплата**: система поддерживает оплату как наличными, так и картой через банковский терминал, а также с помощью систем быстрого перевода (СБП).
+- **Управление местами**: система отображает текущее состояние каждого места в автобусе (свободно, забронировано, занято).
+
+### Роли пользователей:
+
+- **Администратор**: управляет всей системой, включая пользователей, маршруты, автобусы и кассиров.
+- **Кассир**: регистрирует продажи билетов, принимает оплату, проверяет наличие свободных мест, обрабатывает возвраты и скидки.
+- **Диспетчер**: следит за текущими маршрутами и управляет рейсами, чтобы обеспечивать своевременное прибытие и отправление автобусов.
+
+### Основные функции:
+
+1. **Создание маршрутов**: администратор может задавать маршруты, управлять остановками и расписанием.
+2. **Продажа билетов**: кассиры могут оформлять билеты для пассажиров, предоставлять скидки и работать с оплатой.
+3. **Управление автобусами**: отображение занятых и свободных мест, регистрация отправления и прибытия автобусов.
+4. **Возврат билетов**: пассажиры могут сдать билет через кассира, с применением соответствующих правил возврата. -->
+
+## Установка и запуск проекта
+
+1. Склонируйте репозиторий:
+
+```bash
+git clone https://github.com/your-username/bus-transportation.git
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. Установите зависимости
+
+```bash
+npm install
+```
+
+3. Запустите проект
+
+```bash
+npm run dev
+```

@@ -1,12 +1,13 @@
+import clsx from "clsx";
 import {
   forwardRef,
   InputHTMLAttributes,
   ReactNode,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useRef,
 } from "react";
-import clsx from "clsx";
 import styles from "./Input.module.scss";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -52,6 +53,18 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         onWrapperClick();
       }
     }, [onWrapperClick]);
+
+    useEffect(() => {
+      if (message) {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      } else {
+        if (inputRef.current) {
+          inputRef.current.blur();
+        }
+      }
+    }, [message]);
 
     return (
       <div

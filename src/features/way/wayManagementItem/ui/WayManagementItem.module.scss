@@ -1,0 +1,7 @@
+.item {
+  border: 1px solid transparent;
+
+  &__isSelected {
+    border: 1px solid var(--color-blue-70);
+  }
+}

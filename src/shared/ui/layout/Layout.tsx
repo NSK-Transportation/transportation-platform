@@ -1,5 +1,5 @@
-import { forwardRef, HTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
+import { forwardRef, HTMLAttributes, ReactNode } from "react";
 import styles from "./Layout.module.scss";
 
 export interface LayoutProps extends HTMLAttributes<HTMLDivElement> {
@@ -7,7 +7,6 @@ export interface LayoutProps extends HTMLAttributes<HTMLDivElement> {
   mainPanel: ReactNode; // Серединая часть интерфейса
   informationPanel: ReactNode; // Правая часть интерфейса
   headerPanel: ReactNode; // Верхняя часть интерфейса
-  navPanel: ReactNode; // Верхняя часть интерфейса
   gridTemplateAreas?: "default" | "withoutInfo";
   className?: string;
 }
@@ -19,7 +18,6 @@ const Layout = forwardRef<HTMLDivElement, LayoutProps>(
       mainPanel,
       informationPanel,
       headerPanel,
-      navPanel,
       gridTemplateAreas = "default",
       className,
       ...props
@@ -33,7 +31,6 @@ const Layout = forwardRef<HTMLDivElement, LayoutProps>(
       })}
       {...props}
     >
-      <aside className={styles.layout__navPanel}>{navPanel}</aside>
       <header className={styles.layout__headerPanel}>{headerPanel}</header>
       <aside className={styles.layout__asidePanel}>{asidePanel}</aside>
       <main className={styles.layout__mainPanel}>{mainPanel}</main>

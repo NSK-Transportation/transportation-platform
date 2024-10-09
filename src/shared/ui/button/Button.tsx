@@ -10,6 +10,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     | "tertiary"
     | "link"
     | "danger"
+    | "shadow"
     // Для SeatMainItem компонента //
     | "free"
     | "selected"

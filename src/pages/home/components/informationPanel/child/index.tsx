@@ -1,1 +1,0 @@
-export {SeatInfoItem} from "../child/seatInfoItem/SeatInfoItem"
