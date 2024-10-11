@@ -2,7 +2,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { Cities, City } from "@/entities/city";
+import { City } from "@/entities/city";
 import { Way } from "../types/way.types";
 
 // Интерфейс хранилища
@@ -39,7 +39,7 @@ export const useWayStore = create<Store>()(
         cities: [
           {
             id: 1,
-            name: Cities.NOVOSIBIRSK,
+            name: "Novosibirsk",
             rus: "Новосибирск",
             stations: [
               {
@@ -56,7 +56,7 @@ export const useWayStore = create<Store>()(
           },
           {
             id: 2,
-            name: Cities.KRASNOYARSK,
+            name: "Krasnoyarsk",
             rus: "Красноярск",
             stations: [
               {

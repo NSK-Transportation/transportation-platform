@@ -22,6 +22,9 @@ export interface Store {
   setPassengers: (newPassenger: Passenger) => void;
   updatePassenger: (id: Passenger["id"], data: Partial<Passenger>) => void;
   clearPassenger: (id: Passenger["id"]) => void;
+
+  formFullfield: boolean;
+  setFormFullfield: (fullfield: boolean) => void;
 }
 
 export const usePassengerStore = create<Store>()(
@@ -52,8 +55,8 @@ export const usePassengerStore = create<Store>()(
       },
       updatePassenger: (id, data) => {
         set((state) => ({
-          passengers: state.passengers.map((passenger) =>
-            passenger.id === id ? { ...passenger, ...data } : passenger,
+          passengers: state.passengers.map(
+            (passenger) => passenger.id === id && { ...passenger, ...data },
           ),
         }));
       },
@@ -61,6 +64,13 @@ export const usePassengerStore = create<Store>()(
         set((state) => ({
           passengers: state.passengers.filter((passenger) => passenger.id !== id),
         }));
+      },
+
+      formFullfield: false,
+      setFormFullfield: (fullfield) => {
+        set((state) => {
+          state.formFullfield = fullfield;
+        });
       },
     })),
     {
