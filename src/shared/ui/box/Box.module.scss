@@ -10,7 +10,7 @@
 
   &.hover {
     &:hover {
-      box-shadow: 0px 0px 4px 0px #00000026;
+      box-shadow: 0px 0px 4px 0px #00000033;
     }
   }
 
@@ -46,7 +46,7 @@
 
   //variant
   &.default {
-    box-shadow: 0px 0px 4px 0px #00000026;
+    box-shadow: 0px 0px 4px 0px #00000033;
   }
 
   &.dashed {
@@ -55,7 +55,7 @@
   }
 
   &.solid {
-    box-shadow: 0px 0px 4px 0px #00000026;
+    box-shadow: 0px 0px 4px 0px #00000033;
     outline: 1px solid var(--color-blue-50);
   }
 
