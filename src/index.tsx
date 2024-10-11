@@ -1,7 +1,9 @@
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
+import { Toaster } from "react-hot-toast";
 import { BrowserRouter } from "react-router-dom";
 import App from "./app/App.tsx";
+import { ToastOptions } from "./shared/config";
 
 import "./app/styles/global.css";
 import "./app/styles/reset.css";
@@ -31,6 +33,7 @@ deferRender().then(() => {
     <BrowserRouter>
       <Suspense fallback="Loading...">
         <App />
+        <Toaster toastOptions={ToastOptions} />
       </Suspense>
     </BrowserRouter>,
   );
