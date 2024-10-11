@@ -30,6 +30,9 @@ export const PassengerCard: FC<Props> = ({ direction }) => {
                 <PassengerFormField direction={direction} passenger={passenger} />
               </Grid>
             </Grid>
+            <Typography variant="h4" color="secondary">
+              * - обязательно к заполнению
+            </Typography>
           </Stacks>
         </Box>
       ))}
