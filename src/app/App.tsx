@@ -1,14 +1,6 @@
-import { QueryClient, QueryClientProvider } from "react-query";
-import { Router } from "./routers";
+import { Outlet } from "react-router-dom";
 
-const queryClient = new QueryClient();
+import "./styles/global.css";
+import "./styles/reset.css";
 
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Router />
-    </QueryClientProvider>
-  );
-}
-
-export default App;
+export const App = () => <Outlet />;
