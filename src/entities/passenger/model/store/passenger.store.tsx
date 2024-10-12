@@ -78,3 +78,12 @@ export const usePassengerStore = create<Store>()(
     },
   ),
 );
+
+const channel = new BroadcastChannel("passenger_channel");
+
+usePassengerStore.subscribe((state: Store) => {
+  channel.postMessage({
+    type: "GET_PASSENGER",
+    passengers: state.passengers,
+  });
+});

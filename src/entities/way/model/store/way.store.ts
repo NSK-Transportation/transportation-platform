@@ -17,6 +17,10 @@ export interface Store {
   setWay: (way: Way) => void;
   setRemoteSale: (remoteSale: boolean) => void;
   setReturnHave: (returnHave: boolean) => void;
+  setOption: (
+    name: keyof Store["options"],
+    option: Store["options"][keyof Store["options"]],
+  ) => void;
 }
 
 export const useWayStore = create<Store>()(
@@ -36,37 +40,7 @@ export const useWayStore = create<Store>()(
         },
       },
       options: {
-        cities: [
-          {
-            id: 1,
-            name: "Novosibirsk",
-            rus: "Новосибирск",
-            stations: [
-              {
-                id: 1,
-                name: "AB Main",
-                rus: "АВ Главный",
-              },
-              {
-                id: 2,
-                name: "Railway",
-                rus: "Железнодорожный",
-              },
-            ],
-          },
-          {
-            id: 2,
-            name: "Krasnoyarsk",
-            rus: "Красноярск",
-            stations: [
-              {
-                id: 1,
-                name: "AB Krasnoyarsk",
-                rus: "АВ Красноярск",
-              },
-            ],
-          },
-        ],
+        cities: [],
       },
 
       setWay: (way) => {
@@ -74,16 +48,19 @@ export const useWayStore = create<Store>()(
           state.way = way;
         });
       },
-
       setRemoteSale: (remoteSale) => {
         set((state) => {
           state.remoteSale = remoteSale;
         });
       },
-
       setReturnHave: (returnHave) => {
         set((state) => {
           state.returnHave = returnHave;
+        });
+      },
+      setOption: (name, option) => {
+        set((state) => {
+          state.options[name] = option;
         });
       },
     })),
