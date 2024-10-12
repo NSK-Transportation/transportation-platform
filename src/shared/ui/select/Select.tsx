@@ -12,7 +12,6 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   className?: string;
   options: Option[];
   fullWidth?: boolean;
-  defaultValue?: string | number;
   placeholder?: string;
   onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -20,9 +19,14 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, options, fullWidth, value, placeholder, onChange, ...props }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState(value);
     const selectRef = useRef<HTMLDivElement>(null);
 
-    const selectedOption = options.find((option) => option.value === value) || null;
+    useEffect(() => {
+      setSelectedValue(value);
+    }, [value]);
+
+    const selectedOption = options.find((option) => option.value === selectedValue) || null;
 
     const handleSelectClick = () => {
       setIsOpen(!isOpen);
@@ -30,6 +34,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
     const handleOptionClick = (option: Option) => {
       setIsOpen(false);
+      setSelectedValue(option.value);
       if (onChange) {
         const event = {
           target: { value: option.value },
