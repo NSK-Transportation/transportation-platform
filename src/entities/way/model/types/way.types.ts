@@ -18,3 +18,7 @@ export interface Way {
 export interface GetWayResponse {
   ways: WayDetail[];
 }
+
+export interface GetCitiesResponse {
+  cities: City[];
+}
