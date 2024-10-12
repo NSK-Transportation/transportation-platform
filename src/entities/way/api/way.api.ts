@@ -1,6 +1,6 @@
 /* eslint-disable @conarti/feature-sliced/layers-slices */
 import { axiosInstance } from "@/shared/api";
-import { GetWayResponse, Way } from "../model/types/way.types";
+import { GetCitiesResponse, GetWayResponse, Way } from "../model/types/way.types";
 
 export const getWays = async (way: Way) => {
   const response = await axiosInstance.get<GetWayResponse>(`/ways`, {
@@ -14,4 +14,10 @@ export const getWays = async (way: Way) => {
   });
 
   return response.data.ways;
+};
+
+export const getCities = async () => {
+  const response = await axiosInstance.get<GetCitiesResponse>(`/cities`);
+
+  return response.data.cities;
 };
