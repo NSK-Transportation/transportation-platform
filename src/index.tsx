@@ -1,16 +1,17 @@
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { Toaster } from "react-hot-toast";
-import { BrowserRouter } from "react-router-dom";
-import App from "./app/App.tsx";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./app/providers/router";
 import { ToastOptions } from "./shared/config";
-
-import "./app/styles/global.css";
-import "./app/styles/reset.css";
+import { Spinner } from "./shared/ui/index.ts";
 
 const root = document.getElementById("root");
 
 const container = createRoot(root as HTMLElement);
+
+const queryClient = new QueryClient();
 
 async function deferRender() {
   if (import.meta.env.MODE !== "development") {
@@ -30,11 +31,11 @@ async function deferRender() {
 
 deferRender().then(() => {
   container.render(
-    <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
       <Suspense fallback="Loading...">
-        <App />
+        <RouterProvider router={router} fallbackElement={<Spinner />} />
         <Toaster toastOptions={ToastOptions} />
       </Suspense>
-    </BrowserRouter>,
+    </QueryClientProvider>,
   );
 });
