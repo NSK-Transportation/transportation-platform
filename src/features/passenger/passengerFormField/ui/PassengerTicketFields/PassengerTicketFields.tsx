@@ -14,8 +14,6 @@ interface Props {
   setFormComplete: (isComplete: boolean) => void;
 }
 
-// TODO: У Select удалить value, и обернуть в Controller или найти альтернативу
-
 export const PassengerTicketFields: FC<Props> = ({
   passenger,
   direction,
@@ -59,6 +57,14 @@ export const PassengerTicketFields: FC<Props> = ({
       );
     }
 
+    // Если скидочный билет
+    if (ticket.type === "discount") {
+      return (
+        !!ticket.discount?.type &&
+        !!(passenger.identification?.student?.number || passenger.identification?.military?.number)
+      );
+    }
+
     // Если льготы
     if (ticket.type === "privilege") {
       return (
@@ -85,11 +91,11 @@ export const PassengerTicketFields: FC<Props> = ({
 
   return (
     <>
-      <Label variant="h3" text="Тип билета">
+      <Label variant="h3" text="Тип билета" required>
         <Select
           {...register(`ticket.${direction}.type`)}
-          placeholder="Выберите тип билета"
           value={passenger.ticket[direction]?.type}
+          placeholder="Выберите тип билета"
           options={tickets.map((ticket) => ({
             label: ticket.rus,
             value: ticket.type,
@@ -109,7 +115,7 @@ export const PassengerTicketFields: FC<Props> = ({
 
       {passenger?.ticket[direction]?.type === "full" && (
         <>
-          <Label variant="h3" text="Тип документа">
+          <Label variant="h3" text="Тип документа" required>
             <Select
               {...register("identification.document.type")}
               value={passenger.identification?.document?.type}
@@ -127,7 +133,7 @@ export const PassengerTicketFields: FC<Props> = ({
             />
           </Label>
           <Stacks gap={16}>
-            <Label variant="h3" text="Серия">
+            <Label variant="h3" text="Серия" required>
               <Input
                 {...register("identification.document.series")}
                 placeholder="-- --"
@@ -136,7 +142,7 @@ export const PassengerTicketFields: FC<Props> = ({
                 }
               />
             </Label>
-            <Label variant="h3" text="Номер ">
+            <Label variant="h3" text="Номер" required>
               <Input
                 {...register("identification.document.number")}
                 placeholder="--- ---"
@@ -168,7 +174,7 @@ export const PassengerTicketFields: FC<Props> = ({
               }
             />
           </Label>
-          <Label variant="h3" text="Свидетельство о рождении">
+          <Label variant="h3" text="Свидетельство о рождении" required>
             <Stacks gap={16}>
               <Input
                 {...register("identification.child.series")}
@@ -191,7 +197,7 @@ export const PassengerTicketFields: FC<Props> = ({
 
       {passenger?.ticket[direction]?.type === "discount" && (
         <>
-          <Label variant="h3" text="Cкидка">
+          <Label variant="h3" text="Cкидка" required>
             <Select
               {...register(`ticket.${direction}.discount.type`)}
               value={passenger.ticket[direction].discount?.type}
@@ -215,6 +221,7 @@ export const PassengerTicketFields: FC<Props> = ({
                 ? "Номер студенческого"
                 : "Номер справки"
             }
+            required
           >
             <Input
               {...register(
@@ -238,7 +245,7 @@ export const PassengerTicketFields: FC<Props> = ({
 
       {passenger?.ticket[direction]?.type === "privilege" && (
         <>
-          <Label variant="h3" text="Тип льготы">
+          <Label variant="h3" text="Тип льготы" required>
             <Select
               {...register("identification.privilege.type")}
               value={passenger.identification?.privilege?.type}
@@ -255,7 +262,7 @@ export const PassengerTicketFields: FC<Props> = ({
               }
             />
           </Label>
-          <Label variant="h3" text="Документ на право льготы">
+          <Label variant="h3" text="Документ на право льготы" required>
             <Stacks gap={16}>
               <Input
                 {...register("identification.privilege.series")}

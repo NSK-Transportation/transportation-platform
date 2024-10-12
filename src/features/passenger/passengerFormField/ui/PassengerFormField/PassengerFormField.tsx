@@ -16,14 +16,6 @@ export const PassengerFormField: FC<Props> = ({ passenger, direction }) => {
   const [isTicketFormComplete, setTicketFormComplete] = useState(false);
   const [isBaseFormComplete, setBaseFormComplete] = useState(false);
 
-  const debouncedUpdatePassenger = _.debounce((updatedPassenger: Partial<Passenger>) => {
-    updatePassenger(passenger.id, updatedPassenger);
-  }, 500);
-
-  const handleChangePassenger = (update: Partial<Passenger>) => {
-    debouncedUpdatePassenger(update);
-  };
-
   useEffect(() => {
     if (isTicketFormComplete && isBaseFormComplete) {
       setFormFullfield(true);
@@ -31,6 +23,14 @@ export const PassengerFormField: FC<Props> = ({ passenger, direction }) => {
       setFormFullfield(false);
     }
   }, [isTicketFormComplete, isBaseFormComplete, setFormFullfield]);
+
+  const debouncedUpdatePassenger = _.debounce((updatedPassenger: Partial<Passenger>) => {
+    updatePassenger(passenger.id, updatedPassenger);
+  }, 300);
+
+  const handleChangePassenger = (update: Partial<Passenger>) => {
+    debouncedUpdatePassenger(update);
+  };
 
   return (
     <>
