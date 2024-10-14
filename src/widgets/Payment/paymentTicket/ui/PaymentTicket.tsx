@@ -1,93 +1,64 @@
-import { useState } from "react";
-import { Payment, usePaymentStore } from "@/entities/payment";
-import { Box, Button, Divider, Grid, Stacks, Tooltip, Typography } from "@/shared/ui";
+import toast from "react-hot-toast";
+import { useMutation } from "react-query";
+import { usePassengerStore } from "@/entities/passenger";
+import { Payment, PaymentInformation, usePaymentStore } from "@/entities/payment";
+import { paymentMutation } from "@/entities/payment";
+import { Button } from "@/shared/ui";
 
-// TODO: Добавить второй экран для показа данных клиентам/пассажирам
 // В сущность оплаты Payment добавить варианты оплаты, т.е.
 // - если кассир выбрал наличку, то подключается логика для наличной оплаты (печать чека и т.д. по ТЗ)
 // - если кассир выбрал карту, то подключается логика для оплаты картой (перенаправление на сервис оплаты или сигнал терминалу)
 // - если кассир выбрал СБП, то подключается логика для СБП (на втором экране рендерится QR CODE)
 
 export const PaymentTicket = () => {
-  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
   const {
-    options: { payments },
+    payment,
+    setPayment,
+    options: { methods },
   } = usePaymentStore();
+  const { passengers } = usePassengerStore();
 
-  const renderPriceDetail = (
-    label: string,
-    sum: number,
-    therePrice: number,
-    returnPrice?: number,
-  ) => (
-    <Typography variant="h5">
-      {sum && (
-        <>
-          {label}:{" "}
-          <Tooltip
-            text={
-              <>
-                <Typography variant="h5" color="secondary">
-                  Туда: {therePrice} руб
-                </Typography>
-                {returnPrice && (
-                  <Typography variant="h5" color="secondary">
-                    Обратно: {returnPrice} руб
-                  </Typography>
-                )}
-              </>
-            }
-          >
-            <Typography variant="h5" color="info" line="underline">
-              {sum} руб.
-            </Typography>
-          </Tooltip>
-        </>
-      )}
-    </Typography>
+  const { mutateAsync, isLoading } = useMutation(
+    (type: Payment["type"]) => paymentMutation(type, payment),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    },
   );
 
-  const handlePayment = (payment: Payment) => {
-    setSelectedPayment(payment);
+  const handlePayment = async (type: Payment["type"], payment: Payment) => {
+    switch (type) {
+      case "cash":
+        toast("Выбрана оплата через наличку");
+        break;
+      case "card":
+        toast("Выбрана оплата через карточку");
+        break;
+      case "sbp":
+        toast("Выбрана оплата через СБП");
+        break;
+    }
+    setPayment(payment);
+    await mutateAsync(type);
   };
 
   return (
-    <Box>
-      <Stacks fullwidth direction="column" gap={16}>
-        <Typography variant="h3">Оплата</Typography>
-
-        <Stacks gap={32} justifyContent="center">
-          <Stacks gap={4}>
-            <Typography variant="h3">К оплате:</Typography>
-            <Typography variant="h3" weight="bold" color="primary-second">
-              TOTALSUM рублей
-            </Typography>
-          </Stacks>
-          <Divider orientation="vertical" />
-          <Stacks direction="column">
-            <Typography variant="h5" color="secondary">
-              Из чего состоит сумма:
-            </Typography>
-
-            <>
-              {renderPriceDetail("Пассажирский билет", 0, 0, 0)}
-              {renderPriceDetail("Багажный билет", 0, 0, 0)}
-            </>
-          </Stacks>
-        </Stacks>
-
-        <Grid gap={16} columns="1fr 1fr 1fr">
-          {payments.map((payment) => (
-            <Button
-              key={payment.id}
-              variant={payment.type === selectedPayment?.type ? "selected" : "payment"}
-              label={payment.rus}
-              size="large"
-              onClick={() => handlePayment(payment)}
-            />
-          ))}
-        </Grid>
-      </Stacks>
-    </Box>
+    <>
+      <PaymentInformation
+        actions={methods.map((method) => (
+          <Button // Разбить кнопки оплаты на разные компонентны, для разной логики оплаты
+            key={method.id}
+            variant={method.type === payment?.type ? "selected" : "payment"}
+            label={method.rus}
+            size="large"
+            onClick={() => handlePayment(method.type, method)}
+            loading={method.type === payment.type && isLoading}
+          />
+        ))}
+        payment={payment}
+        passengers={passengers}
+      />
+    </>
   );
 };
