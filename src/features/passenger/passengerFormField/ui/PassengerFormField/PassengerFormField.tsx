@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { FC, useEffect, useState } from "react";
+import { FC, ReactNode, useLayoutEffect, useState } from "react";
 import { Passenger, usePassengerStore } from "@/entities/passenger";
 import { Direction } from "@/shared/types";
 import { PassengerBaseFields } from "../PassengerBaseFields/PassengerBaseFields";
@@ -8,19 +8,20 @@ import { PassengerTicketFields } from "../PassengerTicketFields/PassengerTicketF
 interface Props {
   passenger: Passenger;
   direction: Direction;
+  addBaggage: ReactNode;
 }
 
-export const PassengerFormField: FC<Props> = ({ passenger, direction }) => {
+// TODO: Изменить проверку полей - добавить проверку у всех пассажиров, если их больше 1
+
+export const PassengerFormField: FC<Props> = ({ passenger, direction, addBaggage }) => {
   const { updatePassenger, setFormFullfield } = usePassengerStore();
 
   const [isTicketFormComplete, setTicketFormComplete] = useState(false);
   const [isBaseFormComplete, setBaseFormComplete] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isTicketFormComplete && isBaseFormComplete) {
       setFormFullfield(true);
-    } else {
-      setFormFullfield(false);
     }
   }, [isTicketFormComplete, isBaseFormComplete, setFormFullfield]);
 
@@ -39,6 +40,7 @@ export const PassengerFormField: FC<Props> = ({ passenger, direction }) => {
         direction={direction}
         onChange={handleChangePassenger}
         setFormComplete={setTicketFormComplete}
+        addBaggage={addBaggage}
       />
       {!!passenger.ticket[direction]?.type && (
         <PassengerBaseFields

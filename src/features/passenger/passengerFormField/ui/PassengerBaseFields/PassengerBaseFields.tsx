@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useCountryStore } from "@/entities/country";
 import { Passenger } from "@/entities/passenger";
 import { Direction } from "@/shared/types";
-import { Input, Label, RadioGroup, CountrySelect } from "@/shared/ui";
+import { Input, Label, RadioGroup, CountrySelect, Checkbox } from "@/shared/ui";
 // import { getFormatPhoneNumber } from "@/shared/utils/getFormatPhoneNumber.ts";
 
 interface Props {
@@ -29,8 +29,10 @@ export const PassengerBaseFields: FC<Props> = ({ passenger, onChange, setFormCom
     !!passenger.firstName &&
     !!passenger.patronymic &&
     !!passenger.birthday &&
-    !!passenger.phone?.number &&
-    !!passenger.phone?.code &&
+    (passenger.phone?.refusalToProvide ||
+      (!!passenger.phone?.number &&
+        !!passenger.phone?.code &&
+        !passenger.phone?.refusalToProvide)) &&
     !!passenger.gender;
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export const PassengerBaseFields: FC<Props> = ({ passenger, onChange, setFormCom
     setFormComplete(completeStatus);
   }, [passenger, setFormComplete]);
 
-  const handleFieldChange = (field: string, value: string) => {
+  const handleFieldChange = (field: string, value: string | boolean) => {
     const clonedPassenger = _.cloneDeep(passenger);
     const updatedPassenger = _.merge(clonedPassenger, _.set({}, field, value));
     onChange(updatedPassenger);
@@ -92,7 +94,10 @@ export const PassengerBaseFields: FC<Props> = ({ passenger, onChange, setFormCom
       </Label>
       <Label variant="h3" text="Телефон" required>
         <Input
-          {...register("phone.number")}
+          {...register("phone.number", {
+            pattern: /[A-Za-z]{3}/,
+            disabled: passenger.phone.refusalToProvide,
+          })}
           // value={getFormatPhoneNumber(passenger.phone.number, "(xxx) xxx-xx-xx")}
           placeholder="(---) --- -- --"
           onChange={(event) => handleFieldChange("phone.number", event.target.value)}
@@ -107,6 +112,11 @@ export const PassengerBaseFields: FC<Props> = ({ passenger, onChange, setFormCom
               onChange={(event) => handleFieldChange("phone.code", event.target.value)}
             />
           }
+        />
+        <Checkbox
+          {...register("phone.refusalToProvide")}
+          label="Отказ от предоставления телефона"
+          onChange={(event) => handleFieldChange("phone.refusalToProvide", event.target.checked)}
         />
       </Label>
       <Label variant="h3" text="Пол" required>

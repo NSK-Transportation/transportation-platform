@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { FC, useEffect } from "react";
+import { FC, ReactNode, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDiscountStore } from "@/entities/discount";
 import { Passenger, usePassengerStore } from "@/entities/passenger";
@@ -12,6 +12,7 @@ interface Props {
   direction: Direction;
   onChange: (update: Partial<Passenger>) => void;
   setFormComplete: (isComplete: boolean) => void;
+  addBaggage: ReactNode;
 }
 
 export const PassengerTicketFields: FC<Props> = ({
@@ -19,6 +20,7 @@ export const PassengerTicketFields: FC<Props> = ({
   direction,
   onChange,
   setFormComplete,
+  addBaggage,
 }) => {
   const {
     options: { tickets },
@@ -110,7 +112,9 @@ export const PassengerTicketFields: FC<Props> = ({
       </Label>
 
       <Label variant="h3" text="Багаж">
-        <Input disabled readOnly placeholder="Выберите багаж" style={{ cursor: "pointer" }} />
+        <Stacks fullheight alignItems="center" justifyContent="center">
+          {addBaggage}
+        </Stacks>
       </Label>
 
       {passenger?.ticket[direction]?.type === "full" && (
