@@ -55,8 +55,8 @@ export const usePassengerStore = create<Store>()(
       },
       updatePassenger: (id, data) => {
         set((state) => ({
-          passengers: state.passengers.map(
-            (passenger) => passenger.id === id && { ...passenger, ...data },
+          passengers: state.passengers.map((passenger) =>
+            passenger.id === id ? { ...passenger, ...data } : passenger,
           ),
         }));
       },
