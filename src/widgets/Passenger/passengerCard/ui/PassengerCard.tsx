@@ -1,5 +1,7 @@
 import { FC } from "react";
+import { AddBaggagePopover } from "@/features/baggage";
 import { PassengerFormField } from "@/features/passenger";
+import { useBaggageStore } from "@/entities/baggage";
 import { usePassengerStore } from "@/entities/passenger";
 import { Direction } from "@/shared/types";
 import { Box, Chip, Grid, Stacks, Typography } from "@/shared/ui";
@@ -10,6 +12,7 @@ interface Props {
 
 export const PassengerCard: FC<Props> = ({ direction }) => {
   const { passengers } = usePassengerStore();
+  const { baggage } = useBaggageStore();
 
   return (
     <>
@@ -27,7 +30,17 @@ export const PassengerCard: FC<Props> = ({ direction }) => {
 
             <Grid gap={16}>
               <Grid columns="repeat(2, 1fr)" gap={16}>
-                <PassengerFormField direction={direction} passenger={passenger} />
+                <PassengerFormField
+                  direction={direction}
+                  passenger={passenger}
+                  addBaggage={
+                    <AddBaggagePopover
+                      baggage={baggage}
+                      passenger={passenger}
+                      direction={direction}
+                    />
+                  }
+                />
               </Grid>
             </Grid>
             <Typography variant="h4" color="secondary">
