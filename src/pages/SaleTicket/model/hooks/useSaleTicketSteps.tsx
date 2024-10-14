@@ -14,8 +14,6 @@ export const useSaleTicketSteps = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const step = Number(searchParams.get("step")) || 0;
 
-  console.log(formFullfield);
-
   const steps = [
     { icon: <BusIcon /> },
     { icon: <SeatIcon /> },
