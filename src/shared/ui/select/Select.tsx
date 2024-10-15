@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useState, useRef, useEffect, forwardRef, SelectHTMLAttributes } from "react";
+import { useState, useRef, useEffect, forwardRef, SelectHTMLAttributes, ChangeEvent } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import styles from "./Select.module.scss";
 
@@ -12,37 +12,34 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   className?: string;
   options: Option[];
   fullWidth?: boolean;
-  defaultValue?: string | number;
   placeholder?: string;
+  onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, options, fullWidth, value, placeholder, ...props }, _ref) => {
+  ({ className, options, fullWidth, value, placeholder, onChange, ...props }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+    const [selectedValue, setSelectedValue] = useState(value);
     const selectRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      if (value !== undefined) {
-        const selected = options.find((option) => option.value === value);
-        if (selected) {
-          setSelectedOption(selected);
-        }
-      }
-    }, [value, options]);
+      setSelectedValue(value);
+    }, [value]);
+
+    const selectedOption = options.find((option) => option.value === selectedValue) || null;
 
     const handleSelectClick = () => {
       setIsOpen(!isOpen);
     };
 
     const handleOptionClick = (option: Option) => {
-      setSelectedOption(option);
       setIsOpen(false);
-      if (props.onChange) {
+      setSelectedValue(option.value);
+      if (onChange) {
         const event = {
           target: { value: option.value },
-        } as React.ChangeEvent<HTMLSelectElement>;
-        props.onChange(event);
+        } as ChangeEvent<HTMLSelectElement>;
+        onChange(event);
       }
     };
 

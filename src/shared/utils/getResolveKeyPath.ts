@@ -11,9 +11,9 @@
  * @param params - объект, где ключи — это параметры, которые могут встречаться в квадратных скобках в ключе, а значения — то, чем их нужно заменить.
  * @returns Массив строк, где каждая строка — это часть ключа, разделённая точкой.
  */
-export function getResolveKeyPath(key: string, params: { [key: string]: string }): string[] {
+export function getResolveKeyPath(key: string, params?: { [key: string]: string }): string[] {
   return key
-    .replace(/\[([^\]]+)\]/g, (_, match) => params[match] || match)
+    .replace(/\[([^\]]+)\]/g, (_, match) => params?.[match] || match)
     .split(".")
     .map((part) => part.trim());
 }

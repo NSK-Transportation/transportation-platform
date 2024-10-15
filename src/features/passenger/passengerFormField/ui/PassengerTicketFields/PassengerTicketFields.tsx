@@ -1,4 +1,6 @@
-import { FC } from "react";
+import _ from "lodash";
+import { FC, ReactNode, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { useDiscountStore } from "@/entities/discount";
 import { Passenger, usePassengerStore } from "@/entities/passenger";
 import { useTicketStore } from "@/entities/ticket";
@@ -9,9 +11,17 @@ interface Props {
   passenger: Passenger;
   direction: Direction;
   onChange: (update: Partial<Passenger>) => void;
+  setFormComplete: (isComplete: boolean) => void;
+  addBaggage: ReactNode;
 }
 
-export const PassengerTicketFields: FC<Props> = ({ passenger, direction, onChange }) => {
+export const PassengerTicketFields: FC<Props> = ({
+  passenger,
+  direction,
+  onChange,
+  setFormComplete,
+  addBaggage,
+}) => {
   const {
     options: { tickets },
   } = useTicketStore();
@@ -22,89 +32,126 @@ export const PassengerTicketFields: FC<Props> = ({ passenger, direction, onChang
     options: { documents, privileges },
   } = usePassengerStore();
 
+  const { register, trigger } = useForm<Passenger>({
+    defaultValues: passenger,
+    mode: "all",
+  });
+
+  const isTicketFormComplete = (passenger: Passenger, direction: Direction): boolean => {
+    const ticket = passenger.ticket[direction];
+    if (!ticket?.type) return false;
+
+    // Если выбран полный билет, проверяем документ
+    if (ticket.type === "full") {
+      return (
+        !!passenger.identification?.document?.type &&
+        !!passenger.identification?.document?.series &&
+        !!passenger.identification?.document?.number
+      );
+    }
+
+    // Если детский билет
+    if (ticket.type === "child") {
+      return (
+        !!ticket.discount?.type &&
+        !!passenger.identification?.child?.series &&
+        !!passenger.identification?.child?.number
+      );
+    }
+
+    // Если скидочный билет
+    if (ticket.type === "discount") {
+      return (
+        !!ticket.discount?.type &&
+        !!(passenger.identification?.student?.number || passenger.identification?.military?.number)
+      );
+    }
+
+    // Если льготы
+    if (ticket.type === "privilege") {
+      return (
+        !!passenger.identification?.privilege?.type &&
+        !!passenger.identification?.privilege?.series &&
+        !!passenger.identification?.privilege?.number
+      );
+    }
+
+    return true;
+  };
+
+  useEffect(() => {
+    const completeStatus = isTicketFormComplete(passenger, direction);
+    setFormComplete(completeStatus);
+  }, [direction, passenger, setFormComplete]);
+
+  const handleFieldChange = (field: string, value: unknown) => {
+    const clonedPassenger = _.cloneDeep(passenger);
+    const updatedPassenger = _.merge(clonedPassenger, _.set({}, field, value));
+    onChange(updatedPassenger);
+    trigger(field as keyof Passenger, { shouldFocus: true });
+  };
+
   return (
     <>
-      <Label variant="h3" text="Тип билета">
+      <Label variant="h3" text="Тип билета" required>
         <Select
+          {...register(`ticket.${direction}.type`)}
+          value={passenger.ticket[direction]?.type}
           placeholder="Выберите тип билета"
           options={tickets.map((ticket) => ({
             label: ticket.rus,
             value: ticket.type,
           }))}
-          value={passenger?.ticket[direction]?.type}
           onChange={(event) =>
-            onChange({
-              ticket: {
-                ...passenger.ticket,
-                [direction]: {
-                  ...passenger.ticket[direction],
-                  ...tickets.find((ticket) => ticket.type === event.target.value),
-                },
-              },
-            })
+            handleFieldChange(
+              `ticket.${direction}`,
+              tickets.find((ticket) => ticket.type === event.target.value),
+            )
           }
         />
       </Label>
 
       <Label variant="h3" text="Багаж">
-        <Input disabled readOnly placeholder="Выберите багаж" style={{ cursor: "pointer" }} />
+        <Stacks fullheight alignItems="center" justifyContent="center">
+          {addBaggage}
+        </Stacks>
       </Label>
 
       {passenger?.ticket[direction]?.type === "full" && (
         <>
-          <Label variant="h3" text="Тип документа">
+          <Label variant="h3" text="Тип документа" required>
             <Select
+              {...register("identification.document.type")}
+              value={passenger.identification?.document?.type}
               placeholder="Выберите тип документа"
               options={documents.map((document) => ({
                 label: document.rus,
                 value: document.type,
               }))}
-              value={passenger.identification?.document?.type}
-              onChange={(event) => {
-                onChange({
-                  identification: {
-                    ...passenger.identification,
-                    document: {
-                      ...passenger.identification?.document,
-                      ...documents.find((document) => document.type === event.target.value),
-                    },
-                  },
-                });
-              }}
+              onChange={(event) =>
+                handleFieldChange(
+                  "identification.document",
+                  documents.find((document) => document.type === event.target.value),
+                )
+              }
             />
           </Label>
           <Stacks gap={16}>
-            <Label variant="h3" text="Серия">
+            <Label variant="h3" text="Серия" required>
               <Input
-                value={passenger.identification?.document?.series}
+                {...register("identification.document.series")}
                 placeholder="-- --"
                 onChange={(event) =>
-                  onChange({
-                    identification: {
-                      ...passenger.identification,
-                      document: {
-                        ...passenger.identification?.document,
-                        series: event.target.value,
-                      },
-                    },
-                  })
+                  handleFieldChange("identification.document.series", event.target.value)
                 }
               />
             </Label>
-            <Label variant="h3" text="Номер ">
+            <Label variant="h3" text="Номер" required>
               <Input
-                value={passenger.identification?.document?.number}
+                {...register("identification.document.number")}
                 placeholder="--- ---"
                 onChange={(event) =>
-                  onChange({
-                    identification: {
-                      ...passenger.identification,
-                      document: {
-                        ...passenger.identification?.document,
-                        number: event.target.value,
-                      },
-                    },
-                  })
+                  handleFieldChange("identification.document.number", event.target.value)
                 }
               />
             </Label>
@@ -116,59 +163,36 @@ export const PassengerTicketFields: FC<Props> = ({ passenger, direction, onChang
         <>
           <Label variant="h3" text="Cкидка">
             <Select
+              {...register(`ticket.${direction}.discount.type`)}
+              value={passenger.ticket[direction].discount?.type}
               placeholder="Выберите скидку"
               options={discounts.child.map((document) => ({
                 label: document.rus,
                 value: document.type,
               }))}
-              value={passenger.ticket[direction]?.discount?.type}
-              onChange={(event) => {
-                onChange({
-                  ticket: {
-                    ...passenger.ticket,
-                    [direction]: {
-                      ...passenger.ticket[direction],
-                      discount: {
-                        ...passenger.ticket[direction]?.discount,
-                        ...discounts.child.find((document) => document.type === event.target.value),
-                      },
-                    },
-                  },
-                });
-              }}
+              onChange={(event) =>
+                handleFieldChange(
+                  `ticket.${direction}.discount`,
+                  discounts.child.find((discount) => discount.type === event.target.value),
+                )
+              }
             />
           </Label>
-          <Label variant="h3" text="Свидетельство о рождении">
+          <Label variant="h3" text="Свидетельство о рождении" required>
             <Stacks gap={16}>
               <Input
+                {...register("identification.child.series")}
                 placeholder="Серия"
-                value={passenger.identification?.child?.series}
-                onChange={(event) => {
-                  onChange({
-                    identification: {
-                      ...passenger.identification,
-                      child: {
-                        ...passenger.identification?.child,
-                        series: event.target.value,
-                      },
-                    },
-                  });
-                }}
+                onChange={(event) =>
+                  handleFieldChange("identification.child.series", event.target.value)
+                }
               />
               <Input
+                {...register("identification.child.number")}
                 placeholder="Номер"
-                value={passenger.identification?.child?.number}
-                onChange={(event) => {
-                  onChange({
-                    identification: {
-                      ...passenger.identification,
-                      child: {
-                        ...passenger.identification?.child,
-                        number: event.target.value,
-                      },
-                    },
-                  });
-                }}
+                onChange={(event) =>
+                  handleFieldChange("identification.child.number", event.target.value)
+                }
               />
             </Stacks>
           </Label>
@@ -177,28 +201,21 @@ export const PassengerTicketFields: FC<Props> = ({ passenger, direction, onChang
 
       {passenger?.ticket[direction]?.type === "discount" && (
         <>
-          <Label variant="h3" text="Cкидка">
+          <Label variant="h3" text="Cкидка" required>
             <Select
+              {...register(`ticket.${direction}.discount.type`)}
+              value={passenger.ticket[direction].discount?.type}
               placeholder="Выберите скидку"
               options={discounts.main.map((document) => ({
                 label: document.rus,
                 value: document.type,
               }))}
-              value={passenger.ticket[direction]?.discount?.type}
-              onChange={(event) => {
-                onChange({
-                  ticket: {
-                    ...passenger.ticket,
-                    [direction]: {
-                      ...passenger.ticket[direction],
-                      discount: {
-                        ...passenger.ticket[direction]?.discount,
-                        ...discounts.main.find((document) => document.type === event.target.value),
-                      },
-                    },
-                  },
-                });
-              }}
+              onChange={(event) =>
+                handleFieldChange(
+                  `ticket.${direction}.discount`,
+                  discounts.main.find((discount) => discount.type === event.target.value),
+                )
+              }
             />
           </Label>
           <Label
@@ -208,23 +225,22 @@ export const PassengerTicketFields: FC<Props> = ({ passenger, direction, onChang
                 ? "Номер студенческого"
                 : "Номер справки"
             }
+            required
           >
             <Input
-              placeholder="Введите номер"
-              value={
+              {...register(
                 passenger.ticket[direction]?.discount?.type === "student"
-                  ? passenger.identification?.student?.number
-                  : passenger.identification?.military?.number
-              }
+                  ? "identification.student.number"
+                  : "identification.military.number",
+              )}
+              placeholder="Введите номер"
               onChange={(event) =>
-                onChange({
-                  identification: {
-                    ...passenger.identification,
-                    ...(passenger.ticket[direction]?.discount?.type === "student"
-                      ? { student: { number: event.target.value } }
-                      : { military: { number: event.target.value } }),
-                  },
-                })
+                handleFieldChange(
+                  passenger.ticket[direction]?.discount?.type === "student"
+                    ? "identification.student.number"
+                    : "identification.military.number",
+                  event.target.value,
+                )
               }
             />
           </Label>
@@ -233,58 +249,38 @@ export const PassengerTicketFields: FC<Props> = ({ passenger, direction, onChang
 
       {passenger?.ticket[direction]?.type === "privilege" && (
         <>
-          <Label variant="h3" text="Тип льготы">
+          <Label variant="h3" text="Тип льготы" required>
             <Select
+              {...register("identification.privilege.type")}
+              value={passenger.identification?.privilege?.type}
               placeholder="Нет льготы"
               options={privileges?.map((privilege) => ({
                 label: privilege.rus,
                 value: privilege.type,
               }))}
-              value={passenger.identification?.privilege?.type}
-              onChange={(event) => {
-                onChange({
-                  identification: {
-                    ...passenger.identification,
-                    privilege: {
-                      ...passenger.identification?.privilege,
-                      ...privileges?.find((privilege) => privilege.type === event.target.value),
-                    },
-                  },
-                });
-              }}
+              onChange={(event) =>
+                handleFieldChange(
+                  "identification.privilege",
+                  privileges.find((privilege) => privilege.type === event.target.value),
+                )
+              }
             />
           </Label>
-          <Label variant="h3" text="Документ на право льготы">
+          <Label variant="h3" text="Документ на право льготы" required>
             <Stacks gap={16}>
               <Input
-                value={passenger.identification?.privilege?.series}
+                {...register("identification.privilege.series")}
                 placeholder="Серия"
-                onChange={(event) => {
-                  onChange({
-                    identification: {
-                      ...passenger.identification,
-                      privilege: {
-                        ...passenger.identification?.privilege,
-                        series: event.target.value,
-                      },
-                    },
-                  });
-                }}
+                onChange={(event) =>
+                  handleFieldChange("identification.privilege.series", event.target.value)
+                }
               />
               <Input
-                value={passenger.identification?.privilege?.number}
+                {...register("identification.privilege.number")}
                 placeholder="Номер"
-                onChange={(event) => {
-                  onChange({
-                    identification: {
-                      ...passenger.identification,
-                      privilege: {
-                        ...passenger.identification?.privilege,
-                        number: event.target.value,
-                      },
-                    },
-                  });
-                }}
+                onChange={(event) =>
+                  handleFieldChange("identification.privilege.number", event.target.value)
+                }
               />
             </Stacks>
           </Label>

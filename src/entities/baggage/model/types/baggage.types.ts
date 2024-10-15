@@ -1,9 +1,9 @@
 export interface Baggage {
-  available?: number;
-  count: number;
+  available: number;
+  quantity?: number;
   price: number;
 }
 
 export interface QueryParams {
-  count: number;
+  quantity: number;
 }

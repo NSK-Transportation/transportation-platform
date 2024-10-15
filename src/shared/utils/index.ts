@@ -1,4 +1,3 @@
-export { getSumValues } from "./getSumValues";
 export { getCapitalizeFirstLetter } from "./getCapitalizeFirstLetter";
 export { getResolveKeyPath } from "./getResolveKeyPath";
 export { getUniqueId } from "./getUniqueId";

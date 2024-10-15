@@ -1,24 +1,28 @@
 /**
- * Форматирование номера телефона с использованием регулярных выражений
+ * Форматирование номера телефона по заданному паттерну
  *
  * @param phone - Введенный пользователем номер телефона (без форматирования)
+ * @param pattern - Паттерн для форматирования - "X" для обозначения цифр.
  * @returns Отформатированный телефонный номер
  */
-export const getFormatPhoneNumber = (phone: string): string => {
-  const cleaned = phone.replace(/\D/g, "");
+export const getFormatPhoneNumber = (phone: string, pattern: string): string => {
+  const cleaned = phone?.replace(/\D/g, "");
 
-  const patterns = [
-    { regex: /^(\d{0,3})$/, format: "$1" },
-    { regex: /^(\d{3})(\d{0,3})$/, format: "($1) $2" },
-    { regex: /^(\d{3})(\d{3})(\d{0,2})$/, format: "($1) $2-$3" },
-    { regex: /^(\d{3})(\d{3})(\d{2})(\d{0,2})$/, format: "($1) $2-$3-$4" },
-  ];
+  let formatted = "";
+  let phoneIndex = 0;
 
-  for (const { regex, format } of patterns) {
-    if (regex.test(cleaned)) {
-      return `${cleaned.replace(regex, format)}`;
+  for (let i = 0; i < pattern.length; i++) {
+    if (["X", "x"].includes(pattern[i])) {
+      if (phoneIndex < cleaned?.length) {
+        formatted += cleaned[phoneIndex];
+        phoneIndex++;
+      } else {
+        break;
+      }
+    } else {
+      formatted += pattern[i];
     }
   }
 
-  return `${cleaned}`;
+  return formatted;
 };

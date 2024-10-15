@@ -13,9 +13,10 @@ export const SelectDate: FC<Props> = ({ name, message, placeholder }) => {
   const { way, setWay } = useWayStore();
 
   const handleDateChange = async (date: Date) => {
+    const formattedDate = moment(date).format("YYYY-MM-DD");
     setWay({
       ...way,
-      [name]: date,
+      [name]: formattedDate,
     });
   };
 

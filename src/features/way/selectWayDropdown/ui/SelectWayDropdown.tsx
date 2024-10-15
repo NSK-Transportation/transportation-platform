@@ -1,7 +1,8 @@
 import { FC } from "react";
+import { useQuery } from "react-query";
 import { City } from "@/entities/city";
 import { Station } from "@/entities/station";
-import { useWayStore, Way } from "@/entities/way";
+import { getCities, useWayStore, Way } from "@/entities/way";
 import { DropdownStation } from "@/shared/ui";
 import { getValue } from "@/shared/utils";
 
@@ -16,6 +17,7 @@ export const SelectWayDropdown: FC<Props> = ({ name, placeholder = "Placeholder"
     way,
     setWay,
     options: { cities },
+    setOption,
   } = useWayStore();
 
   const handleWayChange = (city: City, station: Station | null, name: keyof Way) => {
@@ -25,13 +27,20 @@ export const SelectWayDropdown: FC<Props> = ({ name, placeholder = "Placeholder"
     });
   };
 
+  const { isFetching } = useQuery(["cities", cities], () => getCities(), {
+    refetchOnWindowFocus: false,
+    onSuccess(data) {
+      setOption("cities", data);
+    },
+  });
+
   const wayName = getValue(way, name);
 
   if (!wayName || wayName instanceof Date) {
     return null;
   }
 
-  const city = cities.find((city) => city.name === (wayName?.city ?? ""));
+  const city = cities?.find((city) => city.name === (wayName?.city ?? ""));
   const station = city?.stations.find((station) => station.name === wayName.station);
 
   return (
@@ -43,6 +52,7 @@ export const SelectWayDropdown: FC<Props> = ({ name, placeholder = "Placeholder"
       placeholder={placeholder}
       message={message}
       options={cities}
+      loading={isFetching}
     />
   );
 };

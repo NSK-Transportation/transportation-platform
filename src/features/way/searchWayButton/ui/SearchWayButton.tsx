@@ -1,4 +1,5 @@
 import { FC } from "react";
+import toast from "react-hot-toast";
 import { useQuery } from "react-query";
 import { getWays, useWayStore } from "@/entities/way";
 import { useWayDetailStore } from "@/entities/wayDetails";
@@ -6,7 +7,7 @@ import { Direction } from "@/shared/types";
 import { Button } from "@/shared/ui";
 
 interface Props {
-  direction?: Direction;
+  direction: Direction;
 }
 
 export const SearchWayButton: FC<Props> = ({ direction }) => {
@@ -23,9 +24,14 @@ export const SearchWayButton: FC<Props> = ({ direction }) => {
 
   const handleClick = () => {
     if (!(way.date && way.from.city && way.to.city)) {
-      alert("Заполните поля");
+      toast("Заполните поля");
       return;
     }
+    toast.promise(refetch(), {
+      loading: "Загрузка",
+      success: "Маршруты получены",
+      error: "Ошибка",
+    });
     refetch();
   };
 

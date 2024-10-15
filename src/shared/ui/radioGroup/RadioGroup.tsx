@@ -1,4 +1,4 @@
-import { CSSProperties, FC } from "react";
+import { CSSProperties, forwardRef } from "react";
 import clsx from "clsx";
 import styles from "./RadioGroup.module.scss";
 import { Radio } from "../radio/Radio";
@@ -17,35 +17,30 @@ export interface RadioGroupProps {
   className?: string;
 }
 
-const RadioGroup: FC<RadioGroupProps> = ({
-  name,
-  radios,
-  selected,
-  direction = "column",
-  onChange,
-  className,
-  ...props
-}) => {
-  return (
-    <div
-      className={clsx(styles.radioGroup, className)}
-      style={{ flexDirection: direction }}
-      {...props}
-    >
-      {radios.map(({ value, title }) => (
-        <Radio
-          key={value}
-          id={`${name}-${value}`}
-          name={name}
-          value={value}
-          label={title}
-          checked={selected === value}
-          onChange={() => onChange(value)}
-        />
-      ))}
-    </div>
-  );
-};
+const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
+  ({ name, radios, selected, direction = "column", onChange, className, ...props }, ref) => {
+    return (
+      <div
+        className={clsx(styles.radioGroup, className)}
+        style={{ flexDirection: direction }}
+        ref={ref}
+        {...props}
+      >
+        {radios.map(({ value, title }) => (
+          <Radio
+            key={value}
+            id={`${name}-${value}`}
+            name={name}
+            value={value}
+            label={title}
+            checked={selected === value}
+            onChange={() => onChange(value)}
+          />
+        ))}
+      </div>
+    );
+  },
+);
 
 RadioGroup.displayName = "RadioGroup";
 

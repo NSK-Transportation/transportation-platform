@@ -5,7 +5,8 @@
   background-color: var(--content-background-color);
   padding: 16px;
   border-radius: 8px;
-  animation: fadeIn var(--transition-duration) var(--transition-timing-function) forwards;
+  box-shadow: 0px 0px 4px 0px #00000033;
+  // animation: fadeIn var(--transition-duration) var(--transition-timing-function) forwards;
   z-index: 50;
 
   &__actions {
@@ -14,11 +15,11 @@
   }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+// @keyframes fadeIn {
+//   from {
+//     opacity: 0;
+//   }
+//   to {
+//     opacity: 1;
+//   }
+// }

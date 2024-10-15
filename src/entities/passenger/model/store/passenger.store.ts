@@ -4,6 +4,7 @@ import { immer } from "zustand/middleware/immer";
 import {
   Document,
   DocumentType,
+  Gender,
   Passenger,
   Privilege,
   PrivilegeType,
@@ -16,12 +17,16 @@ export interface Store {
   options: {
     documents: Omit<Document, "series" | "number">[];
     privileges: Omit<Privilege, "series" | "number">[];
+    genders: Gender[];
   };
 
   setPassenger: (passenger: Passenger) => void;
   setPassengers: (newPassenger: Passenger) => void;
   updatePassenger: (id: Passenger["id"], data: Partial<Passenger>) => void;
   clearPassenger: (id: Passenger["id"]) => void;
+
+  formFullfield: boolean;
+  setFormFullfield: (fullfield: boolean) => void;
 }
 
 export const usePassengerStore = create<Store>()(
@@ -37,6 +42,10 @@ export const usePassengerStore = create<Store>()(
         privileges: [
           { id: 1, type: PrivilegeType.STUDENT, rus: "Студент" },
           { id: 2, type: PrivilegeType.MILITARY, rus: "СВО" },
+        ],
+        genders: [
+          { id: 1, type: "male", rus: "Мужской" },
+          { id: 2, type: "female", rus: "Женский" },
         ],
       },
 
@@ -62,9 +71,25 @@ export const usePassengerStore = create<Store>()(
           passengers: state.passengers.filter((passenger) => passenger.id !== id),
         }));
       },
+
+      formFullfield: false,
+      setFormFullfield: (fullfield) => {
+        set((state) => {
+          state.formFullfield = fullfield;
+        });
+      },
     })),
     {
       name: "PassengerStore",
     },
   ),
 );
+
+const channel = new BroadcastChannel("passenger_channel");
+
+usePassengerStore.subscribe((state: Store) => {
+  channel.postMessage({
+    type: "GET_PASSENGER",
+    passengers: state.passengers,
+  });
+});

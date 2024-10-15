@@ -26,6 +26,12 @@
   overflow: auto;
 }
 
+.loading,
+.optionUndefined {
+  width: auto;
+  padding: 8px 16px 8px 16px;
+}
+
 .dropdownMenu::-webkit-scrollbar {
   width: 0;
 }
