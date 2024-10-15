@@ -13,7 +13,18 @@ export default {
         count: 10,
         available: 10,
       },
-      discounts: [],
+      discounts: [
+        {
+          id: 1,
+          type: "student",
+          rus: "Студент",
+        },
+        {
+          id: 2,
+          type: "military",
+          rus: "СВО",
+        },
+      ],
       seats: [
         {
           id: 1,
