@@ -4,21 +4,12 @@
   grid-template-rows: auto 1fr;
   padding: 16px;
   gap: 16px;
+  grid-template-areas:
+    "aside header header"
+    "aside main main";
   width: 100vw;
   height: 100vh;
   max-width: 1440px;
-
-  &.default {
-    grid-template-areas:
-      "aside header header"
-      "aside main info";
-  }
-
-  &.withoutInfo {
-    grid-template-areas:
-      "aside header header"
-      "aside main main";
-  }
 
   &__headerPanel {
     grid-area: header;
