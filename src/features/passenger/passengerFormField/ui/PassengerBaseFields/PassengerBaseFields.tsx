@@ -2,7 +2,7 @@ import _ from "lodash";
 import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useCountryStore } from "@/entities/country";
-import { Passenger } from "@/entities/passenger";
+import { Passenger, usePassengerStore } from "@/entities/passenger";
 import { Direction } from "@/shared/types";
 import { Input, Label, RadioGroup, CountrySelect, Checkbox } from "@/shared/ui";
 // import { getFormatPhoneNumber } from "@/shared/utils/getFormatPhoneNumber.ts";
@@ -18,6 +18,9 @@ export const PassengerBaseFields: FC<Props> = ({ passenger, onChange, setFormCom
   const {
     options: { countries },
   } = useCountryStore();
+  const {
+    options: { genders },
+  } = usePassengerStore();
 
   const { register, trigger } = useForm<Passenger>({
     defaultValues: passenger,
@@ -40,7 +43,7 @@ export const PassengerBaseFields: FC<Props> = ({ passenger, onChange, setFormCom
     setFormComplete(completeStatus);
   }, [passenger, setFormComplete]);
 
-  const handleFieldChange = (field: string, value: string | boolean) => {
+  const handleFieldChange = (field: string, value: unknown) => {
     const clonedPassenger = _.cloneDeep(passenger);
     const updatedPassenger = _.merge(clonedPassenger, _.set({}, field, value));
     onChange(updatedPassenger);
@@ -124,12 +127,17 @@ export const PassengerBaseFields: FC<Props> = ({ passenger, onChange, setFormCom
           {...register("gender")}
           direction="row"
           name="gender"
-          radios={[
-            { value: "men", title: "Мужской" },
-            { value: "women", title: "Женский" },
-          ]}
-          selected={passenger.gender || ""}
-          onChange={(value) => handleFieldChange("gender", value)}
+          radios={genders.map((gender) => ({
+            title: gender.rus ?? "",
+            value: gender.type ?? "",
+          }))}
+          selected={passenger.gender?.type || ""}
+          onChange={(value) =>
+            handleFieldChange(
+              "gender",
+              genders.find((gender) => gender.type === value),
+            )
+          }
         />
       </Label>
     </>
