@@ -20,7 +20,7 @@ export const PaymentInformation: FC<Props> = ({ actions, payment, passengers }) 
             <Typography variant="h5" color="secondary">
               Туда: {payment[type]?.there?.price} руб
             </Typography>
-            {!payment[type]?.return && (
+            {!!payment[type]?.return && (
               <Typography variant="h5" color="secondary">
                 Обратно: {payment[type]?.return?.price} руб
               </Typography>
