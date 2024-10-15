@@ -2,7 +2,9 @@
 import { Ticket } from "@/entities/ticket";
 import { Options } from "@/shared/types/types";
 
-export type Gender = "male" | "female";
+export type GenderType = "male" | "female";
+
+export type Gender = Options<GenderType, "type">;
 
 export enum PrivilegeType {
   STUDENT = "student",
@@ -50,7 +52,7 @@ export interface Passenger {
   firstName: string;
   lastName: string;
   patronymic: string;
-  gender: Gender | null;
+  gender: Gender;
   birthday: Date | null;
   phone: Phone;
   identification: Partial<Identification> | null;
