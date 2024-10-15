@@ -4,6 +4,7 @@ import { immer } from "zustand/middleware/immer";
 import {
   Document,
   DocumentType,
+  Gender,
   Passenger,
   Privilege,
   PrivilegeType,
@@ -16,6 +17,7 @@ export interface Store {
   options: {
     documents: Omit<Document, "series" | "number">[];
     privileges: Omit<Privilege, "series" | "number">[];
+    genders: Gender[];
   };
 
   setPassenger: (passenger: Passenger) => void;
@@ -40,6 +42,10 @@ export const usePassengerStore = create<Store>()(
         privileges: [
           { id: 1, type: PrivilegeType.STUDENT, rus: "Студент" },
           { id: 2, type: PrivilegeType.MILITARY, rus: "СВО" },
+        ],
+        genders: [
+          { id: 1, type: "male", rus: "Мужской" },
+          { id: 2, type: "female", rus: "Женский" },
         ],
       },
 
