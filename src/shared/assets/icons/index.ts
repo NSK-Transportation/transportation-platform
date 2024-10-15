@@ -18,3 +18,5 @@ export { FiAlertCircle as ErrorIcon } from "react-icons/fi";
 export { BiSolidGrid as AdminIcon } from "react-icons/bi";
 export { PiSlideshow as ReferenceIcon } from "react-icons/pi";
 export { IoExitOutline as ExitIcon } from "react-icons/io5";
+export { IoIosArrowDown as ArrowDownIcon } from "react-icons/io";
+export { IoIosArrowUp as ArrowUpIcon } from "react-icons/io";
