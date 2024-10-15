@@ -5,7 +5,6 @@ import { Layout } from "@/shared/ui";
 
 export const Home = () => {
   const location = useLocation();
-  const isSaleTicket = location.pathname === "/home/sale-ticket";
   const isHome = location.pathname === "/home";
 
   return (
@@ -13,8 +12,6 @@ export const Home = () => {
       headerPanel={<Header />}
       asidePanel={<Sidebar />}
       mainPanel={isHome ? "Выберите действие" : <Outlet />}
-      informationPanel={"Info"}
-      gridTemplateAreas={isSaleTicket ? "default" : "withoutInfo"}
     />
   );
 };

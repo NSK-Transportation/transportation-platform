@@ -1,10 +1,12 @@
-import { Stacks } from "@/shared/ui";
+import { InformationPanel } from "@/widgets/Information";
+import { Grid } from "@/shared/ui";
 import { StepContent } from "./StepContent";
 
 export const SaleTicket = () => {
   return (
-    <Stacks gap={16} direction="column" fullheight>
+    <Grid gap={16} columns={"1.5fr 1fr"} fullheight>
       <StepContent />
-    </Stacks>
+      <InformationPanel />
+    </Grid>
   );
 };

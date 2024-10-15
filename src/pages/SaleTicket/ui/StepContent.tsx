@@ -7,7 +7,7 @@ import { SelectorWayForSaleTicket, WayDetailList } from "@/widgets/Way";
 import { StepperButtons } from "@/features/step";
 import { usePassengerStore } from "@/entities/passenger";
 import { useWayStore } from "@/entities/way";
-import { Stepper } from "@/shared/ui";
+import { Stacks, Stepper } from "@/shared/ui";
 import { useSaleTicketSteps } from "../model/hooks/useSaleTicketSteps";
 
 export const StepContent = () => {
@@ -67,7 +67,7 @@ export const StepContent = () => {
   const step = stepContent();
 
   return (
-    <>
+    <Stacks direction="column" gap={16}>
       <Stepper direction="row" activeStep={activeStep} steps={steps} />
       {step}
       <StepperButtons
@@ -76,6 +76,6 @@ export const StepContent = () => {
         isFirstStep={isFirstStep}
         isLastStep={isLastStep}
       />
-    </>
+    </Stacks>
   );
 };
