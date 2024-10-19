@@ -34,3 +34,4 @@ export { Tooltip } from "./tooltip/Tooltip";
 export { CountrySelect } from "./countrySelect/CountrySelect";
 export { DropdownStation } from "./dropdownStation/DropdownStation";
 export { Alert } from "./alert/Alert";
+export { Skeleton } from "./skeleton/Skeleton";
