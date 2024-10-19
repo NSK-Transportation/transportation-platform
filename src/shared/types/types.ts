@@ -8,3 +8,5 @@ export type Options<T, K extends string> = {
 
 // Тип для направлений
 export type Direction = "there" | "return";
+
+export type Status = "idle" | "loading" | "success" | "error";

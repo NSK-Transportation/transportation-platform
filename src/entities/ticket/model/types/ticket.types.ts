@@ -3,7 +3,7 @@ import { Baggage } from "@/entities/baggage";
 import { Cashier } from "@/entities/cashier";
 import { Discount } from "@/entities/discount";
 import { Payment } from "@/entities/payment";
-import { Refund } from "@/entities/refund";
+// import { Refund } from "@/entities/refund";
 import { Seat } from "@/entities/seat";
 import { WayDetail } from "@/entities/wayDetails";
 import { Options } from "@/shared/types/types";
@@ -26,5 +26,5 @@ export interface Ticket extends Options<TicketType, "type"> {
   cashier: Cashier | null;
   saleDate: string;
   saleTime: string;
-  refund?: Partial<Refund> | null;
+  // refund?: Partial<Refund> | null;
 }
