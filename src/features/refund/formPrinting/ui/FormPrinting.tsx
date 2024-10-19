@@ -1,41 +1,33 @@
-import { useQuery } from "react-query";
-import { getRefund } from "@/entities/refund";
-import { DownloadIcon, ErrorIcon, SuccessIcon } from "@/shared/assets";
+import { FC } from "react";
+import { RefundForm, type Form } from "@/entities/refund";
+import { usePrint } from "@/shared/hooks";
+import { Status } from "@/shared/types";
 import { Divider, Stacks, Typography } from "@/shared/ui";
+import { getStatusIcon } from "../lib/utils/getStatusIcon";
 
-export const FormPrinting = () => {
-  const { status, refetch } = useQuery([], () => getRefund(), {
-    enabled: false,
-    refetchOnWindowFocus: false,
-  });
+interface Props {
+  status: Status;
+  form: Form | undefined;
+}
 
-  const getStatusIcon = () => {
-    switch (status) {
-      case "error":
-        return <ErrorIcon />;
-      case "success":
-        return <SuccessIcon />;
-      case "loading":
-        return <DownloadIcon />;
-      case "idle":
-        return null;
-    }
-  };
+export const FormPrinting: FC<Props> = ({ status, form }) => {
+  const statusIcon = getStatusIcon(status);
+  const print = usePrint();
 
-  const handlePrint = async () => {
-    console.log("Печать бланка");
-    await refetch();
+  const handlePrint = () => {
+    if (!form) return;
+    print(<RefundForm form={form!} />, "", "Бланк на возврат билета");
   };
 
   return (
-    <Stacks gap={16} onClick={handlePrint}>
+    <Stacks gap={16}>
       <Divider color="blue" orientation="vertical" />
-      <Stacks alignItems="center" gap={4}>
-        <Typography cursor="pointer" variant="h3" color="primary">
+      <Stacks alignItems="center" gap={4} onClick={handlePrint}>
+        <Typography cursor="pointer" variant="h3" color={!form ? "secondary" : "primary"}>
           Печать бланка на возврат билета
         </Typography>
-        <Typography cursor="pointer" variant="h3" color="primary">
-          {getStatusIcon()}
+        <Typography cursor="pointer" variant="h3" color={!form ? "secondary" : "primary"}>
+          {statusIcon}
         </Typography>
       </Stacks>
     </Stacks>
