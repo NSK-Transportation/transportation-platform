@@ -29,9 +29,6 @@ export const SeatPlace: FC<Props> = ({ passenger, direction, wayInfo, passengerI
       )}
       {direction === "return" && (
         <Stacks direction="column" gap={8}>
-          <Typography variant="h3" color="primary-second" weight={600}>
-            Обратный билет
-          </Typography>
           {wayInfo}
           {passenger.ticket.return?.seatId && (
             <Stacks gap={8} fullwidth>

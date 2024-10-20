@@ -1,21 +1,35 @@
+/* eslint-disable @conarti/feature-sliced/layers-slices */
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
+import { Passenger, usePassengerStore, type Store as PassengerStore } from "@/entities/passenger";
 import { Refund } from "../types/refund.types";
 
 // Интерфейс хранилища
 export interface Store {
-  refund: Refund;
+  passenger: Passenger | null;
+  refund: Refund | null;
+
+  setRefund: (data: Refund) => void;
+  clearRefund: () => void;
 }
 
 export const useRefundStore = create<Store>()(
   devtools(
     immer((set) => ({
-      refund: {
-        withheld: 0,
-        retentionPercentage: 0,
-        amount: 0,
-        type: "card",
+      passenger: null,
+      refund: null,
+
+      setRefund(data) {
+        set({
+          refund: data,
+        });
+      },
+      clearRefund: () => {
+        set({
+          passenger: null,
+          refund: null,
+        });
       },
     })),
     {
@@ -23,3 +37,9 @@ export const useRefundStore = create<Store>()(
     },
   ),
 );
+
+usePassengerStore.subscribe((state: PassengerStore) => {
+  useRefundStore.setState({
+    passenger: state.passenger,
+  });
+});

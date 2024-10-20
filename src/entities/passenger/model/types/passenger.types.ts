@@ -48,7 +48,7 @@ export interface Phone {
 }
 
 export interface Passenger {
-  readonly id: number | string;
+  readonly id: string;
   firstName: string;
   lastName: string;
   patronymic: string;
@@ -60,4 +60,8 @@ export interface Passenger {
     there: Partial<Ticket> | null;
     return: Partial<Ticket> | null;
   };
+}
+
+export interface GetPassengerResponse {
+  passenger: Passenger;
 }

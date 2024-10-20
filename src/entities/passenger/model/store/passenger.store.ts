@@ -12,7 +12,7 @@ import {
 
 // Интерфейс хранилища
 export interface Store {
-  passenger: Partial<Passenger>;
+  passenger: Passenger | null;
   passengers: Passenger[];
   options: {
     documents: Omit<Document, "series" | "number">[];
@@ -32,7 +32,7 @@ export interface Store {
 export const usePassengerStore = create<Store>()(
   devtools(
     immer((set) => ({
-      passenger: {},
+      passenger: null,
       passengers: [],
       options: {
         documents: [

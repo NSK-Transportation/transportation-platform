@@ -23,21 +23,26 @@ export const InformationPanel = () => {
     <Stacks direction="column">
       <Box border="up">
         <Stacks direction="column" gap={16}>
-          <WayInfo activeWay={activeWay.there} />
-
-          {selectedSeats && selectedSeats?.length > 0 && (
-            <Typography
-              onClick={() => setVisible(!visible)}
-              cursor="pointer"
-              variant="h4"
-              color="secondary"
-            >
-              <Stacks alignItems="center" gap={2}>
-                Детали рейса
-                {visible ? <ArrowDownIcon /> : <ArrowUpIcon />}
-              </Stacks>
-            </Typography>
-          )}
+          <WayInfo
+            activeWay={activeWay.there}
+            actions={
+              <>
+                {selectedSeats && selectedSeats?.length > 0 && (
+                  <Typography
+                    onClick={() => setVisible(!visible)}
+                    cursor="pointer"
+                    variant="h4"
+                    color="secondary"
+                  >
+                    <Stacks alignItems="center" gap={2}>
+                      Детали рейса
+                      {visible ? <ArrowDownIcon /> : <ArrowUpIcon />}
+                    </Stacks>
+                  </Typography>
+                )}
+              </>
+            }
+          />
 
           {visible &&
             passengers.map((passenger) => (
@@ -63,7 +68,19 @@ export const InformationPanel = () => {
                           <PassengerTicketInfo passenger={passenger} direction={"return"} />
                         )
                       }
-                      wayInfo={activeWay.return && <WayInfo activeWay={activeWay.return} />}
+                      wayInfo={
+                        activeWay.return && (
+                          <WayInfo
+                            border
+                            activeWay={activeWay.return}
+                            typography={
+                              <Typography variant="h3" color="primary-second" weight={600}>
+                                Обратный билет
+                              </Typography>
+                            }
+                          />
+                        )
+                      }
                     />
                   )}
                 </Stacks>

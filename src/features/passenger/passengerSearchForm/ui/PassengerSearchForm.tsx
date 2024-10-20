@@ -1,32 +1,33 @@
-import { useState } from "react";
+import { useKeyboard } from "@siberiacancode/reactuse";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useQuery } from "react-query";
-import { Document, Identification, usePassengerStore } from "@/entities/passenger";
+import { Identification, usePassengerStore } from "@/entities/passenger";
 import { getPassenger } from "@/entities/passenger";
 import { Box, Button, Input, Label, Stacks } from "@/shared/ui";
 
 export const PassengerSearchForm = () => {
-  const { setPassenger } = usePassengerStore();
-  const [document, setDocument] = useState({
-    series: "",
-    number: "",
-  } as Pick<Document, "series" | "number">);
+  const { setPassenger, passenger } = usePassengerStore();
 
   const {
     handleSubmit,
     register,
     formState: { errors },
+    getValues,
   } = useForm<Identification>();
 
+  const series = getValues().document?.series || "";
+  const number = getValues().document?.number || "";
+
   const { refetch, isFetching } = useQuery(
-    [`passenger`, document],
-    () => getPassenger({ series: document.series, number: document.number }),
+    [`passenger`, passenger],
+    () => getPassenger({ series, number }),
     {
       onSuccess(data) {
         setPassenger(data);
       },
       onError(error) {
-        alert(error);
+        toast(`Ошибка: ${error}`);
       },
       enabled: false,
       refetchOnWindowFocus: false,
@@ -37,6 +38,8 @@ export const PassengerSearchForm = () => {
     await refetch();
   };
 
+  useKeyboard({ onKeyDown: (event) => event.key === "Enter" && handleSubmit(handleClick)() });
+
   return (
     <Box fullWidth style={{ alignSelf: "flex-start" }}>
       <Stacks gap={16} alignItems="flex-end">
@@ -44,7 +47,6 @@ export const PassengerSearchForm = () => {
           <Input
             {...register("document.series", { required: "Введите серию паспорта" })}
             message={errors.document?.series?.message}
-            onChange={(event) => setDocument({ ...document, series: event.target.value })}
             type="number"
             placeholder="Введите серию"
           />
@@ -53,7 +55,6 @@ export const PassengerSearchForm = () => {
           <Input
             {...register("document.number", { required: "Введите номер паспорта" })}
             message={errors.document?.number?.message}
-            onChange={(event) => setDocument({ ...document, number: event.target.value })}
             type="number"
             placeholder="Введите номер"
           />
