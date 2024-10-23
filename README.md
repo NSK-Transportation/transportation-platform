@@ -46,7 +46,7 @@
 git clone https://github.com/your-username/bus-transportation.git
 ```
 
-2. Установите зависимости
+2. Установите зависимости.
 
 ```bash
 npm install
