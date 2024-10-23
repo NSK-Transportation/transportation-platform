@@ -2,7 +2,6 @@
 addReviewers: true
 addAssignees: true
 reviewers:
-  - vlnt-trsv
   - Bakugan74
 numberOfReviewers: 1
 randomReviewer: false
